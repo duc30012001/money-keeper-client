@@ -1,13 +1,7 @@
-// app/(admin)/dashboard/dashboard-client.tsx  ← Client Component
 'use client';
 
-import type { Session } from 'next-auth';
+interface Props {}
 
-interface Props {
-    session: Session | null;
-}
-
-export default function DashboardClient({ session }: Props) {
-    console.log('session:', session);
+export default function DashboardClient({}: Props) {
     return <div>Welcome back!</div>;
 }
