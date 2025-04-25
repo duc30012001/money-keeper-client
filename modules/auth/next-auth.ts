@@ -27,9 +27,11 @@ export const authOptions: NextAuthOptions = {
                         accessToken: data.accessToken,
                         refreshToken: data.refreshToken,
                     };
-                } catch (err) {
-                    console.log('err:', err);
-                    return null; // trả về null khi thất bại => NextAuth sẽ redirect về lỗi
+                } catch (err: any) {
+                    // Pass through the server's error message
+                    const errorMessage =
+                        err.response?.data?.message || 'Authentication failed';
+                    throw new Error(errorMessage);
                 }
             },
         }),
@@ -75,9 +77,7 @@ export const authOptions: NextAuthOptions = {
                 const res = await authService.getCurrentUser();
                 const user = res.data.data;
                 session.user = user;
-                console.log('user:', user);
             } catch (error) {
-                console.log('error:', error);
                 session.error =
                     (error as AxiosError).message ||
                     (token.error as string | undefined);

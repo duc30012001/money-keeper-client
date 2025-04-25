@@ -12,8 +12,9 @@ import { AppRoute } from '@/constants/sidebar';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
-import { HTMLAttributes } from 'react';
+import { HTMLAttributes, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { PasswordInput } from './password-input';
 
@@ -35,6 +36,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {
+    const [isLoading, setIsLoading] = useState(false);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -44,11 +46,27 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
     });
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        await signIn('credentials', {
-            email: data.email,
-            password: data.password,
-            callbackUrl: AppRoute.Dashboard,
-        });
+        setIsLoading(true);
+        try {
+            const result = await signIn('credentials', {
+                email: data.email,
+                password: data.password,
+                redirect: false,
+            });
+
+            if (result?.error) {
+                // The error message is now the server's error message
+                toast.error(result.error);
+                return;
+            }
+
+            window.location.href = AppRoute.Dashboard;
+        } catch (error: any) {
+            // Handle any unexpected errors
+            toast.error(error?.message || 'An error occurred during login');
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     return (
@@ -90,7 +108,9 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
                         </FormItem>
                     )}
                 />
-                <Button className="mt-2">Login</Button>
+                <Button className="mt-2" disabled={isLoading}>
+                    {isLoading ? 'Logging in...' : 'Login'}
+                </Button>
             </form>
         </Form>
     );

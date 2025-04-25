@@ -14,12 +14,13 @@ import { usePathname } from 'next/navigation';
 export function NavMain({ sidebarItems }: { sidebarItems: SidebarItem[] }) {
     const pathname = usePathname();
     return (
-        <SidebarGroup className="group-data-[collapsible=icon]:hidden">
+        <SidebarGroup>
             <SidebarMenu>
                 {sidebarItems.map((item, index) => (
                     <SidebarMenuItem key={index}>
                         <SidebarMenuButton
                             asChild
+                            tooltip={item.title}
                             className={cn({
                                 'bg-accent text-accent-foreground':
                                     pathname === item.href,
