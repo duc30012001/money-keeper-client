@@ -15,4 +15,4 @@ services:
             - NODE_ENV=${NODE_ENV:-development}
         command: ${COMMAND:-yarn dev}
         env_file:
-            - .env
+            - .env.local
