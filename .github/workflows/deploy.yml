@@ -1,0 +1,32 @@
+name: Deploy to VPS
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Start SSH agent
+              uses: webfactory/ssh-agent@v0.8.1
+              with:
+                  ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+            - name: Deploy via SSH
+              env:
+                  HOST: ${{ secrets.VPS_HOST }}
+                  USER: ${{ secrets.VPS_USER }}
+                  PORT: ${{ secrets.VPS_PORT }} # omit or set to 22
+              run: |
+                  # disable host checking (only if you trust the server)
+                  ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} "
+                    cd /www/wwwroot/money-keeper-client &&
+                    git pull origin main &&
+                    docker-compose up -d --build
+                  "
