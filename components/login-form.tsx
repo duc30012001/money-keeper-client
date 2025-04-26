@@ -12,7 +12,6 @@ import { AppRoute } from '@/constants/sidebar';
 import { cn } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 import { HTMLAttributes, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -38,8 +37,6 @@ const formSchema = z.object({
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState(false);
-    const router = useRouter();
-
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -54,16 +51,14 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
             const result = await signIn('credentials', {
                 email: data.email,
                 password: data.password,
-                redirect: false,
+                redirect: true,
+                callbackUrl: AppRoute.Dashboard,
             });
 
             if (result?.error) {
                 // The error message is now the server's error message
                 toast.error(result.error);
-                return;
             }
-
-            router.push(AppRoute.Dashboard);
         } catch (error: any) {
             // Handle any unexpected errors
             toast.error(error?.message || 'An error occurred during login');

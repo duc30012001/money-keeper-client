@@ -102,6 +102,10 @@ export const authOptions: NextAuthOptions = {
 
     // 4) Bảo mật
     secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
-    // (tuỳ chọn) custom page nếu cần:
-    pages: { signIn: AppRoute.Signin },
+
+    // 5) Custom pages and redirects
+    pages: {
+        signIn: AppRoute.Signin,
+        error: AppRoute.Signin, // Redirect to signin page on error
+    },
 };
