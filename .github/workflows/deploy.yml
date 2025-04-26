@@ -26,6 +26,7 @@ jobs:
               run: |
                   # disable host checking (only if you trust the server)
                   ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} "
+                    sudo su &&
                     cd /www/wwwroot/money-keeper-client &&
                     git pull origin main &&
                     docker-compose up -d --build
