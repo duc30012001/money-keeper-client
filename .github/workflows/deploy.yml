@@ -25,10 +25,9 @@ jobs:
                   PORT: ${{ secrets.VPS_PORT }} # omit or set to 22
               run: |
                   # disable host checking (only if you trust the server)
+                  # run each step with sudo
                   ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} "
-                    sudo su &&
                     cd /www/wwwroot/money-keeper-client &&
-                    git config --global --add safe.directory /www/wwwroot/money-keeper-client && 
-                    git pull origin main &&
-                    docker-compose up -d --build
+                    sudo git pull origin main &&
+                    sudo docker-compose up -d --build
                   "
