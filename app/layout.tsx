@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         siteName: 'Money Keeper',
         images: [
             {
-                url: appUrl + '/images/background.jpg',
+                url: appUrl + '/images/background2.png',
                 width: 1200,
                 height: 630,
                 alt: 'Money Keeper App',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
         title: 'Money Keeper',
         description:
             'Money Keeper App - Track your finances, manage your money, and achieve your financial goals',
-        images: [appUrl + '/images/background.jpg'],
+        images: [appUrl + '/images/background2.png'],
         creator: '@vietduc_dev',
     },
     // Additional metadata
