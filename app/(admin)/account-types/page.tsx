@@ -1,6 +1,5 @@
 'use client';
 
-import Container from '@/components/container';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
@@ -31,7 +30,7 @@ export default function AccountTypesPage() {
     };
 
     return (
-        <Container>
+        <div>
             <div className="">
                 <div className="flex items-center justify-end p-2">
                     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -57,6 +56,6 @@ export default function AccountTypesPage() {
                     <AccountTypesTable onEdit={handleEdit} />
                 </div>
             </div>
-        </Container>
+        </div>
     );
 }
