@@ -29,5 +29,6 @@ jobs:
                   ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} "
                     cd /www/wwwroot/money-keeper-client &&
                     sudo git pull origin main &&
-                    sudo docker-compose up -d --build
+                    sudo docker-compose build --no-cache
+                    sudo docker-compose up -d
                   "
