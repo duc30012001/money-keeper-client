@@ -101,7 +101,7 @@ export const authOptions: NextAuthOptions = {
     },
 
     // 4) Bảo mật
-    secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
+    // secret: process.env.NEXT_PUBLIC_NEXTAUTH_SECRET,
 
     // 5) Custom pages and redirects
     pages: {
