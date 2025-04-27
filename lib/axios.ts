@@ -3,7 +3,7 @@ import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { getSession } from 'next-auth/react';
 
 const config: AxiosRequestConfig = {
-    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL, // ví dụ: https://api.example.com
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
