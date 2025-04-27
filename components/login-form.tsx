@@ -14,7 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { signIn } from 'next-auth/react';
 import { HTMLAttributes, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 import { PasswordInput } from './password-input';
 
@@ -37,6 +37,7 @@ const formSchema = z.object({
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {
     const [isLoading, setIsLoading] = useState(false);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -57,11 +58,15 @@ export function LoginForm({ className, ...props }: UserAuthFormProps) {
 
             if (result?.error) {
                 // The error message is now the server's error message
-                toast.error(result.error);
+                toast(result.error, {
+                    type: 'error',
+                });
             }
         } catch (error: any) {
             // Handle any unexpected errors
-            toast.error(error?.message || 'An error occurred during login');
+            toast(error?.message || 'An error occurred during login', {
+                type: 'error',
+            });
         } finally {
             setIsLoading(false);
         }
