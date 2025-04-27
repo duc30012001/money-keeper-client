@@ -26,12 +26,12 @@ export const metadata: Metadata = {
     description:
         'Money Keeper App - Track your finances, manage your money, and achieve your financial goals',
     icons: {
-        icon: '/assets/icon.png',
-        shortcut: '/assets/icon.png',
-        apple: '/assets/icon.png',
+        icon: '/images/icon.png',
+        shortcut: '/images/icon.png',
+        apple: '/images/icon.png',
         other: {
             rel: 'icon',
-            url: '/assets/icon.png',
+            url: '/images/icon.png',
         },
     },
     // Open Graph metadata
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
         siteName: 'Money Keeper',
         images: [
             {
-                url: '/assets/background.png',
+                url: appUrl + '/images/background.png',
                 width: 1200,
                 height: 630,
                 alt: 'Money Keeper App',
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
         title: 'Money Keeper',
         description:
             'Money Keeper App - Track your finances, manage your money, and achieve your financial goals',
-        images: ['/assets/background.png'],
+        images: [appUrl + '/images/background.png'],
         creator: '@vietduc_dev',
     },
     // Additional metadata

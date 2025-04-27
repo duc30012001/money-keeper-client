@@ -27,7 +27,7 @@ export default function LoginPage() {
                     className="flex items-center gap-2 self-center font-medium"
                 >
                     <Image
-                        src="/assets/icon.png"
+                        src="/images/icon.png"
                         alt="Money Keeper"
                         width={30}
                         height={30}
