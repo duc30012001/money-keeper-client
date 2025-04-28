@@ -122,7 +122,11 @@ export function AccountTypeForm({
                         </FormItem>
                     )}
                 />
-                <Button type="submit" disabled={isLoading}>
+                <Button
+                    className="ml-auto mt-2"
+                    type="submit"
+                    disabled={isLoading}
+                >
                     {isLoading
                         ? 'Saving...'
                         : accountType

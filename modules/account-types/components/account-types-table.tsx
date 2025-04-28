@@ -7,6 +7,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import {
     SortableContext,
@@ -15,6 +21,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { GripVertical, Pencil, Trash2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
     useAccountTypesList,
     useDeleteAccountType,
@@ -60,23 +67,39 @@ function SortableRow({ accountType, onEdit, onDelete }: SortableRowProps) {
             </TableCell>
             <TableCell>{accountType.name}</TableCell>
             <TableCell>{accountType.description || '-'}</TableCell>
-            <TableCell>{accountType.sortOrder}</TableCell>
+            {/* <TableCell>{accountType.sortOrder}</TableCell> */}
             <TableCell>
                 <div className="flex gap-2">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => onEdit(accountType)}
-                    >
-                        <Pencil className="h-4 w-4" />
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => onDelete(accountType.id)}
-                    >
-                        <Trash2 className="h-4 w-4" />
-                    </Button>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => onEdit(accountType)}
+                                >
+                                    <Pencil className="h-4 w-4" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Edit</p>
+                            </TooltipContent>
+                        </Tooltip>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() => onDelete(accountType.id)}
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                                <p>Delete</p>
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
                 </div>
             </TableCell>
         </TableRow>
@@ -88,29 +111,38 @@ interface AccountTypesTableProps {
 }
 
 export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
+    const [dataSource, setDataSource] = useState<AccountType[]>([]);
+
     const { data: accountTypesResponse, isLoading } = useAccountTypesList();
     const accountTypes = accountTypesResponse?.data || [];
     const deleteMutation = useDeleteAccountType();
     const updateSortOrderMutation = useUpdateSortOrder();
 
+    useEffect(() => {
+        setDataSource(accountTypes);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [JSON.stringify(accountTypes)]);
+
     const handleDragEnd = (event: DragEndEvent) => {
         const { active, over } = event;
         if (!over || active.id === over.id) return;
 
-        const oldIndex = accountTypes.findIndex(
+        const oldIndex = dataSource.findIndex(
             (item: AccountType) => item.id === active.id
         );
-        const newIndex = accountTypes.findIndex(
+        const newIndex = dataSource.findIndex(
             (item: AccountType) => item.id === over.id
         );
 
-        const newOrder = [...accountTypes];
+        const newOrder = [...dataSource];
         const [removed] = newOrder.splice(oldIndex, 1);
         newOrder.splice(newIndex, 0, removed);
 
         updateSortOrderMutation.mutate({
             ids: newOrder.map((item: AccountType) => item.id),
         });
+
+        setDataSource(newOrder);
     };
 
     const handleDelete = (id: string) => {
@@ -134,16 +166,16 @@ export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
                         <TableHead className="w-[50px]"></TableHead>
                         <TableHead>Name</TableHead>
                         <TableHead>Description</TableHead>
-                        <TableHead>Sort Order</TableHead>
+                        {/* <TableHead>Sort Order</TableHead> */}
                         <TableHead className="w-[100px]">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     <SortableContext
-                        items={accountTypes.map((item: AccountType) => item.id)}
+                        items={dataSource.map((item: AccountType) => item.id)}
                         strategy={verticalListSortingStrategy}
                     >
-                        {accountTypes.map((accountType: AccountType) => (
+                        {dataSource.map((accountType: AccountType) => (
                             <SortableRow
                                 key={accountType.id}
                                 accountType={accountType}

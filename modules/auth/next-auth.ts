@@ -1,9 +1,12 @@
-import { AppRoute } from '@/constants/sidebar';
-import axiosInstance from '@/lib/axios';
 import { AxiosError } from 'axios';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+
+import { AppRoute } from '@/constants/sidebar';
+import axiosInstance from '@/lib/axios';
+import { jwtDecode } from 'jwt-decode';
 import { authService } from './service';
+import { JwtPayload } from './types';
 
 export const authOptions: NextAuthOptions = {
     // 1) Provider đăng nhập bằng email/password
@@ -53,8 +56,10 @@ export const authOptions: NextAuthOptions = {
             }
 
             // Tự động refresh nếu token sắp hết hạn
+            const { accessToken } = token;
             const now = Date.now();
-            const exp = (token.exp as number) * 1000;
+            const accessTokenPayload = jwtDecode<JwtPayload>(accessToken);
+            const exp = (accessTokenPayload.exp as number) * 1000;
             // refresh nếu còn 1 phút hoặc đã quá hạn
             if (now > exp - 60 * 1000) {
                 try {
