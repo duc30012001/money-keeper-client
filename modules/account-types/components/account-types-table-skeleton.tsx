@@ -13,11 +13,10 @@ export function AccountTypesTableSkeleton() {
         <Table>
             <TableHeader>
                 <TableRow>
-                    <TableHead className="w-[50px]"></TableHead>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Description</TableHead>
-                    <TableHead>Sort Order</TableHead>
-                    <TableHead className="w-[100px]">Actions</TableHead>
+                    <TableHead className="w-20"></TableHead>
+                    <TableHead className="w-48">Name</TableHead>
+                    <TableHead className="w-60">Description</TableHead>
+                    <TableHead className="w-20">Actions</TableHead>
                 </TableRow>
             </TableHeader>
             <TableBody>
@@ -31,9 +30,6 @@ export function AccountTypesTableSkeleton() {
                         </TableCell>
                         <TableCell>
                             <Skeleton className="h-4 w-[200px]" />
-                        </TableCell>
-                        <TableCell>
-                            <Skeleton className="h-4 w-[50px]" />
                         </TableCell>
                         <TableCell>
                             <div className="flex gap-2">

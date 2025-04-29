@@ -1,5 +1,13 @@
 import { Button } from '@/components/ui/button';
 import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogFooter,
+    DialogHeader,
+    DialogTitle,
+} from '@/components/ui/dialog';
+import {
     Table,
     TableBody,
     TableCell,
@@ -112,6 +120,9 @@ interface AccountTypesTableProps {
 
 export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
     const [dataSource, setDataSource] = useState<AccountType[]>([]);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+    const [accountTypeToDelete, setAccountTypeToDelete] =
+        useState<AccountType | null>(null);
 
     const { data: accountTypesResponse, isLoading } = useAccountTypesList();
     const accountTypes = accountTypesResponse?.data || [];
@@ -146,8 +157,21 @@ export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
     };
 
     const handleDelete = (id: string) => {
-        if (confirm('Are you sure you want to delete this account type?')) {
-            deleteMutation.mutate(id);
+        const accountType = dataSource.find((item) => item.id === id);
+        if (accountType) {
+            setAccountTypeToDelete(accountType);
+            setDeleteDialogOpen(true);
+        }
+    };
+
+    const confirmDelete = () => {
+        if (accountTypeToDelete) {
+            deleteMutation.mutate(accountTypeToDelete.id, {
+                onSuccess: () => {
+                    setDeleteDialogOpen(false);
+                    setAccountTypeToDelete(null);
+                },
+            });
         }
     };
 
@@ -156,36 +180,71 @@ export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
     }
 
     return (
-        <DndContext
-            collisionDetection={closestCenter}
-            onDragEnd={handleDragEnd}
-        >
-            <Table>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[50px]"></TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Description</TableHead>
-                        {/* <TableHead>Sort Order</TableHead> */}
-                        <TableHead className="w-[100px]">Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    <SortableContext
-                        items={dataSource.map((item: AccountType) => item.id)}
-                        strategy={verticalListSortingStrategy}
-                    >
-                        {dataSource.map((accountType: AccountType) => (
-                            <SortableRow
-                                key={accountType.id}
-                                accountType={accountType}
-                                onEdit={onEdit}
-                                onDelete={handleDelete}
-                            />
-                        ))}
-                    </SortableContext>
-                </TableBody>
-            </Table>
-        </DndContext>
+        <>
+            <DndContext
+                collisionDetection={closestCenter}
+                onDragEnd={handleDragEnd}
+            >
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead className="w-20"></TableHead>
+                            <TableHead className="w-48">Name</TableHead>
+                            <TableHead className="w-60">Description</TableHead>
+                            {/* <TableHead>Sort Order</TableHead> */}
+                            <TableHead className="w-20">Actions</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <SortableContext
+                            items={dataSource.map(
+                                (item: AccountType) => item.id
+                            )}
+                            strategy={verticalListSortingStrategy}
+                        >
+                            {dataSource.map((accountType: AccountType) => (
+                                <SortableRow
+                                    key={accountType.id}
+                                    accountType={accountType}
+                                    onEdit={onEdit}
+                                    onDelete={handleDelete}
+                                />
+                            ))}
+                        </SortableContext>
+                    </TableBody>
+                </Table>
+            </DndContext>
+
+            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Delete Account Type</DialogTitle>
+                        <DialogDescription>
+                            Are you sure you want to delete &quot;
+                            {accountTypeToDelete?.name}&quot;? This action
+                            cannot be undone.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <DialogFooter>
+                        <Button
+                            variant="outline"
+                            onClick={() => setDeleteDialogOpen(false)}
+                            disabled={deleteMutation.isPending}
+                        >
+                            Cancel
+                        </Button>
+                        <Button
+                            variant="destructive"
+                            onClick={confirmDelete}
+                            disabled={deleteMutation.isPending}
+                        >
+                            {deleteMutation.isPending
+                                ? 'Deleting...'
+                                : 'Delete'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+        </>
     );
 }

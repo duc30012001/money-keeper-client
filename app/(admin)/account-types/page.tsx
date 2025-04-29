@@ -33,15 +33,23 @@ export default function AccountTypesPage() {
         <div>
             <div className="">
                 <div className="flex items-center justify-end p-2">
-                    <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                    <Dialog
+                        open={isDialogOpen}
+                        onOpenChange={(open) => {
+                            setIsDialogOpen(open);
+                            if (!open) {
+                                setEditingAccountType(undefined);
+                            }
+                        }}
+                    >
                         <DialogTrigger asChild>
-                            <Button>Create Account Type</Button>
+                            <Button>Create</Button>
                         </DialogTrigger>
                         <DialogContent>
                             <DialogHeader>
                                 <DialogTitle>
                                     {editingAccountType
-                                        ? 'Edit Account Type'
+                                        ? 'Edit ' + editingAccountType.name
                                         : 'Create Account Type'}
                                 </DialogTitle>
                             </DialogHeader>

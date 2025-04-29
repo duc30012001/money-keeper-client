@@ -5,7 +5,6 @@ import {
     Tag,
     User,
     Users,
-    Zap,
     type LucideIcon,
 } from 'lucide-react';
 
@@ -36,6 +35,5 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     { title: 'Account Types', href: AppRoute.AccountTypes, icon: Layers },
     { title: 'Accounts', href: AppRoute.Accounts, icon: User },
     { title: 'Categories', href: AppRoute.Categories, icon: Tag },
-    { title: 'Action Types', href: AppRoute.ActionTypes, icon: Zap },
     { title: 'Users', href: AppRoute.Users, icon: Users },
 ];

@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 import {
     useCreateAccountType,
@@ -50,15 +51,39 @@ export function AccountTypeForm({
     const updateMutation = useUpdateAccountType();
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        if (accountType) {
-            await updateMutation.mutateAsync({
-                id: accountType.id,
-                data: values as UpdateAccountTypeDto,
-            });
-        } else {
-            await createMutation.mutateAsync(values as CreateAccountTypeDto);
+        try {
+            if (accountType) {
+                await updateMutation.mutateAsync({
+                    id: accountType.id,
+                    data: values as UpdateAccountTypeDto,
+                });
+            } else {
+                await createMutation.mutateAsync(
+                    values as CreateAccountTypeDto
+                );
+            }
+            onSuccess?.();
+        } catch (error: any) {
+            if (error.response?.data) {
+                const {
+                    message,
+                    error: errorType,
+                    statusCode,
+                } = error.response.data;
+                const toastMessage =
+                    message || `Error (${statusCode}): ${errorType}`;
+                const toastId = `account-type-error-${statusCode}-${errorType}`;
+
+                if (!toast.isActive(toastId)) {
+                    toast.error(toastMessage, { toastId });
+                }
+            } else {
+                const toastId = 'account-type-unknown-error';
+                if (!toast.isActive(toastId)) {
+                    toast.error('Something went wrong', { toastId });
+                }
+            }
         }
-        onSuccess?.();
     };
 
     const isLoading = createMutation.isPending || updateMutation.isPending;
