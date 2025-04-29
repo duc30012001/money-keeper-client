@@ -8,9 +8,9 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { AccountTypeForm } from '@/modules/account-types/components/account-type-form';
-import { AccountTypesTable } from '@/modules/account-types/components/account-types-table';
-import { AccountType } from '@/modules/account-types/types/account-type';
+import { AccountTypeForm } from '@/modules/account-type/components/account-type-form';
+import { AccountTypesTable } from '@/modules/account-type/components/account-types-table';
+import { AccountType } from '@/modules/account-type/types/account-type';
 import { useState } from 'react';
 
 export default function AccountTypesPage() {
