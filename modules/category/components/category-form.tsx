@@ -12,54 +12,49 @@ import { Textarea } from '@/components/ui/textarea';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useCreateCategory, useUpdateCategory } from '../hooks/use-categories';
 import {
-    useCreateAccountType,
-    useUpdateAccountType,
-} from '../hooks/use-account-types';
-import {
-    AccountType,
-    CreateAccountTypeDto,
-    UpdateAccountTypeDto,
-} from '../types/account-type';
+    Category,
+    CreateCategoryDto,
+    UpdateCategoryDto,
+} from '../types/category';
+import { ActionTypeSelect } from './action-type-select';
 
 const formSchema = z.object({
     name: z.string().min(1, 'Name is required'),
+    actionType: z.enum(['income', 'expense']),
     description: z.string().optional(),
     sortOrder: z.number().optional(),
 });
 
-interface AccountTypeFormProps {
-    accountType?: AccountType;
+interface CategoryFormProps {
+    category?: Category;
     onSuccess?: () => void;
 }
 
-export function AccountTypeForm({
-    accountType,
-    onSuccess,
-}: AccountTypeFormProps) {
+export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: accountType?.name || '',
-            description: accountType?.description || '',
-            sortOrder: accountType?.sortOrder || 1,
+            name: category?.name || '',
+            actionType: category?.actionType,
+            description: category?.description || '',
+            sortOrder: category?.sortOrder || 1,
         },
     });
 
-    const createMutation = useCreateAccountType();
-    const updateMutation = useUpdateAccountType();
+    const createMutation = useCreateCategory();
+    const updateMutation = useUpdateCategory();
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            if (accountType) {
+            if (category) {
                 await updateMutation.mutateAsync({
-                    id: accountType.id,
-                    data: values as UpdateAccountTypeDto,
+                    id: category.id,
+                    data: values as UpdateCategoryDto,
                 });
             } else {
-                await createMutation.mutateAsync(
-                    values as CreateAccountTypeDto
-                );
+                await createMutation.mutateAsync(values as CreateCategoryDto);
             }
             onSuccess?.();
         } catch (error) {
@@ -80,7 +75,7 @@ export function AccountTypeForm({
                             <FormLabel>Name</FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Enter account type name"
+                                    placeholder="Enter category name"
                                     {...field}
                                     disabled={isLoading}
                                 />
@@ -89,6 +84,7 @@ export function AccountTypeForm({
                         </FormItem>
                     )}
                 />
+                <ActionTypeSelect name="actionType" />
                 <FormField
                     control={form.control}
                     name="description"
@@ -97,7 +93,7 @@ export function AccountTypeForm({
                             <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
-                                    placeholder="Enter account type description"
+                                    placeholder="Enter category description"
                                     {...field}
                                     disabled={isLoading}
                                 />
@@ -133,11 +129,7 @@ export function AccountTypeForm({
                     type="submit"
                     disabled={isLoading}
                 >
-                    {isLoading
-                        ? 'Saving...'
-                        : accountType
-                          ? 'Update'
-                          : 'Create'}
+                    {isLoading ? 'Saving...' : category ? 'Update' : 'Create'}
                 </Button>
             </form>
         </Form>

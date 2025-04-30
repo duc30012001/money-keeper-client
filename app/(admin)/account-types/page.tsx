@@ -9,7 +9,7 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { AccountTypeForm } from '@/modules/account-type/components/account-type-form';
-import { AccountTypesTable } from '@/modules/account-type/components/account-types-table';
+import { AccountTypesTable } from '@/modules/account-type/components/account-type-table';
 import { AccountType } from '@/modules/account-type/types/account-type';
 import { useState } from 'react';
 

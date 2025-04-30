@@ -6,6 +6,7 @@ import type { Metadata } from 'next';
 import { getServerSession } from 'next-auth';
 import localFont from 'next/font/local';
 import NextTopLoader from 'nextjs-toploader';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import './globals.css';
 
 const geistSans = localFont({
@@ -82,7 +83,7 @@ export default async function RootLayout({
                 <ReactQueryProviders>
                     <SessionProviderClientComponent session={session}>
                         <NextTopLoader showSpinner={false} />
-                        {children}
+                        <NuqsAdapter>{children}</NuqsAdapter>
                     </SessionProviderClientComponent>
                 </ReactQueryProviders>
                 <AppToast />

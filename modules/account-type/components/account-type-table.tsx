@@ -36,7 +36,7 @@ import {
     useUpdateSortOrder,
 } from '../hooks/use-account-types';
 import { AccountType } from '../types/account-type';
-import { AccountTypesTableSkeleton } from './account-types-table-skeleton';
+import { AccountTypesTableSkeleton } from './account-type-table-skeleton';
 
 interface SortableRowProps {
     accountType: AccountType;

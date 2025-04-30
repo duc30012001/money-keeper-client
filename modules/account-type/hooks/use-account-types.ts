@@ -1,5 +1,11 @@
+import { useApiError } from '@/hooks/use-api-error';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+    useMutation,
+    useQuery,
+    useQueryClient,
+    UseQueryOptions,
+} from '@tanstack/react-query';
 import { accountTypeApi } from '../api/account-type.api';
 import {
     AccountType,
@@ -18,16 +24,19 @@ export const accountTypeKeys = {
 };
 
 export const useAccountTypesList = () => {
+    const { handleError } = useApiError();
     return useQuery<PaginatedResponseDto<AccountType>>({
         queryKey: accountTypeKeys.lists(),
         queryFn: async () => {
             const response = await accountTypeApi.findAll();
             return response.data;
         },
-    });
+        onError: handleError,
+    } as UseQueryOptions<PaginatedResponseDto<AccountType>>);
 };
 
 export const useAccountTypeDetail = (id: string) => {
+    const { handleError } = useApiError();
     return useQuery<ResponseDto<AccountType>>({
         queryKey: accountTypeKeys.detail(id),
         queryFn: async () => {
@@ -35,11 +44,13 @@ export const useAccountTypeDetail = (id: string) => {
             return response.data;
         },
         enabled: !!id,
-    });
+        onError: handleError,
+    } as UseQueryOptions<ResponseDto<AccountType>>);
 };
 
 export const useCreateAccountType = () => {
     const queryClient = useQueryClient();
+    const { handleError } = useApiError();
 
     return useMutation({
         mutationFn: (data: CreateAccountTypeDto) => accountTypeApi.create(data),
@@ -48,11 +59,13 @@ export const useCreateAccountType = () => {
                 queryKey: accountTypeKeys.lists(),
             });
         },
+        onError: handleError,
     });
 };
 
 export const useUpdateAccountType = () => {
     const queryClient = useQueryClient();
+    const { handleError } = useApiError();
 
     return useMutation({
         mutationFn: ({
@@ -70,11 +83,13 @@ export const useUpdateAccountType = () => {
                 queryKey: accountTypeKeys.detail(id),
             });
         },
+        onError: handleError,
     });
 };
 
 export const useUpdateSortOrder = () => {
     const queryClient = useQueryClient();
+    const { handleError } = useApiError();
 
     return useMutation({
         mutationFn: (data: UpdateSortOrderDto) =>
@@ -84,11 +99,13 @@ export const useUpdateSortOrder = () => {
                 queryKey: accountTypeKeys.lists(),
             });
         },
+        onError: handleError,
     });
 };
 
 export const useDeleteAccountType = () => {
     const queryClient = useQueryClient();
+    const { handleError } = useApiError();
 
     return useMutation({
         mutationFn: (id: string) => accountTypeApi.remove(id),
@@ -100,5 +117,6 @@ export const useDeleteAccountType = () => {
                 queryKey: accountTypeKeys.detail(id),
             });
         },
+        onError: handleError,
     });
 };
