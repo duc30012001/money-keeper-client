@@ -32,8 +32,8 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         href: AppRoute.Transactions,
         icon: CreditCard,
     },
-    { title: 'Account Types', href: AppRoute.AccountTypes, icon: Layers },
     { title: 'Accounts', href: AppRoute.Accounts, icon: User },
+    { title: 'Account Types', href: AppRoute.AccountTypes, icon: Layers },
     { title: 'Categories', href: AppRoute.Categories, icon: Tag },
     { title: 'Users', href: AppRoute.Users, icon: Users },
 ];
