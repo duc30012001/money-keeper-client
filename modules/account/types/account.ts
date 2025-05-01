@@ -4,6 +4,7 @@ import { BaseEntity, BaseQuery } from '@/types/common';
 export interface Account extends BaseEntity {
     name: string;
     balance: number;
+    initialBalance: number;
     description: string | null;
     sortOrder: number;
     accountType: AccountType;
@@ -11,7 +12,7 @@ export interface Account extends BaseEntity {
 
 export interface CreateAccountDto {
     name: string;
-    balance?: number;
+    initialBalance?: number;
     description?: string;
     sortOrder?: number;
     accountTypeId: AccountType['id'];

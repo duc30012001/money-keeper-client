@@ -4,6 +4,7 @@ import { DataTable } from '@/components/ui/table/data-table';
 import { DataTableToolbar } from '@/components/ui/table/data-table-toolbar';
 import { useDataTable } from '@/hooks/use-data-table';
 
+import { formatNumber } from '@/lib/format-number';
 import { useAccountTypesList } from '@/modules/account-type/hooks/use-account-types';
 import { ColumnDef } from '@tanstack/react-table';
 import { Text } from 'lucide-react';
@@ -44,13 +45,31 @@ export function AccountTable({
                 id: 'balance',
                 accessorKey: 'balance',
                 header: 'Balance',
+                // header: ({ column }: { column: Column<Account, unknown> }) => (
+                //     <DataTableColumnHeader column={column} title="Balance" />
+                // ),
                 meta: {
                     label: 'Balance',
+                    variant: 'range',
+                    // range: [0, 1000000000],
+                },
+                enableColumnFilter: true,
+                enableHiding: false,
+                enableSorting: true,
+                cell: ({ row }) => formatNumber(row.original.balance),
+            },
+            {
+                id: 'initialBalance',
+                accessorKey: 'initialBalance',
+                header: 'Initial Balance',
+                meta: {
+                    label: 'Initial Balance',
                     variant: 'range',
                     range: [0, 1000000000],
                 },
                 // enableColumnFilter: true,
                 enableHiding: false,
+                cell: ({ row }) => formatNumber(row.original.initialBalance),
             },
             {
                 id: 'accountTypeIds',
@@ -90,7 +109,6 @@ export function AccountTable({
 
     const pageCount = Math.ceil(totalItems / pageSize);
 
-    // console.log('columns:', columns);
     const { table } = useDataTable({
         data,
         columns,
@@ -102,7 +120,6 @@ export function AccountTable({
             maxSize: 300, //enforced during column resizing
         },
     });
-    // console.log('table:', table.getAllColumns());
 
     return (
         <DataTable table={table}>

@@ -93,7 +93,10 @@ export const columns: ColumnDef<Category>[] = [
         meta: {
             label: 'Action type',
             variant: 'multiSelect',
-            options: ACTION_TYPE_OPTIONS,
+            options: ACTION_TYPE_OPTIONS.map((item) => ({
+                label: item.label,
+                value: item.value,
+            })),
         },
         cell: ({ getValue }) => {
             const actionType = getValue<Category['actionType']>();

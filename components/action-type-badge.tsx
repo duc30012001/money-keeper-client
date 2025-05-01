@@ -1,7 +1,6 @@
 import { ACTION_TYPE_OPTIONS } from '@/constants/common';
 import { ActionType } from '@/enums/common';
 import { cn } from '@/lib/utils';
-import { CircleMinus, CirclePlus } from 'lucide-react';
 
 interface ActionTypeBadgeProps {
     type: ActionType;
@@ -9,23 +8,26 @@ interface ActionTypeBadgeProps {
 }
 
 export function ActionTypeBadge({ type, className }: ActionTypeBadgeProps) {
-    const isIncome = type === ActionType.INCOME;
-    const Icon = isIncome ? CirclePlus : CircleMinus;
-    const label = ACTION_TYPE_OPTIONS.find(
+    const actionType = ACTION_TYPE_OPTIONS.find(
         (option) => option.value === type
-    )?.label;
+    );
+
+    if (!actionType) {
+        return null;
+    }
+
+    const { label, backgroundColor, textColor } = actionType;
 
     return (
         <div
             className={cn(
                 'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium',
-                isIncome
-                    ? 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-200'
-                    : 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-200',
+                backgroundColor,
+                textColor,
                 className
             )}
         >
-            <Icon className="size-3" />
+            <actionType.icon className="size-3" />
             <span>{label}</span>
         </div>
     );

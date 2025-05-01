@@ -18,7 +18,7 @@ import { Account, CreateAccountDto, UpdateAccountDto } from '../types/account';
 
 const formSchema = z.object({
     name: z.string().min(1, 'Name is required'),
-    balance: z.number().optional(),
+    initialBalance: z.number().optional(),
     description: z.string().optional(),
     sortOrder: z.number().optional(),
     accountTypeId: z.string(),
@@ -37,7 +37,7 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
             accountTypeId: account?.accountType.id,
             description: account?.description || '',
             sortOrder: account?.sortOrder || 1,
-            balance: account?.balance || 0,
+            initialBalance: account?.initialBalance || 0,
         },
     });
 
@@ -84,15 +84,15 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                 />
                 <FormField
                     control={form.control}
-                    name="balance"
+                    name="initialBalance"
                     render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Balance</FormLabel>
+                            <FormLabel>Initial Balance</FormLabel>
                             <FormControl>
                                 <Input
                                     type="number"
                                     min={0}
-                                    placeholder="Enter balance"
+                                    placeholder="Enter initial balance"
                                     {...field}
                                     onChange={(e) =>
                                         field.onChange(Number(e.target.value))
