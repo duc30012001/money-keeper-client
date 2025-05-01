@@ -43,7 +43,7 @@ const THROTTLE_MS = 50;
 interface UseDataTableProps<TData>
     extends Omit<
             TableOptions<TData>,
-            | 'state'
+            // | 'state'
             | 'pageCount'
             | 'getCoreRowModel'
             | 'manualFiltering'
@@ -270,6 +270,7 @@ export function useDataTable<TData>(props: UseDataTableProps<TData>) {
         initialState,
         pageCount,
         state: {
+            ...tableProps.state,
             pagination,
             sorting,
             columnVisibility,

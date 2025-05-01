@@ -32,6 +32,7 @@ export const useAccountTypesList = () => {
             return response.data;
         },
         onError: handleError,
+        placeholderData: (prev) => prev,
     } as UseQueryOptions<PaginatedResponseDto<AccountType>>);
 };
 

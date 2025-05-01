@@ -2,14 +2,17 @@ import axiosInstance from '@/lib/axios';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
     Category,
+    CategorySearchParams,
     CreateCategoryDto,
     UpdateCategoryDto,
     UpdateSortOrderDto,
 } from '../types/category';
 
 export const categoryApi = {
-    findAll: () =>
-        axiosInstance.get<PaginatedResponseDto<Category>>('/categories'),
+    findAll: (searchParams: CategorySearchParams) =>
+        axiosInstance.get<PaginatedResponseDto<Category>>('/categories', {
+            params: searchParams,
+        }),
 
     findOne: (id: string) =>
         axiosInstance.get<ResponseDto<Category>>(`/categories/${id}`),

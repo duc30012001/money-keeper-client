@@ -27,13 +27,17 @@ export function CategoryTable({
         columns,
         pageCount: pageCount,
         shallow: false, //Setting to false triggers a network request with the updated querystring.
-        debounceMs: 500,
         getSubRows: (row) => row.children,
         getExpandedRowModel: getExpandedRowModel(),
+        defaultColumn: {
+            size: 200, //starting column size
+            minSize: 50, //enforced during column resizing
+            maxSize: 300, //enforced during column resizing
+        },
     });
 
     return (
-        <DataTable table={table}>
+        <DataTable table={table} showPagination={false}>
             <DataTableToolbar table={table} />
         </DataTable>
     );

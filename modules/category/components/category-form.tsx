@@ -19,12 +19,14 @@ import {
     UpdateCategoryDto,
 } from '../types/category';
 import { ActionTypeSelect } from './action-type-select';
+import { CategorySelect } from './category-select';
 
 const formSchema = z.object({
     name: z.string().min(1, 'Name is required'),
     actionType: z.enum(['income', 'expense']),
     description: z.string().optional(),
     sortOrder: z.number().optional(),
+    parentId: z.string().optional(),
 });
 
 interface CategoryFormProps {
@@ -40,11 +42,13 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
             actionType: category?.actionType,
             description: category?.description || '',
             sortOrder: category?.sortOrder || 1,
+            parentId: category?.parent?.id,
         },
     });
 
     const createMutation = useCreateCategory();
     const updateMutation = useUpdateCategory();
+    const actionType = form.watch('actionType');
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
@@ -85,6 +89,17 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                     )}
                 />
                 <ActionTypeSelect name="actionType" />
+                <CategorySelect
+                    name="parentId"
+                    excludeId={category?.id}
+                    actionType={actionType}
+                    disabled={!actionType}
+                    placeholder={
+                        actionType
+                            ? 'Select parent category'
+                            : 'Please select action type first'
+                    }
+                />
                 <FormField
                     control={form.control}
                     name="description"

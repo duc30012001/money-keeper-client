@@ -2,7 +2,7 @@
 
 import type { Option } from '@/types/data-table';
 import type { Column } from '@tanstack/react-table';
-import { PlusCircle, XCircle } from 'lucide-react';
+import { CheckIcon, PlusCircle, XCircle } from 'lucide-react';
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -22,7 +22,6 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
-import { CheckIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
 
 interface DataTableFacetedFilterProps<TData, TValue> {
@@ -158,7 +157,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                                             className={cn(
                                                 'flex size-4 items-center justify-center rounded-sm border border-primary',
                                                 isSelected
-                                                    ? 'bg-primary'
+                                                    ? 'bg-primary text-primary-foreground'
                                                     : 'opacity-50 [&_svg]:invisible'
                                             )}
                                         >

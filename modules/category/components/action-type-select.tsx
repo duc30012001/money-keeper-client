@@ -12,6 +12,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
+import { ACTION_TYPE_OPTIONS } from '@/constants/common';
 import { ActionType } from '@/enums/common';
 import { useFormContext } from 'react-hook-form';
 
@@ -43,12 +44,14 @@ export function ActionTypeSelect({
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            <SelectItem value={ActionType.INCOME}>
-                                Income
-                            </SelectItem>
-                            <SelectItem value={ActionType.EXPENSE}>
-                                Expense
-                            </SelectItem>
+                            {ACTION_TYPE_OPTIONS.map((option) => (
+                                <SelectItem
+                                    key={option.value}
+                                    value={option.value}
+                                >
+                                    {option.label}
+                                </SelectItem>
+                            ))}
                         </SelectContent>
                     </Select>
                     <FormMessage />

@@ -1,3 +1,4 @@
+import { ActionType } from '@/enums/common';
 import { useApiError } from '@/hooks/use-api-error';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
@@ -6,9 +7,11 @@ import {
     useQueryClient,
     UseQueryOptions,
 } from '@tanstack/react-query';
+import { useSearchParams } from 'next/navigation';
 import { categoryApi } from '../api/category.api';
 import {
     Category,
+    CategorySearchParams,
     CreateCategoryDto,
     UpdateCategoryDto,
     UpdateSortOrderDto,
@@ -16,21 +19,25 @@ import {
 
 export const categoryKeys = {
     all: ['categories'] as const,
-    lists: () => [...categoryKeys.all, 'list'] as const,
+    lists: (searchParams?: CategorySearchParams) =>
+        searchParams
+            ? [...categoryKeys.all, 'list', searchParams]
+            : ([...categoryKeys.all, 'list'] as const),
     list: (filters: string) => [...categoryKeys.lists(), { filters }] as const,
     details: () => [...categoryKeys.all, 'detail'] as const,
     detail: (id: string) => [...categoryKeys.details(), id] as const,
 };
 
-export const useCategoriesList = () => {
+export const useCategoriesList = (searchParams: CategorySearchParams) => {
     const { handleError } = useApiError();
     return useQuery<PaginatedResponseDto<Category>>({
-        queryKey: categoryKeys.lists(),
+        queryKey: categoryKeys.lists(searchParams),
         queryFn: async () => {
-            const response = await categoryApi.findAll();
+            const response = await categoryApi.findAll(searchParams);
             return response.data;
         },
         onError: handleError,
+        placeholderData: (prev) => prev,
     } as UseQueryOptions<PaginatedResponseDto<Category>>);
 };
 
@@ -113,4 +120,15 @@ export const useDeleteCategory = () => {
         },
         onError: handleError,
     });
+};
+
+export const useCategorySearchParams = (): CategorySearchParams => {
+    const searchParams = useSearchParams();
+
+    return {
+        page: Number(searchParams.get('page') || 1),
+        pageSize: Number(searchParams.get('pageSize') || 10),
+        keyword: searchParams.get('keyword') || undefined,
+        actionType: (searchParams.get('actionType') as ActionType) || undefined,
+    };
 };

@@ -1,5 +1,5 @@
 import { ActionType } from '@/enums/common';
-import { BaseEntity } from '@/types/common';
+import { BaseEntity, BaseQuery } from '@/types/common';
 
 export interface Category extends BaseEntity {
     name: string;
@@ -9,7 +9,7 @@ export interface Category extends BaseEntity {
     sortOrder: number;
     parent?: Category;
     children: Category[];
-    depth: number;
+    // depth: number;
 }
 
 export interface CreateCategoryDto {
@@ -25,4 +25,8 @@ export interface UpdateCategoryDto extends Partial<CreateCategoryDto> {}
 
 export interface UpdateSortOrderDto {
     ids: string[];
+}
+
+export interface CategorySearchParams extends BaseQuery {
+    actionType?: string;
 }

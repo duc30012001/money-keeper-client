@@ -1,16 +1,18 @@
 'use client';
 
+import { ACTION_TYPE_OPTIONS } from '@/constants/common';
 import { ColumnDef } from '@tanstack/react-table';
 import { Dot, SquareMinus, SquarePlus, Text } from 'lucide-react';
 import { Category } from '../../types/category';
-import { ACTION_TYPE_OPTIONS } from './options';
 
+import { ActionTypeBadge } from '@/components/action-type-badge';
 import { Button } from '@/components/ui/button';
 import { CellAction } from './cell-action';
 
 export const columns: ColumnDef<Category>[] = [
     {
-        accessorKey: 'name',
+        id: 'keyword',
+        accessorKey: 'keyword',
         header: ({ table }) => (
             <>
                 <Button
@@ -28,7 +30,7 @@ export const columns: ColumnDef<Category>[] = [
                 </Button>
             </>
         ),
-        cell: ({ row, cell }) => (
+        cell: ({ row }) => (
             <div
                 style={{
                     // Since rows are flattened by default,
@@ -57,7 +59,7 @@ export const columns: ColumnDef<Category>[] = [
                             <Dot />
                         </Button>
                     )}
-                    {cell.getValue<Category['name']>()}
+                    {row.original.name}
                 </div>
             </div>
         ),
@@ -92,6 +94,11 @@ export const columns: ColumnDef<Category>[] = [
             variant: 'multiSelect',
             options: ACTION_TYPE_OPTIONS,
         },
+        cell: ({ getValue }) => {
+            const actionType = getValue<Category['actionType']>();
+            return <ActionTypeBadge type={actionType} />;
+        },
+        size: 150,
     },
     {
         id: 'description',
@@ -100,10 +107,12 @@ export const columns: ColumnDef<Category>[] = [
         meta: {
             label: 'Description',
         },
+        size: 400,
     },
 
     {
         id: 'actions',
         cell: ({ row }) => <CellAction data={row.original} />,
+        size: 100,
     },
 ];

@@ -1,5 +1,5 @@
 import { type Table as TanstackTable, flexRender } from '@tanstack/react-table';
-import type * as React from 'react';
+import * as React from 'react';
 
 import {
     Table,
@@ -14,13 +14,28 @@ import { DataTablePagination } from '@/components/ui/table/data-table-pagination
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
     table: TanstackTable<TData>;
     actionBar?: React.ReactNode;
+    showPagination?: boolean;
+    // isLoading?: boolean;
+    // skeletonProps?: DataTableSkeletonProps;
 }
 
 export function DataTable<TData>({
     table,
     actionBar,
     children,
+    showPagination = true,
+    // isLoading = false,
+    // skeletonProps,
 }: DataTableProps<TData>) {
+    // if (isLoading) {
+    //     return (
+    //         <div className="flex flex-1 flex-col space-y-4">
+    //             {children}
+    //             <DataTableSkeleton withViewOptions={false} {...skeletonProps} />
+    //         </div>
+    //     );
+    // }
+
     return (
         <div className="flex flex-1 flex-col space-y-4">
             {children}
@@ -35,6 +50,9 @@ export function DataTable<TData>({
                                     <TableHead
                                         key={header.id}
                                         colSpan={header.colSpan}
+                                        style={{
+                                            width: `${header.getSize()}px`,
+                                        }}
                                         // style={{
                                         //     ...getCommonPinningStyles({
                                         //         column: header.column,
@@ -64,6 +82,7 @@ export function DataTable<TData>({
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
+                                            className="whitespace-break-spaces break-words"
                                             key={cell.id}
                                             // style={{
                                             //     ...getCommonPinningStyles({
@@ -95,12 +114,14 @@ export function DataTable<TData>({
                 {/* </ScrollArea> */}
                 {/* </div> */}
             </div>
-            <div className="flex flex-col gap-2.5">
-                <DataTablePagination table={table} />
-                {actionBar &&
-                    table.getFilteredSelectedRowModel().rows.length > 0 &&
-                    actionBar}
-            </div>
+            {showPagination && (
+                <div className="flex flex-col gap-2.5">
+                    <DataTablePagination table={table} />
+                    {actionBar &&
+                        table.getFilteredSelectedRowModel().rows.length > 0 &&
+                        actionBar}
+                </div>
+            )}
         </div>
     );
 }
