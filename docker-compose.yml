@@ -12,7 +12,7 @@ services:
             - /app/node_modules
             - /app/.next
         environment:
-            - NODE_ENV=${NODE_ENV:-development}
-        command: ${COMMAND:-yarn dev}
+            - NODE_ENV=${NODE_ENV:-production}
+        command: ${COMMAND:-yarn start}
         env_file:
             - .env.local
