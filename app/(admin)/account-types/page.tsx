@@ -1,69 +1,82 @@
 'use client';
 
+import { AlertModal } from '@/components/modal/alert-modal';
+import PageContainer from '@/components/page-container';
 import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
 } from '@/components/ui/dialog';
+import { Heading } from '@/components/ui/heading';
+import { ModalType } from '@/enums/common';
+import { useModal } from '@/hooks/use-modal';
 import { AccountTypeForm } from '@/modules/account-type/components/account-type-form';
 import { AccountTypesTable } from '@/modules/account-type/components/account-type-table';
+import { useDeleteAccountType } from '@/modules/account-type/hooks/use-account-types';
 import { AccountType } from '@/modules/account-type/types/account-type';
-import { useState } from 'react';
+import { Plus } from 'lucide-react';
 
 export default function AccountTypesPage() {
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
-    const [editingAccountType, setEditingAccountType] = useState<
-        AccountType | undefined
-    >();
+    const { typeModal, editingData, openModal, closeModal } =
+        useModal<AccountType>();
 
-    const handleEdit = (accountType: AccountType) => {
-        setEditingAccountType(accountType);
-        setIsDialogOpen(true);
-    };
+    const deleteMutation = useDeleteAccountType();
 
-    const handleSuccess = () => {
-        setIsDialogOpen(false);
-        setEditingAccountType(undefined);
+    const confirmDelete = () => {
+        if (editingData) {
+            deleteMutation.mutate(editingData.id, {
+                onSuccess: () => {
+                    closeModal();
+                },
+            });
+        }
     };
 
     return (
-        <div>
-            <div className="">
-                <div className="flex items-center justify-end p-2">
-                    <Dialog
-                        open={isDialogOpen}
-                        onOpenChange={(open) => {
-                            setIsDialogOpen(open);
-                            if (!open) {
-                                setEditingAccountType(undefined);
-                            }
-                        }}
-                    >
-                        <DialogTrigger asChild>
-                            <Button>Create</Button>
-                        </DialogTrigger>
-                        <DialogContent>
-                            <DialogHeader>
-                                <DialogTitle>
-                                    {editingAccountType
-                                        ? 'Edit ' + editingAccountType.name
-                                        : 'Create Account Type'}
-                                </DialogTitle>
-                            </DialogHeader>
-                            <AccountTypeForm
-                                accountType={editingAccountType}
-                                onSuccess={handleSuccess}
-                            />
-                        </DialogContent>
-                    </Dialog>
+        <PageContainer scrollable={false}>
+            <div className="flex flex-1 flex-col space-y-4">
+                <div className="flex items-start justify-between">
+                    <Heading title="Account Types" />
+                    <Button onClick={() => openModal(ModalType.CREATE)}>
+                        <Plus />
+                        Create
+                    </Button>
                 </div>
                 <div className="border-y">
-                    <AccountTypesTable onEdit={handleEdit} />
+                    <AccountTypesTable />
                 </div>
             </div>
-        </div>
+
+            <Dialog
+                open={
+                    typeModal === ModalType.CREATE ||
+                    typeModal === ModalType.EDIT
+                }
+            >
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>
+                            {editingData
+                                ? 'Edit ' + editingData.name
+                                : 'Create Account Type'}
+                        </DialogTitle>
+                    </DialogHeader>
+                    <AccountTypeForm
+                        accountType={editingData ?? undefined}
+                        onSuccess={closeModal}
+                    />
+                </DialogContent>
+            </Dialog>
+
+            <AlertModal
+                isOpen={typeModal === ModalType.DELETE}
+                onClose={closeModal}
+                onConfirm={confirmDelete}
+                loading={deleteMutation.isPending}
+                description={`Are you sure you want to delete "${editingData?.name}"? This action cannot be undone.`}
+            />
+        </PageContainer>
     );
 }

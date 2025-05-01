@@ -2,8 +2,9 @@ import { BaseEntity } from '@/types/common';
 
 export interface AccountType extends BaseEntity {
     name: string;
-    description?: string;
+    description: string | null;
     sortOrder: number;
+    accountCount: number;
 }
 
 export interface CreateAccountTypeDto {

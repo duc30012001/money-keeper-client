@@ -1,13 +1,5 @@
 import { Button } from '@/components/ui/button';
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-} from '@/components/ui/dialog';
-import {
     Table,
     TableBody,
     TableCell,
@@ -21,6 +13,8 @@ import {
     TooltipProvider,
     TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { ModalType } from '@/enums/common';
+import { useModal } from '@/hooks/use-modal';
 import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
 import {
     SortableContext,
@@ -32,7 +26,6 @@ import { GripVertical, Pencil, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import {
     useAccountTypesList,
-    useDeleteAccountType,
     useUpdateSortOrder,
 } from '../hooks/use-account-types';
 import { AccountType } from '../types/account-type';
@@ -40,11 +33,11 @@ import { AccountTypesTableSkeleton } from './account-type-table-skeleton';
 
 interface SortableRowProps {
     accountType: AccountType;
-    onEdit: (accountType: AccountType) => void;
-    onDelete: (id: string) => void;
 }
 
-function SortableRow({ accountType, onEdit, onDelete }: SortableRowProps) {
+function SortableRow({ accountType }: SortableRowProps) {
+    const { openModal } = useModal<AccountType>();
+
     const {
         attributes,
         listeners,
@@ -74,8 +67,8 @@ function SortableRow({ accountType, onEdit, onDelete }: SortableRowProps) {
                 </Button>
             </TableCell>
             <TableCell>{accountType.name}</TableCell>
+            <TableCell>{accountType.accountCount}</TableCell>
             <TableCell>{accountType.description || '-'}</TableCell>
-            {/* <TableCell>{accountType.sortOrder}</TableCell> */}
             <TableCell>
                 <div className="flex gap-2">
                     <TooltipProvider>
@@ -84,7 +77,9 @@ function SortableRow({ accountType, onEdit, onDelete }: SortableRowProps) {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    onClick={() => onEdit(accountType)}
+                                    onClick={() =>
+                                        openModal(ModalType.EDIT, accountType)
+                                    }
                                 >
                                     <Pencil className="h-4 w-4" />
                                 </Button>
@@ -98,7 +93,9 @@ function SortableRow({ accountType, onEdit, onDelete }: SortableRowProps) {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    onClick={() => onDelete(accountType.id)}
+                                    onClick={() =>
+                                        openModal(ModalType.DELETE, accountType)
+                                    }
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </Button>
@@ -114,19 +111,13 @@ function SortableRow({ accountType, onEdit, onDelete }: SortableRowProps) {
     );
 }
 
-interface AccountTypesTableProps {
-    onEdit: (accountType: AccountType) => void;
-}
+interface AccountTypesTableProps {}
 
-export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
+export function AccountTypesTable({}: AccountTypesTableProps) {
     const [dataSource, setDataSource] = useState<AccountType[]>([]);
-    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    const [accountTypeToDelete, setAccountTypeToDelete] =
-        useState<AccountType | null>(null);
 
     const { data: accountTypesResponse, isLoading } = useAccountTypesList();
     const accountTypes = accountTypesResponse?.data || [];
-    const deleteMutation = useDeleteAccountType();
     const updateSortOrderMutation = useUpdateSortOrder();
 
     useEffect(() => {
@@ -156,25 +147,6 @@ export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
         setDataSource(newOrder);
     };
 
-    const handleDelete = (id: string) => {
-        const accountType = dataSource.find((item) => item.id === id);
-        if (accountType) {
-            setAccountTypeToDelete(accountType);
-            setDeleteDialogOpen(true);
-        }
-    };
-
-    const confirmDelete = () => {
-        if (accountTypeToDelete) {
-            deleteMutation.mutate(accountTypeToDelete.id, {
-                onSuccess: () => {
-                    setDeleteDialogOpen(false);
-                    setAccountTypeToDelete(null);
-                },
-            });
-        }
-    };
-
     if (isLoading) {
         return <AccountTypesTableSkeleton />;
     }
@@ -190,8 +162,10 @@ export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
                         <TableRow>
                             <TableHead className="w-20"></TableHead>
                             <TableHead className="w-48">Name</TableHead>
+                            <TableHead className="w-20">
+                                Account Count
+                            </TableHead>
                             <TableHead className="w-60">Description</TableHead>
-                            {/* <TableHead>Sort Order</TableHead> */}
                             <TableHead className="w-20">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -206,45 +180,12 @@ export function AccountTypesTable({ onEdit }: AccountTypesTableProps) {
                                 <SortableRow
                                     key={accountType.id}
                                     accountType={accountType}
-                                    onEdit={onEdit}
-                                    onDelete={handleDelete}
                                 />
                             ))}
                         </SortableContext>
                     </TableBody>
                 </Table>
             </DndContext>
-
-            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-                <DialogContent>
-                    <DialogHeader>
-                        <DialogTitle>Delete Account Type</DialogTitle>
-                        <DialogDescription>
-                            Are you sure you want to delete &quot;
-                            {accountTypeToDelete?.name}&quot;? This action
-                            cannot be undone.
-                        </DialogDescription>
-                    </DialogHeader>
-                    <DialogFooter>
-                        <Button
-                            variant="outline"
-                            onClick={() => setDeleteDialogOpen(false)}
-                            disabled={deleteMutation.isPending}
-                        >
-                            Cancel
-                        </Button>
-                        <Button
-                            variant="destructive"
-                            onClick={confirmDelete}
-                            disabled={deleteMutation.isPending}
-                        >
-                            {deleteMutation.isPending
-                                ? 'Deleting...'
-                                : 'Delete'}
-                        </Button>
-                    </DialogFooter>
-                </DialogContent>
-            </Dialog>
         </>
     );
 }

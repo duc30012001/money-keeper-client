@@ -70,6 +70,7 @@ export const columns: ColumnDef<Category>[] = [
             icon: Text,
         },
         enableColumnFilter: true,
+        enableHiding: false,
     },
     // {
     //     id: 'name',
@@ -99,6 +100,7 @@ export const columns: ColumnDef<Category>[] = [
             return <ActionTypeBadge type={actionType} />;
         },
         size: 150,
+        enableHiding: false,
     },
     {
         id: 'description',
@@ -109,7 +111,6 @@ export const columns: ColumnDef<Category>[] = [
         },
         size: 400,
     },
-
     {
         id: 'actions',
         cell: ({ row }) => <CellAction data={row.original} />,
