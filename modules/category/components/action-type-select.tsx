@@ -14,16 +14,19 @@ import {
 } from '@/components/ui/select';
 import { ACTION_TYPE_OPTIONS } from '@/constants/common';
 import { ActionType } from '@/enums/common';
+import { SelectProps } from '@radix-ui/react-select';
 import { useFormContext } from 'react-hook-form';
 
 interface ActionTypeSelectProps {
     name: string;
     label?: string;
+    selectProps?: SelectProps;
 }
 
 export function ActionTypeSelect({
     name,
     label = 'Action Type',
+    selectProps,
 }: ActionTypeSelectProps) {
     const form = useFormContext();
 
@@ -35,6 +38,7 @@ export function ActionTypeSelect({
                 <FormItem>
                     <FormLabel>{label}</FormLabel>
                     <Select
+                        {...selectProps}
                         onValueChange={field.onChange}
                         defaultValue={field.value}
                     >

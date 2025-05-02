@@ -37,7 +37,7 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
             accountTypeId: account?.accountType.id,
             description: account?.description || '',
             sortOrder: account?.sortOrder || 1,
-            initialBalance: account?.initialBalance || 0,
+            initialBalance: Number(account?.initialBalance) || 0,
         },
     });
 
@@ -51,10 +51,11 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                     id: account.id,
                     data: values as UpdateAccountDto,
                 });
+                onSuccess?.();
             } else {
                 await createMutation.mutateAsync(values as CreateAccountDto);
+                form.reset();
             }
-            onSuccess?.();
         } catch (error) {
             console.log('error:', error);
         }

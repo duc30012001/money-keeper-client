@@ -74,9 +74,7 @@ export default function AccountPage() {
                     typeModal === ModalType.EDIT
                 }
                 onOpenChange={(open) => {
-                    if (open) {
-                        openModal(ModalType.CREATE);
-                    } else {
+                    if (!open) {
                         closeModal();
                     }
                 }}

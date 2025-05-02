@@ -7,6 +7,7 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { accountApi } from '../api/account.api';
 import {
     Account,
@@ -63,6 +64,7 @@ export const useCreateAccount = () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
             });
+            toast.success('Account created successfully!');
         },
         onError: handleError,
     });
@@ -82,6 +84,7 @@ export const useUpdateAccount = () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.detail(id),
             });
+            toast.success('Account updated successfully!');
         },
         onError: handleError,
     });
@@ -98,6 +101,7 @@ export const useUpdateSortOrder = () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
             });
+            toast.success('Account sort order updated successfully!');
         },
         onError: handleError,
     });
@@ -109,13 +113,11 @@ export const useDeleteAccount = () => {
 
     return useMutation({
         mutationFn: (id: string) => accountApi.remove(id),
-        onSuccess: (_, id) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
             });
-            queryClient.invalidateQueries({
-                queryKey: accountKeys.detail(id),
-            });
+            toast.success('Account deleted successfully!');
         },
         onError: handleError,
     });

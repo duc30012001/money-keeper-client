@@ -53,9 +53,9 @@ export function AccountTable({
                     variant: 'range',
                     // range: [0, 1000000000],
                 },
-                enableColumnFilter: true,
+                // enableColumnFilter: true,
                 enableHiding: false,
-                enableSorting: true,
+                // enableSorting: true,
                 cell: ({ row }) => formatNumber(row.original.balance),
             },
             {

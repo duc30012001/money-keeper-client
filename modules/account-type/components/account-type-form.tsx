@@ -56,12 +56,13 @@ export function AccountTypeForm({
                     id: accountType.id,
                     data: values as UpdateAccountTypeDto,
                 });
+                onSuccess?.();
             } else {
                 await createMutation.mutateAsync(
                     values as CreateAccountTypeDto
                 );
+                form.reset();
             }
-            onSuccess?.();
         } catch (error) {
             console.log('error:', error);
         }

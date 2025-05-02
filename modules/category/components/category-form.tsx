@@ -35,6 +35,8 @@ interface CategoryFormProps {
 }
 
 export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
+    const isUpdate = !!category;
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -52,15 +54,15 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            if (category) {
+            if (isUpdate) {
                 await updateMutation.mutateAsync({
                     id: category.id,
                     data: values as UpdateCategoryDto,
                 });
+                onSuccess?.();
             } else {
                 await createMutation.mutateAsync(values as CreateCategoryDto);
             }
-            onSuccess?.();
         } catch (error) {
             console.log('error:', error);
         }
@@ -88,7 +90,10 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                         </FormItem>
                     )}
                 />
-                <ActionTypeSelect name="actionType" />
+                <ActionTypeSelect
+                    name="actionType"
+                    selectProps={{ disabled: isUpdate }}
+                />
                 <CategorySelect
                     name="parentId"
                     excludeId={category?.id}

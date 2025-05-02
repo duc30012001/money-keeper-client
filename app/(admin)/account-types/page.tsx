@@ -54,6 +54,11 @@ export default function AccountTypesPage() {
                     typeModal === ModalType.CREATE ||
                     typeModal === ModalType.EDIT
                 }
+                onOpenChange={(open) => {
+                    if (!open) {
+                        closeModal();
+                    }
+                }}
             >
                 <DialogContent>
                     <DialogHeader>

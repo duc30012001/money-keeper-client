@@ -6,6 +6,7 @@ import {
     useQueryClient,
     UseQueryOptions,
 } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
 import { accountTypeApi } from '../api/account-type.api';
 import {
     AccountType,
@@ -59,6 +60,7 @@ export const useCreateAccountType = () => {
             queryClient.invalidateQueries({
                 queryKey: accountTypeKeys.lists(),
             });
+            toast.success('Account type created successfully!');
         },
         onError: handleError,
     });
@@ -83,6 +85,7 @@ export const useUpdateAccountType = () => {
             queryClient.invalidateQueries({
                 queryKey: accountTypeKeys.detail(id),
             });
+            toast.success('Account type updated successfully!');
         },
         onError: handleError,
     });
@@ -99,6 +102,7 @@ export const useUpdateSortOrder = () => {
             queryClient.invalidateQueries({
                 queryKey: accountTypeKeys.lists(),
             });
+            toast.success('Account type sort order updated successfully!');
         },
         onError: handleError,
     });
@@ -110,13 +114,11 @@ export const useDeleteAccountType = () => {
 
     return useMutation({
         mutationFn: (id: string) => accountTypeApi.remove(id),
-        onSuccess: (_, id) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: accountTypeKeys.lists(),
             });
-            queryClient.invalidateQueries({
-                queryKey: accountTypeKeys.detail(id),
-            });
+            toast.success('Account type deleted successfully!');
         },
         onError: handleError,
     });
