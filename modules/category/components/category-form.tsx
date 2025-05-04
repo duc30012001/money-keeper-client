@@ -79,6 +79,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                 form.reset({
                     parentId: values.parentId,
                     type: values.type,
+                    name: '',
                 });
             }
         } catch (error) {
