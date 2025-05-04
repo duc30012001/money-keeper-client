@@ -64,7 +64,7 @@ export function MoneyBadge({ amount, type, className }: MoneyBadgeProps) {
             <TooltipTrigger asChild>
                 <div
                     className={cn(
-                        'inline-flex cursor-pointer items-center gap-1 rounded-full px-2 py-1 font-medium',
+                        'w-fit cursor-pointer rounded-md px-2 py-1 font-medium',
                         {
                             'text-green-600 hover:bg-green-100':
                                 type === TransactionType.INCOME,
