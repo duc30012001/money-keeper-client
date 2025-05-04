@@ -104,7 +104,9 @@ export function TransactionForm({
             categoryId: transaction?.category?.id,
             senderAccountId: transaction?.senderAccount?.id,
             receiverAccountId: transaction?.receiverAccount?.id,
-            amount: transaction?.amount ? Number(transaction.amount) : 0,
+            amount: transaction?.amount
+                ? Math.abs(Number(transaction.amount))
+                : 0,
             description: transaction?.description || '',
             transactionDate: dayjs(transaction?.transactionDate).toDate(),
         },
