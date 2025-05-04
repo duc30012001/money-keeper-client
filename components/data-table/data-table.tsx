@@ -10,12 +10,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table';
-import { getCommonPinningStyles } from '@/lib/data-table';
 import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
     table: TanstackTable<TData>;
     actionBar?: React.ReactNode;
+    showPagination?: boolean;
 }
 
 export function DataTable<TData>({
@@ -23,6 +23,7 @@ export function DataTable<TData>({
     actionBar,
     children,
     className,
+    showPagination = true,
     ...props
 }: DataTableProps<TData>) {
     return (
@@ -44,10 +45,13 @@ export function DataTable<TData>({
                                         key={header.id}
                                         colSpan={header.colSpan}
                                         style={{
-                                            ...getCommonPinningStyles({
-                                                column: header.column,
-                                            }),
+                                            width: `${header.getSize()}px`,
                                         }}
+                                        // style={{
+                                        //     ...getCommonPinningStyles({
+                                        //         column: header.column,
+                                        //     }),
+                                        // }}
                                     >
                                         {header.isPlaceholder
                                             ? null
@@ -72,12 +76,13 @@ export function DataTable<TData>({
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell
+                                            className="whitespace-break-spaces break-words"
                                             key={cell.id}
-                                            style={{
-                                                ...getCommonPinningStyles({
-                                                    column: cell.column,
-                                                }),
-                                            }}
+                                            // style={{
+                                            //     ...getCommonPinningStyles({
+                                            //         column: cell.column,
+                                            //     }),
+                                            // }}
                                         >
                                             {flexRender(
                                                 cell.column.columnDef.cell,
@@ -100,12 +105,14 @@ export function DataTable<TData>({
                     </TableBody>
                 </Table>
             </div>
-            <div className="flex flex-col gap-2.5">
-                <DataTablePagination table={table} />
-                {actionBar &&
-                    table.getFilteredSelectedRowModel().rows.length > 0 &&
-                    actionBar}
-            </div>
+            {showPagination && (
+                <div className="flex flex-col gap-2.5">
+                    <DataTablePagination table={table} />
+                    {actionBar &&
+                        table.getFilteredSelectedRowModel().rows.length > 0 &&
+                        actionBar}
+                </div>
+            )}
         </div>
     );
 }

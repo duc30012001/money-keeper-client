@@ -1,8 +1,7 @@
-import { OrderDirection } from '@/enums/common';
 import { Account } from '@/modules/account/types/account';
 import { Category } from '@/modules/category/types/category';
 import { BaseEntity, BaseQuery } from '@/types/common';
-import { TransactionOrderBy, TransactionType } from '../enums/transaction';
+import { TransactionType } from '../enums/transaction';
 
 export interface Transaction extends BaseEntity {
     type: TransactionType;
@@ -46,8 +45,6 @@ export interface TransactionSearchParams extends BaseQuery {
     receiverAccountIds?: string;
     transactionDate?: string;
     amount?: string;
-    orderBy?: TransactionOrderBy;
-    orderDirection?: OrderDirection;
     type?: TransactionType;
     sort?: string;
 }

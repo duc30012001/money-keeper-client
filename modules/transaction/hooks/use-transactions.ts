@@ -131,13 +131,11 @@ export const useTransactionSearchParams = (): TransactionSearchParams => {
         keyword: searchParams.get('keyword') || undefined,
         transactionDate: searchParams.get('transactionDate') || undefined,
         amount: searchParams.get('amount') || undefined,
-        orderBy: searchParams.get(
-            'orderBy'
-        ) as TransactionSearchParams['orderBy'],
-        orderDirection: searchParams.get(
-            'orderDirection'
-        ) as TransactionSearchParams['orderDirection'],
         type: searchParams.get('type') as TransactionSearchParams['type'],
         sort: searchParams.get('sort') as TransactionSearchParams['sort'],
+        accountIds: searchParams.get('accountIds') || undefined,
+        categoryIds: searchParams.get('categoryIds') || undefined,
+        senderAccountIds: searchParams.get('senderAccountIds') || undefined,
+        receiverAccountIds: searchParams.get('receiverAccountIds') || undefined,
     };
 };
