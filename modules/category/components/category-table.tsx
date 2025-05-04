@@ -1,11 +1,11 @@
 'use client';
 
-import { DataTable } from '@/components/ui/table/data-table';
-import { DataTableToolbar } from '@/components/ui/table/data-table-toolbar';
+import { DataTable } from '@/components/data-table/data-table';
+import { DataTableToolbar } from '@/components/data-table/data-table-toolbar';
 import { useDataTable } from '@/hooks/use-data-table';
 
 import { ColumnDef, getExpandedRowModel } from '@tanstack/react-table';
-import { Category } from '../../types/category';
+import { Category } from '../types/category';
 
 interface CategoryTableParams<TData, TValue> {
     data: TData[];
@@ -37,7 +37,11 @@ export function CategoryTable({
     });
 
     return (
-        <DataTable table={table} showPagination={false}>
+        <DataTable
+            table={table}
+            showPagination={false}
+            tableContainerClassName="max-h-[calc(100vh-220px)] overflow-auto"
+        >
             <DataTableToolbar table={table} />
         </DataTable>
     );

@@ -8,6 +8,7 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
+import { toast } from 'react-toastify';
 import { categoryApi } from '../api/category.api';
 import {
     Category,
@@ -64,6 +65,7 @@ export const useCreateCategory = () => {
             queryClient.invalidateQueries({
                 queryKey: categoryKeys.lists(),
             });
+            toast.success('Category created successfully!');
         },
         onError: handleError,
     });
@@ -83,6 +85,7 @@ export const useUpdateCategory = () => {
             queryClient.invalidateQueries({
                 queryKey: categoryKeys.detail(id),
             });
+            toast.success('Category updated successfully!');
         },
         onError: handleError,
     });
@@ -99,6 +102,7 @@ export const useUpdateSortOrder = () => {
             queryClient.invalidateQueries({
                 queryKey: categoryKeys.lists(),
             });
+            toast.success('Category sort order updated successfully!');
         },
         onError: handleError,
     });
@@ -117,6 +121,7 @@ export const useDeleteCategory = () => {
             queryClient.invalidateQueries({
                 queryKey: categoryKeys.detail(id),
             });
+            toast.success('Category deleted successfully!');
         },
         onError: handleError,
     });

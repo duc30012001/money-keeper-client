@@ -1,3 +1,4 @@
+import { PageSize } from '@/enums/common';
 import { useApiError } from '@/hooks/use-api-error';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
@@ -128,7 +129,7 @@ export const useAccountSearchParams = (): AccountSearchParams => {
 
     return {
         page: Number(searchParams.get('page') || 1),
-        pageSize: Number(searchParams.get('pageSize') || 10),
+        pageSize: Number(searchParams.get('pageSize') || PageSize.MEDIUM),
         keyword: searchParams.get('keyword') || undefined,
         accountTypeIds: searchParams.get('accountTypeIds') || undefined,
     };

@@ -1,5 +1,6 @@
 'use client';
 
+import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton';
 import { AlertModal } from '@/components/modal/alert-modal';
 import PageContainer from '@/components/page-container';
 import { Button } from '@/components/ui/button';
@@ -11,7 +12,6 @@ import {
 } from '@/components/ui/dialog';
 import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
-import { DataTableSkeleton } from '@/components/ui/table/data-table-skeleton';
 import { ModalType } from '@/enums/common';
 import { useModal } from '@/hooks/use-modal';
 import { AccountForm } from '@/modules/account/components/account-form';
@@ -55,15 +55,25 @@ export default function AccountPage() {
                 <Separator />
                 {isLoading ? (
                     <DataTableSkeleton
-                        columnCount={5}
-                        rowCount={8}
+                        columnCount={7}
                         filterCount={2}
+                        cellWidths={[
+                            '200px',
+                            '200px',
+                            '200px',
+                            '150px',
+                            '400px',
+                            '150px',
+                            '80px',
+                        ]}
                     />
                 ) : (
                     <AccountTable
                         data={accounts?.data ?? []}
-                        totalItems={accounts?.meta?.total ?? 0}
+                        pageCount={accounts?.meta?.totalPages ?? 0}
                         pageSize={accounts?.meta?.pageSize ?? 0}
+                        pageIndex={accounts?.meta?.page ?? 0}
+                        rowCount={accounts?.meta?.total ?? 0}
                     />
                 )}
             </div>

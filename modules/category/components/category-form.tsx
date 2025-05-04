@@ -9,9 +9,12 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { MaxLength } from '@/constants/rules';
+import { useLoading, UseLoadingType } from '@/hooks/use-loading';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { CategoryType } from '../enums/category';
 import { useCreateCategory, useUpdateCategory } from '../hooks/use-categories';
 import {
     Category,
@@ -21,12 +24,21 @@ import {
 import { CategorySelect } from './category-select';
 import { CategoryTypeSelect } from './category-type-select';
 
-const formSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    type: z.enum(['income', 'expense']),
-    description: z.string().optional(),
-    sortOrder: z.number().optional(),
-    parentId: z.string().optional(),
+export const formSchema = z.object({
+    name: z
+        .string()
+        .min(1, 'Name is required')
+        .max(MaxLength.NAME.VALUE, MaxLength.NAME.MESSAGE),
+    description: z
+        .string()
+        .max(MaxLength.DESCRIPTION.VALUE, MaxLength.DESCRIPTION.MESSAGE)
+        .optional(),
+    type: z.nativeEnum(CategoryType),
+    sortOrder: z.number().nonnegative('Sort order must be positive').optional(),
+    parentId: z
+        .string()
+        .uuid('Parent category must be a valid UUID')
+        .optional(),
 });
 
 interface CategoryFormProps {
@@ -36,6 +48,7 @@ interface CategoryFormProps {
 
 export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
     const isUpdate = !!category;
+    const isLoading = useLoading(UseLoadingType.Mutating);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -53,6 +66,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
     const type = form.watch('type');
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
+        console.log('values:', values);
         try {
             if (isUpdate) {
                 await updateMutation.mutateAsync({
@@ -62,13 +76,15 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                 onSuccess?.();
             } else {
                 await createMutation.mutateAsync(values as CreateCategoryDto);
+                form.reset({
+                    parentId: values.parentId,
+                    type: values.type,
+                });
             }
         } catch (error) {
             console.log('error:', error);
         }
     };
-
-    const isLoading = createMutation.isPending || updateMutation.isPending;
 
     return (
         <Form {...form}>
@@ -92,18 +108,31 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                 />
                 <CategoryTypeSelect
                     name="type"
-                    selectProps={{ disabled: isUpdate }}
+                    selectProps={{ disabled: isUpdate || isLoading }}
                 />
-                <CategorySelect
-                    name="parentId"
-                    excludeId={category?.id}
-                    type={type}
-                    disabled={!type}
-                    placeholder={
-                        type
-                            ? 'Select parent category'
-                            : 'Please select action type first'
-                    }
+                <FormField
+                    control={form.control}
+                    name={'parentId'}
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Parent Category</FormLabel>
+                            <FormControl>
+                                <CategorySelect
+                                    excludeId={category?.id}
+                                    type={type}
+                                    disabled={!type || isLoading}
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    placeholder={
+                                        type
+                                            ? 'Select parent category'
+                                            : 'Please select action type first'
+                                    }
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
                 />
                 <FormField
                     control={form.control}
@@ -113,6 +142,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                             <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
+                                    maxLength={MaxLength.DESCRIPTION.VALUE}
                                     placeholder="Enter category description"
                                     {...field}
                                     disabled={isLoading}

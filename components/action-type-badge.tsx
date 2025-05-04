@@ -29,10 +29,10 @@ export function ActionTypeBadge({ type, className }: ActionTypeBadgeProps) {
             className={cn(
                 'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium',
                 {
-                    'bg-green-100 text-green-600':
+                    'bg-green-50 text-green-500':
                         type === TransactionType.INCOME,
-                    'bg-red-100 text-red-600': type === TransactionType.EXPENSE,
-                    'bg-blue-100 text-blue-600':
+                    'bg-red-50 text-red-500': type === TransactionType.EXPENSE,
+                    'bg-blue-50 text-blue-500':
                         type === TransactionType.TRANSFER,
                 },
                 className

@@ -24,6 +24,7 @@ const formSchema = z.object({
     email: z
         .string()
         .min(1, { message: 'Please enter your email' })
+        .max(50, { message: 'Email must be less than 50 characters' })
         .email({ message: 'Invalid email address' }),
     password: z
         .string()
@@ -32,7 +33,8 @@ const formSchema = z.object({
         })
         .min(6, {
             message: 'Password must be at least 6 characters long',
-        }),
+        })
+        .max(50, { message: 'Password must be less than 50 characters' }),
 });
 
 export function LoginForm({ className, ...props }: UserAuthFormProps) {

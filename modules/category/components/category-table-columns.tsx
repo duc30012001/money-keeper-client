@@ -1,13 +1,12 @@
 'use client';
 
+import { ActionTypeBadge } from '@/components/action-type-badge';
+import { Button } from '@/components/ui/button';
 import { CATEGORY_TYPE_OPTIONS } from '@/constants/common';
 import { ColumnDef } from '@tanstack/react-table';
 import { Dot, SquareMinus, SquarePlus, Text } from 'lucide-react';
-import { Category } from '../../types/category';
-
-import { ActionTypeBadge } from '@/components/action-type-badge';
-import { Button } from '@/components/ui/button';
-import { CellAction } from './cell-action';
+import { Category } from '../types/category';
+import { CellAction } from './category-table-action';
 
 export const columns: ColumnDef<Category>[] = [
     {

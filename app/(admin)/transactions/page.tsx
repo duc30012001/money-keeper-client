@@ -55,9 +55,20 @@ export default function TransactionPage() {
                 <Separator />
                 {isLoading ? (
                     <DataTableSkeleton
-                        columnCount={8}
+                        columnCount={10}
                         filterCount={7}
-                        shrinkZero
+                        cellWidths={[
+                            '200px',
+                            '150px',
+                            '120px',
+                            '150px',
+                            '150px',
+                            '150px',
+                            '150px',
+                            '150px',
+                            '350px',
+                            '80px',
+                        ]}
                     />
                 ) : (
                     <TransactionTable

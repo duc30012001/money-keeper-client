@@ -5,34 +5,26 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
+    CommandList,
 } from '@/components/ui/command';
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { PaginatedResponseDto } from '@/types/common';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { ReactNode } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { ReactNode, useEffect, useState } from 'react';
 import { useCategoriesList } from '../hooks/use-categories';
 import { Category } from '../types/category';
 
 interface CategorySelectProps {
-    name: string;
-    label?: string;
     disabled?: boolean;
     excludeId?: string;
     type?: string;
     placeholder?: ReactNode;
+    value?: string;
+    onChange?: (value: string | undefined) => void;
 }
 
 const findCategoryById = (
@@ -54,22 +46,35 @@ const findCategoryById = (
 };
 
 export function CategorySelect({
-    name,
-    label = 'Parent Category',
     disabled,
     excludeId,
     type,
     placeholder = 'Select category',
+    value,
+    onChange,
 }: CategorySelectProps) {
-    const { data: categoriesData } = useCategoriesList({ type });
-    const form = useFormContext();
-    const selectedCategoryId = form.watch(name);
+    const [categoryId, setCategoryId] = useState<string | undefined>(undefined);
+    const [open, setOpen] = useState(false);
 
-    const categories =
-        (categoriesData as PaginatedResponseDto<Category>)?.data || [];
-    const selectedCategory = selectedCategoryId
-        ? findCategoryById(categories, selectedCategoryId)
+    const { data: categoriesData } = useCategoriesList({ type });
+
+    useEffect(() => {
+        if (value) {
+            setCategoryId(value);
+        }
+    }, [value]);
+
+    const categories = categoriesData?.data || [];
+    const selectedCategory = categoryId
+        ? findCategoryById(categories, categoryId)
         : undefined;
+
+    const handleChange = (selectedValue: string) => {
+        const newValue = selectedValue === value ? undefined : selectedValue;
+        setCategoryId(newValue);
+        onChange?.(newValue);
+        setOpen(false);
+    };
 
     const renderCategoryItem = (
         category: Category,
@@ -80,28 +85,24 @@ export function CategorySelect({
         return (
             <>
                 <CommandItem
+                    key={category.id}
                     value={category.id}
-                    onSelect={() => {
-                        form.setValue(name, category.id);
-                    }}
+                    onSelect={handleChange}
                     className="flex items-center gap-2"
+                    keywords={[category.name]}
                 >
-                    <div
-                        className={cn(
-                            'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                            selectedCategoryId === category.id
-                                ? 'bg-primary text-primary-foreground'
-                                : 'opacity-50 [&_svg]:invisible'
-                        )}
-                    >
-                        <Check className="h-4 w-4" />
-                    </div>
                     <span
                         style={{ paddingLeft: `${level * 20}px` }}
                         className="flex items-center gap-2"
                     >
                         {category.name}
                     </span>
+                    <Check
+                        className={cn(
+                            'ml-auto',
+                            value === category.id ? 'opacity-100' : 'opacity-0'
+                        )}
+                    />
                 </CommandItem>
                 {category.children?.map((child) =>
                     renderCategoryItem(child, level + 1)
@@ -111,65 +112,35 @@ export function CategorySelect({
     };
 
     return (
-        <FormField
-            control={form.control}
-            name={name}
-            render={({ field }) => (
-                <FormItem className="flex flex-col">
-                    <FormLabel>{label}</FormLabel>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    disabled={disabled}
-                                    className={cn(
-                                        'w-full justify-between',
-                                        !field.value && 'text-muted-foreground'
-                                    )}
-                                >
-                                    {selectedCategory
-                                        ? selectedCategory.name
-                                        : placeholder}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                            </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                            <Command>
-                                <CommandInput placeholder="Search category..." />
-                                <CommandEmpty>No category found.</CommandEmpty>
-                                <CommandGroup>
-                                    <CommandItem
-                                        value={undefined}
-                                        onSelect={() => {
-                                            form.setValue(name, '');
-                                        }}
-                                        className="flex items-center gap-2"
-                                    >
-                                        <div
-                                            className={cn(
-                                                'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                                                !selectedCategoryId
-                                                    ? 'bg-primary text-primary-foreground'
-                                                    : 'opacity-50 [&_svg]:invisible'
-                                            )}
-                                        >
-                                            <Check className="h-4 w-4" />
-                                        </div>
-                                        <span>None</span>
-                                    </CommandItem>
-                                    {categories.map((category: Category) =>
-                                        renderCategoryItem(category)
-                                    )}
-                                </CommandGroup>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
+        <Popover modal open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <Button
+                    variant="outline"
+                    disabled={disabled}
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between font-normal"
+                >
+                    {selectedCategory?.name || placeholder}
+                    <ChevronsUpDown className="opacity-50" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+                <Command>
+                    <CommandInput
+                        placeholder="Search category..."
+                        className="h-9"
+                    />
+                    <CommandList>
+                        <CommandEmpty>No category found.</CommandEmpty>
+                        <CommandGroup>
+                            {categories.map((category) =>
+                                renderCategoryItem(category)
+                            )}
+                        </CommandGroup>
+                    </CommandList>
+                </Command>
+            </PopoverContent>
+        </Popover>
     );
 }

@@ -10,14 +10,14 @@ import {
 import { ModalType } from '@/enums/common';
 import { useModal } from '@/hooks/use-modal';
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
-import { Account } from '../../types/account';
+import { Category } from '../types/category';
 
 interface CellActionProps {
-    data: Account;
+    data: Category;
 }
 
 export const CellAction: React.FC<CellActionProps> = ({ data }) => {
-    const { openModal } = useModal<Account>();
+    const { openModal } = useModal<Category>();
 
     return (
         <>

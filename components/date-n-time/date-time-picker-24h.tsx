@@ -1,7 +1,6 @@
 'use client';
 
 import { CalendarIcon } from '@radix-ui/react-icons';
-import { format } from 'date-fns';
 import * as React from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +11,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { formatDate } from '@/lib/format';
 import { cn } from '@/lib/utils';
 
 interface DateTimePicker24hProps {
@@ -48,7 +48,7 @@ export function DateTimePicker24h({
     };
 
     return (
-        <Popover open={isOpen} onOpenChange={setIsOpen}>
+        <Popover modal open={isOpen} onOpenChange={setIsOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="outline"
@@ -58,11 +58,7 @@ export function DateTimePicker24h({
                     )}
                 >
                     <CalendarIcon className="mr-2 h-4 w-4" />
-                    {date ? (
-                        format(date, 'MM/dd/yyyy HH:mm')
-                    ) : (
-                        <span>MM/DD/YYYY HH:mm</span>
-                    )}
+                    {date ? formatDate(date) : <span>HH:mm DD/MM/YYYY</span>}
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0">

@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { MaxLength } from '@/constants/rules';
 import { AccountTypeSelect } from '@/modules/account-type/components/account-type-select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -17,11 +18,20 @@ import { useCreateAccount, useUpdateAccount } from '../hooks/use-accounts';
 import { Account, CreateAccountDto, UpdateAccountDto } from '../types/account';
 
 const formSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    initialBalance: z.number().optional(),
-    description: z.string().optional(),
-    sortOrder: z.number().optional(),
-    accountTypeId: z.string(),
+    name: z
+        .string()
+        .min(1, 'Name is required')
+        .max(MaxLength.NAME.VALUE, MaxLength.NAME.MESSAGE),
+    description: z
+        .string()
+        .max(MaxLength.DESCRIPTION.VALUE, MaxLength.DESCRIPTION.MESSAGE)
+        .optional(),
+    initialBalance: z
+        .number()
+        .nonnegative('Initial balance cannot be negative')
+        .optional(),
+    sortOrder: z.number().nonnegative('Sort order must be positive').optional(),
+    accountTypeId: z.string().uuid('Account type must be a valid UUID'),
 });
 
 interface AccountFormProps {
@@ -54,7 +64,9 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                 onSuccess?.();
             } else {
                 await createMutation.mutateAsync(values as CreateAccountDto);
-                form.reset();
+                form.reset({
+                    accountTypeId: values.accountTypeId,
+                });
             }
         } catch (error) {
             console.log('error:', error);
@@ -105,7 +117,23 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                         </FormItem>
                     )}
                 />
-                <AccountTypeSelect name="accountTypeId" />
+                <FormField
+                    control={form.control}
+                    name={'accountTypeId'}
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Account type</FormLabel>
+                            <FormControl>
+                                <AccountTypeSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    disabled={isLoading}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
                 <FormField
                     control={form.control}
                     name="description"
@@ -114,6 +142,7 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                             <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
+                                    maxLength={MaxLength.DESCRIPTION.VALUE}
                                     placeholder="Enter account description"
                                     {...field}
                                     disabled={isLoading}

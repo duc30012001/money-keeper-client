@@ -5,159 +5,107 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
+    CommandList,
 } from '@/components/ui/command';
-import {
-    FormControl,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from '@/components/ui/form';
 import {
     Popover,
     PopoverContent,
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { PaginatedResponseDto } from '@/types/common';
+import { useAccountTypesList } from '@/modules/account-type/hooks/use-account-types';
+import { AccountType } from '@/modules/account-type/types/account-type';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { ReactNode } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useAccountTypesList } from '../hooks/use-account-types';
-import { AccountType } from '../types/account-type';
+import { ReactNode, useEffect, useState } from 'react';
 
 interface AccountTypeSelectProps {
-    name: string;
-    label?: string;
     disabled?: boolean;
     placeholder?: ReactNode;
+    value?: string;
+    onChange?: (value: string | undefined) => void;
 }
 
-const findAccountTypeById = (
-    accountTypes: AccountType[],
-    id: string
-): AccountType | undefined => {
-    for (const accountType of accountTypes) {
-        if (accountType.id === id) {
-            return accountType;
-        }
-    }
-    return undefined;
+const findAccountTypeById = (accountTypes: AccountType[], id: string) => {
+    return accountTypes.find((accountType) => accountType.id === id);
 };
 
 export function AccountTypeSelect({
-    name,
-    label = 'Account Type',
     disabled,
     placeholder = 'Select account type',
+    value,
+    onChange,
 }: AccountTypeSelectProps) {
-    const { data: accountTypesData } = useAccountTypesList();
-    const form = useFormContext();
-    const selectedAccountTypeId = form.watch(name);
+    const [accountTypeId, setAccountTypeId] = useState<string | undefined>(
+        undefined
+    );
+    const [open, setOpen] = useState(false);
 
-    const accountTypes =
-        (accountTypesData as PaginatedResponseDto<AccountType>)?.data || [];
-    const selectedAccountType = selectedAccountTypeId
-        ? findAccountTypeById(accountTypes, selectedAccountTypeId)
+    const { data: accountTypesData } = useAccountTypesList();
+
+    useEffect(() => {
+        if (value) {
+            setAccountTypeId(value);
+        }
+    }, [value]);
+
+    const accountTypes = accountTypesData?.data || [];
+    const selectedAccountType = accountTypeId
+        ? findAccountTypeById(accountTypes, accountTypeId)
         : undefined;
 
-    const renderAccountTypeItem = (
-        accountType: AccountType,
-        level: number = 0
-    ): JSX.Element => {
-        return (
-            <>
-                <CommandItem
-                    value={accountType.id}
-                    onSelect={() => {
-                        form.setValue(name, accountType.id);
-                    }}
-                    className="flex items-center gap-2"
-                >
-                    <div
-                        className={cn(
-                            'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                            selectedAccountTypeId === accountType.id
-                                ? 'bg-primary text-primary-foreground'
-                                : 'opacity-50 [&_svg]:invisible'
-                        )}
-                    >
-                        <Check className="h-4 w-4" />
-                    </div>
-                    <span
-                        style={{ paddingLeft: `${level * 20}px` }}
-                        className="flex items-center gap-2"
-                    >
-                        {accountType.name}
-                    </span>
-                </CommandItem>
-            </>
-        );
+    const handleChange = (selectedValue: string) => {
+        const newValue = selectedValue === value ? undefined : selectedValue;
+        setAccountTypeId(newValue);
+        onChange?.(newValue);
+        setOpen(false);
     };
 
     return (
-        <FormField
-            control={form.control}
-            name={name}
-            render={({ field }) => (
-                <FormItem className="flex flex-col">
-                    <FormLabel>{label}</FormLabel>
-                    <Popover>
-                        <PopoverTrigger asChild>
-                            <FormControl>
-                                <Button
-                                    variant="outline"
-                                    role="combobox"
-                                    disabled={disabled}
-                                    className={cn(
-                                        'w-full justify-between',
-                                        !field.value && 'text-muted-foreground'
-                                    )}
+        <Popover modal open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+                <Button
+                    variant="outline"
+                    disabled={disabled}
+                    role="combobox"
+                    aria-expanded={open}
+                    className="w-full justify-between font-normal"
+                >
+                    {selectedAccountType?.name || placeholder}
+                    <ChevronsUpDown className="opacity-50" />
+                </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-full p-0">
+                <Command>
+                    <CommandInput
+                        placeholder="Search account type..."
+                        className="h-9"
+                    />
+                    <CommandList>
+                        <CommandEmpty>No account type found.</CommandEmpty>
+                        <CommandGroup>
+                            {accountTypes.map((accountType) => (
+                                <CommandItem
+                                    key={accountType.id}
+                                    value={accountType.id}
+                                    onSelect={handleChange}
+                                    className="flex items-center gap-2"
+                                    keywords={[accountType.name]}
                                 >
-                                    {selectedAccountType
-                                        ? selectedAccountType.name
-                                        : placeholder}
-                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                                </Button>
-                            </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-full p-0">
-                            <Command>
-                                <CommandInput placeholder="Search account type..." />
-                                <CommandEmpty>
-                                    No account type found.
-                                </CommandEmpty>
-                                <CommandGroup>
-                                    <CommandItem
-                                        value={undefined}
-                                        onSelect={() => {
-                                            form.setValue(name, '');
-                                        }}
-                                        className="flex items-center gap-2"
-                                    >
-                                        <div
-                                            className={cn(
-                                                'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
-                                                !selectedAccountTypeId
-                                                    ? 'bg-primary text-primary-foreground'
-                                                    : 'opacity-50 [&_svg]:invisible'
-                                            )}
-                                        >
-                                            <Check className="h-4 w-4" />
-                                        </div>
-                                        <span>None</span>
-                                    </CommandItem>
-                                    {accountTypes.map(
-                                        (accountType: AccountType) =>
-                                            renderAccountTypeItem(accountType)
-                                    )}
-                                </CommandGroup>
-                            </Command>
-                        </PopoverContent>
-                    </Popover>
-                    <FormMessage />
-                </FormItem>
-            )}
-        />
+                                    {accountType.name}
+                                    <Check
+                                        className={cn(
+                                            'ml-auto',
+                                            value === accountType.id
+                                                ? 'opacity-100'
+                                                : 'opacity-0'
+                                        )}
+                                    />
+                                </CommandItem>
+                            ))}
+                        </CommandGroup>
+                    </CommandList>
+                </Command>
+            </PopoverContent>
+        </Popover>
     );
 }

@@ -10,6 +10,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { MaxLength } from '@/constants/rules';
+import { useLoading, UseLoadingType } from '@/hooks/use-loading';
 import { AccountSelect } from '@/modules/account/components/account-select';
 import { CategorySelect } from '@/modules/category/components/category-select';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,12 +33,21 @@ import { TransactionTypeSelect } from './transaction-type-select';
 const formSchema = z
     .object({
         type: z.nativeEnum(TransactionType),
-        accountId: z.string().optional(),
-        categoryId: z.string().optional(),
-        senderAccountId: z.string().optional(),
-        receiverAccountId: z.string().optional(),
-        amount: z.number().positive(),
-        description: z.string().optional(),
+        accountId: z.string().uuid('Account must be a valid UUID').optional(),
+        categoryId: z.string().uuid('Category must be a valid UUID').optional(),
+        senderAccountId: z
+            .string()
+            .uuid('Sender account must be a valid UUID')
+            .optional(),
+        receiverAccountId: z
+            .string()
+            .uuid('Receiver account must be a valid UUID')
+            .optional(),
+        amount: z.number().positive('Amount must be positive'),
+        description: z
+            .string()
+            .max(200, 'Description must be less than 200 characters')
+            .optional(),
         transactionDate: z.date().optional(),
     })
     .superRefine((values, ctx) => {
@@ -96,6 +107,8 @@ export function TransactionForm({
     transaction,
     onSuccess,
 }: TransactionFormProps) {
+    const isLoading = useLoading(UseLoadingType.Mutating);
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -138,8 +151,6 @@ export function TransactionForm({
             console.log('error:', error);
         }
     };
-
-    const isLoading = createMutation.isPending || updateMutation.isPending;
 
     return (
         <Form {...form}>
@@ -186,21 +197,86 @@ export function TransactionForm({
                 <TransactionTypeSelect name="type" />
                 {type && type === TransactionType.TRANSFER && (
                     <>
-                        <AccountSelect
-                            label="Sender account"
-                            placeholder="Select sender account"
-                            name="senderAccountId"
+                        <FormField
+                            control={form.control}
+                            name={'senderAccountId'}
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Sender account</FormLabel>
+                                    <FormControl>
+                                        <AccountSelect
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder="Select sender account"
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
-                        <AccountSelect
-                            label="Receiver account"
-                            name="receiverAccountId"
+                        <FormField
+                            control={form.control}
+                            name={'receiverAccountId'}
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Receiver account</FormLabel>
+                                    <FormControl>
+                                        <AccountSelect
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder="Select receiver account"
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
                         />
                     </>
                 )}
                 {type && type !== TransactionType.TRANSFER && (
                     <>
-                        <AccountSelect name="accountId" />
-                        <CategorySelect name="categoryId" type={type} />
+                        <FormField
+                            control={form.control}
+                            name={'accountId'}
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Account</FormLabel>
+                                    <FormControl>
+                                        <AccountSelect
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            disabled={isLoading}
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name={'categoryId'}
+                            render={({ field }) => (
+                                <FormItem className="flex flex-col">
+                                    <FormLabel>Category</FormLabel>
+                                    <FormControl>
+                                        <CategorySelect
+                                            type={type}
+                                            disabled={!type || isLoading}
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder={
+                                                type
+                                                    ? 'Select parent category'
+                                                    : 'Please select action type first'
+                                            }
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                     </>
                 )}
                 <FormField
@@ -211,6 +287,7 @@ export function TransactionForm({
                             <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
+                                    maxLength={MaxLength.DESCRIPTION.VALUE}
                                     placeholder="Enter transaction description"
                                     {...field}
                                     disabled={isLoading}

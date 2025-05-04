@@ -9,6 +9,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { MaxLength } from '@/constants/rules';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -23,9 +24,15 @@ import {
 } from '../types/account-type';
 
 const formSchema = z.object({
-    name: z.string().min(1, 'Name is required'),
-    description: z.string().optional(),
-    sortOrder: z.number().optional(),
+    name: z
+        .string()
+        .min(1, 'Name is required')
+        .max(MaxLength.NAME.VALUE, MaxLength.NAME.MESSAGE),
+    description: z
+        .string()
+        .max(MaxLength.DESCRIPTION.VALUE, MaxLength.DESCRIPTION.MESSAGE)
+        .optional(),
+    sortOrder: z.number().nonnegative('Sort order must be positive').optional(),
 });
 
 interface AccountTypeFormProps {
@@ -98,6 +105,7 @@ export function AccountTypeForm({
                             <FormLabel>Description</FormLabel>
                             <FormControl>
                                 <Textarea
+                                    maxLength={MaxLength.DESCRIPTION.VALUE}
                                     placeholder="Enter account type description"
                                     {...field}
                                     disabled={isLoading}

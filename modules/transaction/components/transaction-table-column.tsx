@@ -14,7 +14,7 @@ import { formatDate } from '@/lib/format';
 import { formatNumber } from '@/lib/format-number';
 import { Account } from '@/modules/account/types/account';
 import { Category } from '@/modules/category/types/category';
-import { ColumnDef } from '@tanstack/react-table';
+import { ColumnDef, ColumnMeta } from '@tanstack/react-table';
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
 import { Transaction } from '../types/transaction';
 
@@ -22,6 +22,26 @@ interface GetTransactionTableColumnProps {
     accounts: Account[];
     categories: Category[];
     openModal: (type: ModalType, data?: Transaction) => void;
+}
+
+function getCategoriesOptions(categories: Category[], level = 0) {
+    const result: ColumnMeta<Transaction, unknown>['options'] = [];
+
+    // two non-breaking spaces per level
+    const indentUnit = '\u00A0';
+
+    categories.forEach((category) => {
+        const indent = indentUnit.repeat(level * 5);
+        result.push({
+            label: `${indent}${category.name}`,
+            value: category.id,
+        });
+        if (category.children.length) {
+            result.push(...getCategoriesOptions(category.children, level + 1));
+        }
+    });
+
+    return result;
 }
 
 export function getTransactionTableColumn({
@@ -130,11 +150,7 @@ export function getTransactionTableColumn({
             meta: {
                 label: 'Category',
                 variant: 'multiSelect',
-                options:
-                    categories?.map((category) => ({
-                        label: category.name,
-                        value: category.id,
-                    })) ?? [],
+                options: getCategoriesOptions(categories),
             },
             cell: ({ row }) => row.original.category?.name,
             size: 150,
