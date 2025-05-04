@@ -65,6 +65,7 @@ export default function TransactionPage() {
                         pageCount={transactions?.meta?.totalPages ?? 0}
                         pageSize={transactions?.meta?.pageSize ?? 0}
                         pageIndex={transactions?.meta?.page ?? 0}
+                        rowCount={transactions?.meta?.total ?? 0}
                     />
                 )}
             </div>

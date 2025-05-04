@@ -43,8 +43,7 @@ export function DataTablePagination<TData>({
                         selected.
                     </>
                 ) : (
-                    <>{table.getTotalSize()} row(s) total.</>
-                    // <>{table.getFilteredRowModel().rows.length} row(s) total.</>
+                    <>{table.getRowCount()} row(s) total.</>
                 )}
             </div>
             <div className="flex flex-col-reverse items-center gap-4 sm:flex-row sm:gap-6 lg:gap-8">

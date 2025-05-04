@@ -17,6 +17,7 @@ interface TransactionTableParams<TData> {
     pageCount: number;
     pageSize: number;
     pageIndex: number;
+    rowCount: number;
 }
 
 export function TransactionTable({
@@ -24,6 +25,7 @@ export function TransactionTable({
     pageCount,
     pageSize,
     pageIndex,
+    rowCount,
 }: TransactionTableParams<Transaction>) {
     const { openModal } = useModal<Transaction>();
 
@@ -44,6 +46,7 @@ export function TransactionTable({
         data,
         columns,
         pageCount,
+        rowCount,
         shallow: false, //Setting to false triggers a network request with the updated querystring.
         getRowId: (originalRow) => originalRow.id,
         clearOnDefault: true,
