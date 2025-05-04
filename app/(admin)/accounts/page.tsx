@@ -14,12 +14,14 @@ import { Heading } from '@/components/ui/heading';
 import { Separator } from '@/components/ui/separator';
 import { ModalType } from '@/enums/common';
 import { useModal } from '@/hooks/use-modal';
+import { formatNumber } from '@/lib/format-number';
 import { AccountForm } from '@/modules/account/components/account-form';
 import { AccountTable } from '@/modules/account/components/account-table';
 import {
     useAccountSearchParams,
     useAccountsList,
     useDeleteAccount,
+    useTotalBalance,
 } from '@/modules/account/hooks/use-accounts';
 import { Account } from '@/modules/account/types/account';
 import { Plus } from 'lucide-react';
@@ -29,6 +31,7 @@ export default function AccountPage() {
         useModal<Account>();
     const searchParams = useAccountSearchParams();
 
+    const { data: totalBalance } = useTotalBalance();
     const { data: accounts, isLoading } = useAccountsList(searchParams);
 
     const deleteMutation = useDeleteAccount();
@@ -46,7 +49,12 @@ export default function AccountPage() {
         <PageContainer scrollable={false}>
             <div className="flex flex-1 flex-col space-y-4">
                 <div className="flex items-start justify-between">
-                    <Heading title="Accounts" />
+                    <Heading
+                        title="Accounts"
+                        description={`Total Balance: ${formatNumber(
+                            totalBalance?.data
+                        )}`}
+                    />
                     <Button onClick={() => openModal(ModalType.CREATE)}>
                         <Plus />
                         Create
@@ -55,14 +63,15 @@ export default function AccountPage() {
                 <Separator />
                 {isLoading ? (
                     <DataTableSkeleton
-                        columnCount={7}
+                        columnCount={8}
                         filterCount={2}
                         cellWidths={[
                             '200px',
                             '200px',
                             '200px',
                             '150px',
-                            '400px',
+                            '200px',
+                            '150px',
                             '150px',
                             '80px',
                         ]}

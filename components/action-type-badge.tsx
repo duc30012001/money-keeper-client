@@ -66,11 +66,11 @@ export function MoneyBadge({ amount, type, className }: MoneyBadgeProps) {
                     className={cn(
                         'w-fit cursor-pointer rounded-md px-2 py-1 font-medium',
                         {
-                            'text-green-600 hover:bg-green-100':
+                            'text-green-500 hover:bg-green-50':
                                 type === TransactionType.INCOME,
-                            'text-red-600 hover:bg-red-100':
+                            'text-red-500 hover:bg-red-50':
                                 type === TransactionType.EXPENSE,
-                            'text-blue-600 hover:bg-blue-100':
+                            'text-blue-500 hover:bg-blue-50':
                                 type === TransactionType.TRANSFER,
                         },
                         className

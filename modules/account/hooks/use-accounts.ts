@@ -27,6 +27,7 @@ export const accountKeys = {
     list: (filters: string) => [...accountKeys.lists(), { filters }] as const,
     details: () => [...accountKeys.all, 'detail'] as const,
     detail: (id: string) => [...accountKeys.details(), id] as const,
+    totalBalance: () => [...accountKeys.all, 'total-balance'] as const,
 };
 
 export const useAccountsList = (searchParams: AccountSearchParams) => {
@@ -55,6 +56,19 @@ export const useAccountDetail = (id: string) => {
     } as UseQueryOptions<ResponseDto<Account>>);
 };
 
+export const useTotalBalance = () => {
+    const { handleError } = useApiError();
+    return useQuery<ResponseDto<number>>({
+        queryKey: accountKeys.totalBalance(),
+        queryFn: async () => {
+            const response = await accountApi.getTotalBalance();
+            return response.data;
+        },
+        onError: handleError,
+        placeholderData: (prev) => prev,
+    } as UseQueryOptions<ResponseDto<number>>);
+};
+
 export const useCreateAccount = () => {
     const queryClient = useQueryClient();
     const { handleError } = useApiError();
@@ -64,6 +78,9 @@ export const useCreateAccount = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
+            });
+            queryClient.invalidateQueries({
+                queryKey: accountKeys.totalBalance(),
             });
             toast.success('Account created successfully!');
         },
@@ -84,6 +101,9 @@ export const useUpdateAccount = () => {
             });
             queryClient.invalidateQueries({
                 queryKey: accountKeys.detail(id),
+            });
+            queryClient.invalidateQueries({
+                queryKey: accountKeys.totalBalance(),
             });
             toast.success('Account updated successfully!');
         },
@@ -117,6 +137,9 @@ export const useDeleteAccount = () => {
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
+            });
+            queryClient.invalidateQueries({
+                queryKey: accountKeys.totalBalance(),
             });
             toast.success('Account deleted successfully!');
         },

@@ -25,7 +25,7 @@ interface TransactionTypeSelectProps {
 
 export function TransactionTypeSelect({
     name,
-    label = 'Transaction Type',
+    label = 'Transaction type',
     selectProps,
 }: TransactionTypeSelectProps) {
     const form = useFormContext();

@@ -56,6 +56,11 @@ export function AccountTypeForm({
     const createMutation = useCreateAccountType();
     const updateMutation = useUpdateAccountType();
 
+    const resetForm = () => {
+        form.resetField('name');
+        form.resetField('description');
+    };
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             if (accountType) {
@@ -68,7 +73,7 @@ export function AccountTypeForm({
                 await createMutation.mutateAsync(
                     values as CreateAccountTypeDto
                 );
-                form.reset();
+                resetForm();
             }
         } catch (error) {
             console.log('error:', error);

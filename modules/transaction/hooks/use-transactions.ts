@@ -69,6 +69,9 @@ export const useCreateTransaction = () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
             });
+            queryClient.invalidateQueries({
+                queryKey: accountKeys.totalBalance(),
+            });
             toast.success('Transaction created successfully!');
         },
         onError: handleError,
@@ -97,6 +100,9 @@ export const useUpdateTransaction = () => {
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
             });
+            queryClient.invalidateQueries({
+                queryKey: accountKeys.totalBalance(),
+            });
             toast.success('Transaction updated successfully!');
         },
         onError: handleError,
@@ -115,6 +121,9 @@ export const useDeleteTransaction = () => {
             });
             queryClient.invalidateQueries({
                 queryKey: accountKeys.lists(),
+            });
+            queryClient.invalidateQueries({
+                queryKey: accountKeys.totalBalance(),
             });
             toast.success('Transaction deleted successfully!');
         },

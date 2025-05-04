@@ -8,7 +8,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import NumberInput from '@/components/ui/number-input';
 import { Textarea } from '@/components/ui/textarea';
 import { MaxLength } from '@/constants/rules';
 import { useLoading, UseLoadingType } from '@/hooks/use-loading';
@@ -16,6 +16,7 @@ import { AccountSelect } from '@/modules/account/components/account-select';
 import { CategorySelect } from '@/modules/category/components/category-select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import dayjs from 'dayjs';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { TransactionType } from '../enums/transaction';
@@ -129,6 +130,21 @@ export function TransactionForm({
     const updateMutation = useUpdateTransaction();
     const type = form.watch('type');
 
+    useEffect(() => {
+        if (type === TransactionType.TRANSFER) {
+            form.setValue('accountId', undefined);
+            form.setValue('categoryId', undefined);
+        } else {
+            form.setValue('senderAccountId', undefined);
+            form.setValue('receiverAccountId', undefined);
+        }
+    }, [type, form]);
+
+    const resetForm = () => {
+        form.resetField('amount');
+        form.resetField('description');
+    };
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             if (transaction) {
@@ -141,11 +157,7 @@ export function TransactionForm({
                 await createMutation.mutateAsync(
                     values as CreateTransactionDto
                 );
-                form.reset({
-                    type: values.type,
-                    transactionDate: values.transactionDate,
-                    amount: 0,
-                });
+                resetForm();
             }
         } catch (error) {
             console.log('error:', error);
@@ -160,7 +172,7 @@ export function TransactionForm({
                     name="transactionDate"
                     render={({ field }) => (
                         <FormItem className="flex flex-col">
-                            <FormLabel>Date of birth</FormLabel>
+                            <FormLabel>Transaction date</FormLabel>
                             <FormControl>
                                 <DateTimePicker24h
                                     value={field.value}
@@ -175,26 +187,30 @@ export function TransactionForm({
                 <FormField
                     control={form.control}
                     name="amount"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormLabel>Amount</FormLabel>
-                            <FormControl>
-                                <Input
-                                    type="number"
-                                    min={0}
-                                    placeholder="Enter amount"
-                                    {...field}
-                                    onChange={(e) =>
-                                        field.onChange(Number(e.target.value))
-                                    }
-                                    disabled={isLoading}
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
+                    render={({ field }) => {
+                        return (
+                            <FormItem>
+                                <FormLabel>Amount</FormLabel>
+                                <FormControl>
+                                    <NumberInput
+                                        disabled={isLoading}
+                                        value={field.value}
+                                        onValueChange={(e) => {
+                                            field.onChange(e.floatValue);
+                                        }}
+                                        placeholder="Enter amount"
+                                        getInputRef={field.ref}
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        );
+                    }}
                 />
-                <TransactionTypeSelect name="type" />
+                <TransactionTypeSelect
+                    name="type"
+                    selectProps={{ disabled: isLoading }}
+                />
                 {type && type === TransactionType.TRANSFER && (
                     <>
                         <FormField

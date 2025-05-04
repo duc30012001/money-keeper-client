@@ -14,6 +14,9 @@ export const accountApi = {
             params: searchParams,
         }),
 
+    getTotalBalance: () =>
+        axiosInstance.get<ResponseDto<number>>('/accounts/total-balance'),
+
     findOne: (id: string) =>
         axiosInstance.get<ResponseDto<Account>>(`/accounts/${id}`),
 

@@ -8,6 +8,7 @@ import {
     FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import NumberInput from '@/components/ui/number-input';
 import { Textarea } from '@/components/ui/textarea';
 import { MaxLength } from '@/constants/rules';
 import { AccountTypeSelect } from '@/modules/account-type/components/account-type-select';
@@ -54,6 +55,12 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
     const createMutation = useCreateAccount();
     const updateMutation = useUpdateAccount();
 
+    const resetForm = () => {
+        form.resetField('name');
+        form.resetField('description');
+        form.resetField('initialBalance');
+    };
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             if (account) {
@@ -64,9 +71,7 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                 onSuccess?.();
             } else {
                 await createMutation.mutateAsync(values as CreateAccountDto);
-                form.reset({
-                    accountTypeId: values.accountTypeId,
-                });
+                resetForm();
             }
         } catch (error) {
             console.log('error:', error);
@@ -102,15 +107,14 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                         <FormItem>
                             <FormLabel>Initial Balance</FormLabel>
                             <FormControl>
-                                <Input
-                                    type="number"
-                                    min={0}
-                                    placeholder="Enter initial balance"
-                                    {...field}
-                                    onChange={(e) =>
-                                        field.onChange(Number(e.target.value))
-                                    }
+                                <NumberInput
                                     disabled={isLoading}
+                                    value={field.value}
+                                    onValueChange={(e) => {
+                                        field.onChange(e.floatValue);
+                                    }}
+                                    placeholder="Enter initial balance"
+                                    getInputRef={field.ref}
                                 />
                             </FormControl>
                             <FormMessage />

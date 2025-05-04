@@ -12,6 +12,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { MaxLength } from '@/constants/rules';
 import { useLoading, UseLoadingType } from '@/hooks/use-loading';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CategoryType } from '../enums/category';
@@ -65,8 +66,16 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
     const updateMutation = useUpdateCategory();
     const type = form.watch('type');
 
+    useEffect(() => {
+        form.setValue('parentId', undefined);
+    }, [type, form]);
+
+    const resetForm = () => {
+        form.resetField('name');
+        form.resetField('description');
+    };
+
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        console.log('values:', values);
         try {
             if (isUpdate) {
                 await updateMutation.mutateAsync({
@@ -76,11 +85,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                 onSuccess?.();
             } else {
                 await createMutation.mutateAsync(values as CreateCategoryDto);
-                form.reset({
-                    parentId: values.parentId,
-                    type: values.type,
-                    name: '',
-                });
+                resetForm();
             }
         } catch (error) {
             console.log('error:', error);

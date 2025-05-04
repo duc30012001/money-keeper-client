@@ -1,7 +1,7 @@
 import { getBrowserLocale } from './locale';
 
 export function formatNumber(
-    value: number | string,
+    value: number | string = 0,
     options?: Intl.NumberFormatOptions
 ): string {
     const locale = getBrowserLocale();

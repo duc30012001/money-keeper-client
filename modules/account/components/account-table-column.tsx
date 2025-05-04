@@ -83,7 +83,18 @@ export function getAccountTableColumn({
             meta: {
                 label: 'Description',
             },
-            size: 400,
+            size: 200,
+        },
+        {
+            id: 'createdAt',
+            accessorKey: 'createdAt',
+            header: 'Created At',
+            meta: {
+                label: 'Updated At',
+            },
+            enableSorting: true,
+            size: 150,
+            cell: ({ row }) => formatDate(row.original.createdAt),
         },
         {
             id: 'updatedAt',
