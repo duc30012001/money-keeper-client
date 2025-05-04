@@ -4,6 +4,7 @@ import { DataTable } from '@/components/ui/table/data-table';
 import { DataTableToolbar } from '@/components/ui/table/data-table-toolbar';
 import { useDataTable } from '@/hooks/use-data-table';
 
+import { formatDate } from '@/lib/format';
 import { formatNumber } from '@/lib/format-number';
 import { useAccountTypesList } from '@/modules/account-type/hooks/use-account-types';
 import { ColumnDef } from '@tanstack/react-table';
@@ -99,9 +100,20 @@ export function AccountTable({
                 size: 400,
             },
             {
+                id: 'updatedAt',
+                accessorKey: 'updatedAt',
+                header: 'Updated At',
+                meta: {
+                    label: 'Updated At',
+                },
+                enableSorting: true,
+                size: 200,
+                cell: ({ row }) => formatDate(row.original.updatedAt),
+            },
+            {
                 id: 'actions',
                 cell: ({ row }) => <CellAction data={row.original} />,
-                size: 100,
+                size: 80,
             },
         ],
         [accountTypes?.data]

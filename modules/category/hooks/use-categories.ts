@@ -1,5 +1,5 @@
-import { ActionType } from '@/enums/common';
 import { useApiError } from '@/hooks/use-api-error';
+import { CategoryType } from '@/modules/category/enums/category';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
     useMutation,
@@ -129,6 +129,6 @@ export const useCategorySearchParams = (): CategorySearchParams => {
         page: Number(searchParams.get('page') || 1),
         pageSize: Number(searchParams.get('pageSize') || 10),
         keyword: searchParams.get('keyword') || undefined,
-        actionType: (searchParams.get('actionType') as ActionType) || undefined,
+        type: (searchParams.get('type') as CategoryType) || undefined,
     };
 };

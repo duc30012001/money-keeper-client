@@ -1,6 +1,6 @@
 'use client';
 
-import { ACTION_TYPE_OPTIONS } from '@/constants/common';
+import { CATEGORY_TYPE_OPTIONS } from '@/constants/common';
 import { ColumnDef } from '@tanstack/react-table';
 import { Dot, SquareMinus, SquarePlus, Text } from 'lucide-react';
 import { Category } from '../../types/category';
@@ -86,21 +86,21 @@ export const columns: ColumnDef<Category>[] = [
     //     enableColumnFilter: true,
     // },
     {
-        id: 'actionType',
-        accessorKey: 'actionType',
+        id: 'type',
+        accessorKey: 'type',
         header: 'Action Type',
         enableColumnFilter: true,
         meta: {
             label: 'Action type',
             variant: 'multiSelect',
-            options: ACTION_TYPE_OPTIONS.map((item) => ({
+            options: CATEGORY_TYPE_OPTIONS.map((item) => ({
                 label: item.label,
                 value: item.value,
             })),
         },
         cell: ({ getValue }) => {
-            const actionType = getValue<Category['actionType']>();
-            return <ActionTypeBadge type={actionType} />;
+            const type = getValue<Category['type']>();
+            return <ActionTypeBadge type={type} />;
         },
         size: 150,
         enableHiding: false,

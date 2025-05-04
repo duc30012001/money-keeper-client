@@ -1,15 +1,34 @@
-import { ActionType } from '@/enums/common';
-import { Minus, Plus } from 'lucide-react';
+import { CategoryType } from '@/modules/category/enums/category';
+import { TransactionType } from '@/modules/transaction/enums/transaction';
+import { ArrowRightLeft, Minus, Plus } from 'lucide-react';
 
-export const ACTION_TYPE_OPTIONS = [
+export const CATEGORY_TYPE_OPTIONS = [
     {
-        value: ActionType.INCOME,
+        value: CategoryType.INCOME,
         label: 'Income',
         icon: Plus,
     },
     {
-        value: ActionType.EXPENSE,
+        value: CategoryType.EXPENSE,
         label: 'Expense',
         icon: Minus,
+    },
+];
+
+export const TRANSACTION_TYPE_OPTIONS = [
+    {
+        value: TransactionType.INCOME,
+        label: 'Income',
+        icon: Plus,
+    },
+    {
+        value: TransactionType.EXPENSE,
+        label: 'Expense',
+        icon: Minus,
+    },
+    {
+        value: TransactionType.TRANSFER,
+        label: 'Transfer',
+        icon: ArrowRightLeft,
     },
 ];

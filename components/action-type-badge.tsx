@@ -1,36 +1,87 @@
-import { ACTION_TYPE_OPTIONS } from '@/constants/common';
-import { ActionType } from '@/enums/common';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { TRANSACTION_TYPE_OPTIONS } from '@/constants/common';
 import { cn } from '@/lib/utils';
+import { CategoryType } from '@/modules/category/enums/category';
+import { TransactionType } from '@/modules/transaction/enums/transaction';
 
 interface ActionTypeBadgeProps {
-    type: ActionType;
+    type: CategoryType | TransactionType;
     className?: string;
 }
 
 export function ActionTypeBadge({ type, className }: ActionTypeBadgeProps) {
-    const actionType = ACTION_TYPE_OPTIONS.find(
+    const typeData = TRANSACTION_TYPE_OPTIONS.find(
         (option) => option.value === type
     );
 
-    if (!actionType) {
+    if (!typeData) {
         return null;
     }
 
-    const { label } = actionType;
+    const { label } = typeData;
 
     return (
         <div
             className={cn(
                 'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium',
                 {
-                    'bg-green-100 text-green-600': type === ActionType.INCOME,
-                    'bg-red-100 text-red-600': type === ActionType.EXPENSE,
+                    'bg-green-100 text-green-600':
+                        type === TransactionType.INCOME,
+                    'bg-red-100 text-red-600': type === TransactionType.EXPENSE,
+                    'bg-blue-100 text-blue-600':
+                        type === TransactionType.TRANSFER,
                 },
                 className
             )}
         >
-            <actionType.icon className="size-3" />
+            <typeData.icon className="size-3" />
             <span>{label}</span>
         </div>
+    );
+}
+
+interface MoneyBadgeProps {
+    amount: number | string;
+    type: TransactionType;
+    className?: string;
+}
+
+export function MoneyBadge({ amount, type, className }: MoneyBadgeProps) {
+    const typeData = TRANSACTION_TYPE_OPTIONS.find(
+        (option) => option.value === type
+    );
+
+    if (!typeData) {
+        return null;
+    }
+
+    return (
+        <Tooltip>
+            <TooltipTrigger asChild>
+                <div
+                    className={cn(
+                        'inline-flex cursor-pointer items-center gap-1 rounded-full px-2 py-1 font-medium',
+                        {
+                            'text-green-600 hover:bg-green-100':
+                                type === TransactionType.INCOME,
+                            'text-red-600 hover:bg-red-100':
+                                type === TransactionType.EXPENSE,
+                            'text-blue-600 hover:bg-blue-100':
+                                type === TransactionType.TRANSFER,
+                        },
+                        className
+                    )}
+                >
+                    <span>{amount}</span>
+                </div>
+            </TooltipTrigger>
+            <TooltipContent side="right" align="center">
+                <p>{typeData.label}</p>
+            </TooltipContent>
+        </Tooltip>
     );
 }

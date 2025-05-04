@@ -12,22 +12,22 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { ACTION_TYPE_OPTIONS } from '@/constants/common';
-import { ActionType } from '@/enums/common';
+import { CATEGORY_TYPE_OPTIONS } from '@/constants/common';
+import { CategoryType } from '@/modules/category/enums/category';
 import { SelectProps } from '@radix-ui/react-select';
 import { useFormContext } from 'react-hook-form';
 
-interface ActionTypeSelectProps {
+interface CategoryTypeSelectProps {
     name: string;
     label?: string;
     selectProps?: SelectProps;
 }
 
-export function ActionTypeSelect({
+export function CategoryTypeSelect({
     name,
-    label = 'Action Type',
+    label = 'Category Type',
     selectProps,
-}: ActionTypeSelectProps) {
+}: CategoryTypeSelectProps) {
     const form = useFormContext();
 
     return (
@@ -44,11 +44,11 @@ export function ActionTypeSelect({
                     >
                         <FormControl>
                             <SelectTrigger>
-                                <SelectValue placeholder="Select action type" />
+                                <SelectValue placeholder="Select category type" />
                             </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                            {ACTION_TYPE_OPTIONS.map((option) => (
+                            {CATEGORY_TYPE_OPTIONS.map((option) => (
                                 <SelectItem
                                     key={option.value}
                                     value={option.value}
@@ -65,17 +65,17 @@ export function ActionTypeSelect({
     );
 }
 
-interface ActionTypeFilterProps {
-    value: ActionType | 'all';
-    onChange: (value: ActionType | 'all') => void;
+interface CategoryTypeFilterProps {
+    value: CategoryType | 'all';
+    onChange: (value: CategoryType | 'all') => void;
     label?: string;
 }
 
-export function ActionTypeFilter({
+export function CategoryTypeFilter({
     value,
     onChange,
     label = 'Filter by Type',
-}: ActionTypeFilterProps) {
+}: CategoryTypeFilterProps) {
     return (
         <div className="space-y-2">
             <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
@@ -83,12 +83,15 @@ export function ActionTypeFilter({
             </label>
             <Select onValueChange={onChange} value={value}>
                 <SelectTrigger>
-                    <SelectValue placeholder="Select action type" />
+                    <SelectValue placeholder="Select category type" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value="all">All</SelectItem>
-                    <SelectItem value={ActionType.INCOME}>Income</SelectItem>
-                    <SelectItem value={ActionType.EXPENSE}>Expense</SelectItem>
+                    {CATEGORY_TYPE_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                            {option.label}
+                        </SelectItem>
+                    ))}
                 </SelectContent>
             </Select>
         </div>

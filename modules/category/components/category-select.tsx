@@ -31,7 +31,7 @@ interface CategorySelectProps {
     label?: string;
     disabled?: boolean;
     excludeId?: string;
-    actionType?: string;
+    type?: string;
     placeholder?: ReactNode;
 }
 
@@ -58,10 +58,10 @@ export function CategorySelect({
     label = 'Parent Category',
     disabled,
     excludeId,
-    actionType,
+    type,
     placeholder = 'Select category',
 }: CategorySelectProps) {
-    const { data: categoriesData } = useCategoriesList({ actionType });
+    const { data: categoriesData } = useCategoriesList({ type });
     const form = useFormContext();
     const selectedCategoryId = form.watch(name);
 

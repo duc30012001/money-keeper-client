@@ -2,7 +2,6 @@
 
 import { SidebarIcon } from 'lucide-react';
 
-import { SearchForm } from '@/components/search-form';
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -14,6 +13,7 @@ import { Separator } from '@/components/ui/separator';
 import { useSidebar } from '@/components/ui/sidebar';
 import { SIDEBAR_ITEMS } from '@/constants/sidebar';
 import { usePathname } from 'next/navigation';
+import LiveDateTime from './live-date-time';
 
 export function SiteHeader() {
     const { toggleSidebar } = useSidebar();
@@ -40,7 +40,7 @@ export function SiteHeader() {
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>
-                <SearchForm className="w-full sm:ml-auto sm:w-auto" />
+                <LiveDateTime className="ml-auto" />
             </div>
         </header>
     );

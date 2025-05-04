@@ -18,12 +18,12 @@ import {
     CreateCategoryDto,
     UpdateCategoryDto,
 } from '../types/category';
-import { ActionTypeSelect } from './action-type-select';
 import { CategorySelect } from './category-select';
+import { CategoryTypeSelect } from './category-type-select';
 
 const formSchema = z.object({
     name: z.string().min(1, 'Name is required'),
-    actionType: z.enum(['income', 'expense']),
+    type: z.enum(['income', 'expense']),
     description: z.string().optional(),
     sortOrder: z.number().optional(),
     parentId: z.string().optional(),
@@ -41,7 +41,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             name: category?.name || '',
-            actionType: category?.actionType,
+            type: category?.type,
             description: category?.description || '',
             sortOrder: category?.sortOrder || 1,
             parentId: category?.parent?.id,
@@ -50,7 +50,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
 
     const createMutation = useCreateCategory();
     const updateMutation = useUpdateCategory();
-    const actionType = form.watch('actionType');
+    const type = form.watch('type');
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
@@ -90,17 +90,17 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                         </FormItem>
                     )}
                 />
-                <ActionTypeSelect
-                    name="actionType"
+                <CategoryTypeSelect
+                    name="type"
                     selectProps={{ disabled: isUpdate }}
                 />
                 <CategorySelect
                     name="parentId"
                     excludeId={category?.id}
-                    actionType={actionType}
-                    disabled={!actionType}
+                    type={type}
+                    disabled={!type}
                     placeholder={
-                        actionType
+                        type
                             ? 'Select parent category'
                             : 'Please select action type first'
                     }
