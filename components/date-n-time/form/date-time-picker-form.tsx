@@ -50,7 +50,7 @@ export function DateTimePickerForm() {
 
     function handleTimeChange(type: 'hour' | 'minute' | 'ampm', value: string) {
         const currentDate = form.getValues('time') || new Date();
-        let newDate = new Date(currentDate);
+        const newDate = new Date(currentDate);
 
         if (type === 'hour') {
             const hour = parseInt(value, 10);
