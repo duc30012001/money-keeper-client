@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import {
     Cell,
     Legend,
+    LegendProps,
     Pie,
     PieChart,
     ResponsiveContainer,
@@ -52,10 +53,15 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
     const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
         if (active && payload && payload.length) {
             const { name, value } = payload[0];
+            const color = payload[0].payload.fill;
             return (
-                <div className="flex gap-3 rounded-md bg-white p-3 shadow-lg">
+                <div className="flex items-center gap-1 rounded-md border bg-white p-3 shadow">
+                    <div
+                        style={{ backgroundColor: color }}
+                        className="size-2 rounded-full"
+                    />
                     <p className="text-sm">{name}</p>
-                    <p className="text-sm font-semibold">
+                    <p className="ml-3 text-sm font-semibold">
                         {formatNumber(value)} (
                         {((value / total) * 100).toFixed(2)}
                         %)
@@ -64,6 +70,25 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
             );
         }
         return null;
+    };
+
+    const CustomLegend = ({ payload }: LegendProps) => {
+        return (
+            <div className="flex flex-col gap-2">
+                {payload?.map((entry, index) => (
+                    <div
+                        key={`legend-${index}`}
+                        className="flex items-center gap-2"
+                    >
+                        <div
+                            className="size-3 rounded"
+                            style={{ backgroundColor: entry.color }}
+                        />
+                        <span>{entry.value}</span>
+                    </div>
+                ))}
+            </div>
+        );
     };
 
     return (
@@ -119,6 +144,7 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
                             layout="vertical"
                             verticalAlign="middle"
                             align="right"
+                            content={<CustomLegend />}
                         />
                     </PieChart>
                 </ResponsiveContainer>

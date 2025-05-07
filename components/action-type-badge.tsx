@@ -7,6 +7,7 @@ import { TRANSACTION_TYPE_OPTIONS } from '@/constants/common';
 import { cn } from '@/lib/utils';
 import { CategoryType } from '@/modules/category/enums/category';
 import { TransactionType } from '@/modules/transaction/enums/transaction';
+import hexToRgba from 'hex-to-rgba';
 
 interface ActionTypeBadgeProps {
     type: CategoryType | TransactionType;
@@ -22,21 +23,25 @@ export function ActionTypeBadge({ type, className }: ActionTypeBadgeProps) {
         return null;
     }
 
-    const { label } = typeData;
+    const { label, color } = typeData;
 
     return (
         <div
             className={cn(
                 'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium',
                 {
-                    'bg-green-50 text-green-500':
-                        type === TransactionType.INCOME,
-                    'bg-red-50 text-red-500': type === TransactionType.EXPENSE,
-                    'bg-blue-50 text-blue-500':
-                        type === TransactionType.TRANSFER,
+                    // 'bg-green-50 text-green-500':
+                    //     type === TransactionType.INCOME,
+                    // 'bg-red-50 text-red-500': type === TransactionType.EXPENSE,
+                    // 'bg-blue-50 text-blue-500':
+                    //     type === TransactionType.TRANSFER,
                 },
                 className
             )}
+            style={{
+                color,
+                backgroundColor: hexToRgba(color, '0.07'),
+            }}
         >
             <typeData.icon className="size-3" />
             <span>{label}</span>
@@ -59,6 +64,8 @@ export function MoneyBadge({ amount, type, className }: MoneyBadgeProps) {
         return null;
     }
 
+    const { label, color } = typeData;
+
     return (
         <Tooltip>
             <TooltipTrigger asChild>
@@ -66,21 +73,25 @@ export function MoneyBadge({ amount, type, className }: MoneyBadgeProps) {
                     className={cn(
                         'w-fit cursor-pointer rounded-md px-2 py-1 font-medium',
                         {
-                            'text-green-500 hover:bg-green-50':
-                                type === TransactionType.INCOME,
-                            'text-red-500 hover:bg-red-50':
-                                type === TransactionType.EXPENSE,
-                            'text-blue-500 hover:bg-blue-50':
-                                type === TransactionType.TRANSFER,
+                            // 'text-green-500 hover:bg-green-50':
+                            //     type === TransactionType.INCOME,
+                            // 'text-red-500 hover:bg-red-50':
+                            //     type === TransactionType.EXPENSE,
+                            // 'text-blue-500 hover:bg-blue-50':
+                            //     type === TransactionType.TRANSFER,
                         },
                         className
                     )}
+                    style={{
+                        color,
+                        backgroundColor: hexToRgba(color, '0.07'),
+                    }}
                 >
                     <span>{amount}</span>
                 </div>
             </TooltipTrigger>
             <TooltipContent side="right" align="center">
-                <p>{typeData.label}</p>
+                <p>{label}</p>
             </TooltipContent>
         </Tooltip>
     );

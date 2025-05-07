@@ -30,11 +30,11 @@ const chartData = [
 const chartConfig = {
     income: {
         label: 'Income',
-        color: '#22c55e',
+        color: '#39ce4f',
     },
     expenses: {
         label: 'Expenses',
-        color: '#ef4444',
+        color: '#e34164',
     },
 } satisfies ChartConfig;
 

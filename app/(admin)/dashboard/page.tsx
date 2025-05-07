@@ -51,22 +51,22 @@ export default function DashboardPage() {
                     </div>
                 </div>
                 <Separator />
-                <div className="grid grid-cols-4 gap-4">
-                    <StatisticCard title="💼 Total Balance" value={1000} />
+                <div className="grid grid-cols-2 gap-4">
+                    <StatisticCard title="💼 Total Balance" value={10000000} />
                     <StatisticCard
-                        title="💰 Total Income"
-                        value={1000}
+                        title={'💰 Total Income'}
+                        value={15000000}
+                        percentage={10}
+                    />
+                    <StatisticCard
+                        title="📊 Net Savings"
+                        value={7000000}
                         percentage={10}
                     />
                     <StatisticCard
                         title="💸 Total Expenses"
-                        value={1000}
+                        value={8000000}
                         percentage={-10}
-                    />
-                    <StatisticCard
-                        title="📊 Net Savings"
-                        value={1000}
-                        percentage={10}
                     />
                 </div>
                 <Card className="shadow-none">
