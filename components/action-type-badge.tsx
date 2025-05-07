@@ -27,7 +27,7 @@ export function ActionTypeBadge({ type, className }: ActionTypeBadgeProps) {
     return (
         <div
             className={cn(
-                'inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-medium',
+                'inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium',
                 {
                     'bg-green-50 text-green-500':
                         type === TransactionType.INCOME,

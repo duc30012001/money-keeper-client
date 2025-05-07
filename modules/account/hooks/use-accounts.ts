@@ -155,5 +155,6 @@ export const useAccountSearchParams = (): AccountSearchParams => {
         pageSize: Number(searchParams.get('pageSize') || PageSize.MEDIUM),
         keyword: searchParams.get('keyword') || undefined,
         accountTypeIds: searchParams.get('accountTypeIds') || undefined,
+        sort: searchParams.get('sort') || undefined,
     };
 };

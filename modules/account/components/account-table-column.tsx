@@ -1,8 +1,8 @@
+import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
 import { formatDate } from '@/lib/format';
 import { formatNumber } from '@/lib/format-number';
 import { AccountType } from '@/modules/account-type/types/account-type';
-import { ColumnDef } from '@tanstack/react-table';
-import { Text } from 'lucide-react';
+import { Column, ColumnDef } from '@tanstack/react-table';
 import { Account } from '../types/account';
 import { CellAction } from './account-table-action';
 
@@ -23,7 +23,6 @@ export function getAccountTableColumn({
                 label: 'Name',
                 placeholder: 'Search accounts...',
                 variant: 'text',
-                icon: Text,
             },
             enableColumnFilter: true,
             enableHiding: false,
@@ -31,10 +30,9 @@ export function getAccountTableColumn({
         {
             id: 'balance',
             accessorKey: 'balance',
-            header: 'Balance',
-            // header: ({ column }: { column: Column<Account, unknown> }) => (
-            //     <DataTableColumnHeader column={column} title="Balance" />
-            // ),
+            header: ({ column }: { column: Column<Account, unknown> }) => (
+                <DataTableColumnHeader column={column} title="Balance" />
+            ),
             meta: {
                 label: 'Balance',
                 variant: 'range',
@@ -42,20 +40,24 @@ export function getAccountTableColumn({
             },
             // enableColumnFilter: true,
             enableHiding: false,
-            // enableSorting: true,
+            enableSorting: true,
             cell: ({ row }) => formatNumber(row.original.balance),
         },
         {
             id: 'initialBalance',
             accessorKey: 'initialBalance',
-            header: 'Initial Balance',
+            header: ({ column }: { column: Column<Account, unknown> }) => (
+                <DataTableColumnHeader
+                    column={column}
+                    title="Initial Balance"
+                />
+            ),
             meta: {
                 label: 'Initial Balance',
                 variant: 'range',
                 range: [0, 1000000000],
             },
-            // enableColumnFilter: true,
-            enableHiding: false,
+            enableSorting: true,
             cell: ({ row }) => formatNumber(row.original.initialBalance),
         },
         {
@@ -88,9 +90,11 @@ export function getAccountTableColumn({
         {
             id: 'createdAt',
             accessorKey: 'createdAt',
-            header: 'Created At',
+            header: ({ column }: { column: Column<Account, unknown> }) => (
+                <DataTableColumnHeader column={column} title="Created At" />
+            ),
             meta: {
-                label: 'Updated At',
+                label: 'Created At',
             },
             enableSorting: true,
             size: 150,
@@ -99,7 +103,9 @@ export function getAccountTableColumn({
         {
             id: 'updatedAt',
             accessorKey: 'updatedAt',
-            header: 'Updated At',
+            header: ({ column }: { column: Column<Account, unknown> }) => (
+                <DataTableColumnHeader column={column} title="Updated At" />
+            ),
             meta: {
                 label: 'Updated At',
             },

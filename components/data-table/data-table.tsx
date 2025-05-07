@@ -11,6 +11,7 @@ import {
     TableRow,
 } from '@/components/ui/table';
 import { cn } from '@/lib/utils';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface DataTableProps<TData> extends React.ComponentProps<'div'> {
     table: TanstackTable<TData>;
@@ -37,14 +38,14 @@ export function DataTable<TData>({
             {...props}
         >
             {children}
-            <div
+            <ScrollArea
                 className={cn(
-                    'overflow-hidden rounded-md border',
+                    'h-full w-full rounded-md border',
                     tableContainerClassName
                 )}
             >
                 <Table>
-                    <TableHeader>
+                    <TableHeader className="sticky top-0">
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id}>
                                 {headerGroup.headers.map((header) => (
@@ -112,7 +113,7 @@ export function DataTable<TData>({
                         )}
                     </TableBody>
                 </Table>
-            </div>
+            </ScrollArea>
             {showPagination && (
                 <div className="flex flex-col gap-2.5">
                     <DataTablePagination table={table} />

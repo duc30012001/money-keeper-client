@@ -88,22 +88,27 @@ function SortableRow({ accountType }: SortableRowProps) {
                                 <p>Edit</p>
                             </TooltipContent>
                         </Tooltip>
-                        <Tooltip>
-                            <TooltipTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    onClick={() =>
-                                        openModal(ModalType.DELETE, accountType)
-                                    }
-                                >
-                                    <Trash2 className="h-4 w-4" />
-                                </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                                <p>Delete</p>
-                            </TooltipContent>
-                        </Tooltip>
+                        {accountType.accountCount === 0 && (
+                            <Tooltip>
+                                <TooltipTrigger asChild>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        onClick={() =>
+                                            openModal(
+                                                ModalType.DELETE,
+                                                accountType
+                                            )
+                                        }
+                                    >
+                                        <Trash2 className="h-4 w-4" />
+                                    </Button>
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                    <p>Delete</p>
+                                </TooltipContent>
+                            </Tooltip>
+                        )}
                     </TooltipProvider>
                 </div>
             </TableCell>

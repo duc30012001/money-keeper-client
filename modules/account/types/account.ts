@@ -26,4 +26,5 @@ export interface UpdateSortOrderDto {
 
 export interface AccountSearchParams extends BaseQuery {
     accountTypeIds?: string;
+    sort?: string;
 }

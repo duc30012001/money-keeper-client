@@ -50,6 +50,9 @@ export function AccountTable({
                 pageIndex,
                 pageSize,
             },
+            columnVisibility: {
+                initialBalance: false,
+            },
         },
     });
 

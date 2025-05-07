@@ -40,7 +40,7 @@ export function CategoryTable({
         <DataTable
             table={table}
             showPagination={false}
-            tableContainerClassName="max-h-[calc(100vh-220px)] overflow-auto"
+            className="max-h-[calc(100vh-10rem)]"
         >
             <DataTableToolbar table={table} />
         </DataTable>
