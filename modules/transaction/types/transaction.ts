@@ -48,3 +48,41 @@ export interface TransactionSearchParams extends BaseQuery {
     type?: TransactionType;
     sort?: string;
 }
+
+export interface TransactionPeriodResult {
+    income: number;
+    expenses: number;
+    net: number;
+}
+
+export interface TransactionAnalyticResult {
+    current: TransactionPeriodResult;
+    previous: TransactionPeriodResult;
+    change: {
+        income: number | null;
+        expenses: number | null;
+        net: number | null;
+    };
+}
+
+export interface TransactionAnalyticSearchParams {
+    transactionDate?: string;
+    accountIds?: string;
+    categoryIds?: string;
+}
+
+export interface ChartResult {
+    label: string;
+    income: number;
+    expense: number;
+}
+
+export interface ExpenseByParentCategoryResult {
+    label: string;
+    value: number;
+}
+
+export interface IncomeByParentCategoryResult {
+    label: string;
+    value: number;
+}

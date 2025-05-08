@@ -1,14 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import {
-    TooltipContent,
-    TooltipProvider,
-    TooltipTrigger,
-    Tooltip as UI_Tooltip,
-} from '@/components/ui/tooltip';
 import { PIE_CHART_COLORS } from '@/constants/color';
 import { formatNumber } from '@/lib/format-number';
-import { ChartNoAxesColumn, ChartPie, List } from 'lucide-react';
 import { useMemo } from 'react';
 import {
     Cell,
@@ -22,27 +14,27 @@ import {
 } from 'recharts';
 
 export type DashboardChartProps = {
-    data: { name: string; value: number }[];
+    data: { label: string; value: number }[];
     title: string;
 };
 
-const toggleGroupItems = [
-    {
-        value: 'list',
-        icon: List,
-        label: 'List',
-    },
-    {
-        value: 'bar',
-        icon: ChartNoAxesColumn,
-        label: 'Bar Chart',
-    },
-    {
-        value: 'pie',
-        icon: ChartPie,
-        label: 'Pie Chart',
-    },
-];
+// const toggleGroupItems = [
+//     {
+//         value: 'list',
+//         icon: List,
+//         label: 'List',
+//     },
+//     {
+//         value: 'bar',
+//         icon: ChartNoAxesColumn,
+//         label: 'Bar Chart',
+//     },
+//     {
+//         value: 'pie',
+//         icon: ChartPie,
+//         label: 'Pie Chart',
+//     },
+// ];
 
 export function DashboardChart({ data, title }: DashboardChartProps) {
     const total = useMemo(
@@ -96,7 +88,7 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
             <CardHeader>
                 <CardTitle className="flex items-center justify-between gap-2">
                     {title}
-                    <TooltipProvider>
+                    {/* <TooltipProvider>
                         <ToggleGroup type="single">
                             {toggleGroupItems.map((item) => (
                                 <UI_Tooltip key={item.value}>
@@ -111,7 +103,7 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
                                 </UI_Tooltip>
                             ))}
                         </ToggleGroup>
-                    </TooltipProvider>
+                    </TooltipProvider> */}
                 </CardTitle>
             </CardHeader>
             <CardContent>
@@ -120,7 +112,7 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
                         <Pie
                             data={data}
                             dataKey="value"
-                            nameKey="name"
+                            nameKey="label"
                             outerRadius={'100%'}
                             innerRadius={'65%'}
                             // fill="#8884d8"

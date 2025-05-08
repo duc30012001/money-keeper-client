@@ -25,7 +25,7 @@ export function StatisticCard({
                     <h2 className="text-3xl font-semibold">
                         {formatNumber(value)}
                     </h2>
-                    {!!percentage && (
+                    {percentage !== undefined && percentage !== null && (
                         <p className="flex flex-col items-end">
                             <span
                                 className={cn(
