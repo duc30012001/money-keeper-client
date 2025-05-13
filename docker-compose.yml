@@ -2,6 +2,7 @@ version: '3.8'
 
 services:
     app:
+        image: money-keeper-client:latest
         build:
             context: .
             target: ${TARGET:-builder}
