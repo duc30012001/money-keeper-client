@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Skeleton } from '@/components/ui/skeleton';
 import { formatNumber } from '@/lib/format-number';
 import { cn } from '@/lib/utils';
 import { ArrowDown, ArrowUp } from 'lucide-react';
@@ -8,12 +9,14 @@ export type StatisticCardProps = {
     title: ReactNode;
     value: number;
     percentage?: number;
+    isLoading?: boolean;
 };
 
 export function StatisticCard({
     title,
     value,
     percentage,
+    isLoading,
 }: StatisticCardProps) {
     return (
         <Card className="shadow-none">
@@ -23,7 +26,11 @@ export function StatisticCard({
             <CardContent className="">
                 <div className="flex items-center justify-between">
                     <h2 className="text-3xl font-semibold">
-                        {formatNumber(value)}
+                        {isLoading ? (
+                            <Skeleton className="h-9 w-[200px]" />
+                        ) : (
+                            formatNumber(value)
+                        )}
                     </h2>
                     {percentage !== undefined && percentage !== null && (
                         <p className="flex flex-col items-end">

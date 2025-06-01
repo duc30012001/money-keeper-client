@@ -17,4 +17,4 @@ services:
         command: ${COMMAND:-yarn start}
         restart: unless-stopped
         env_file:
-            - .env.production.local
+            - .env

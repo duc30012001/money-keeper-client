@@ -6,6 +6,13 @@ export const useTransactionAnalyticSearchParams = () => {
     const from = dayjs().startOf('month').valueOf();
     const to = dayjs().endOf('month').valueOf();
 
+    const convertValue = (value: any) => {
+        if (Array.isArray(value)) {
+            return value.join(',');
+        }
+        return value;
+    };
+
     const [transactionDate, setTransactionDate] = useQueryState(
         'transactionDate',
         parseAsString.withDefault(`${from},${to}`)
@@ -14,9 +21,10 @@ export const useTransactionAnalyticSearchParams = () => {
     const [categoryIds, setCategoryIds] = useQueryState('categoryIds');
 
     const searchParams: TransactionAnalyticSearchParams = {
-        transactionDate: transactionDate || undefined,
-        accountIds: accountIds || undefined,
-        categoryIds: categoryIds || undefined,
+        transactionDate:
+            (transactionDate && convertValue(transactionDate)) || undefined,
+        accountIds: (accountIds && convertValue(accountIds)) || undefined,
+        categoryIds: (categoryIds && convertValue(categoryIds)) || undefined,
     };
 
     return {
