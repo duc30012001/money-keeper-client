@@ -11,7 +11,9 @@ import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { categoryApi } from '../api/category.api';
 import {
+    AnalyticCategoryDto,
     Category,
+    CategoryAnalytic,
     CategorySearchParams,
     CreateCategoryDto,
     UpdateCategoryDto,
@@ -27,6 +29,10 @@ export const categoryKeys = {
     list: (filters: string) => [...categoryKeys.lists(), { filters }] as const,
     details: () => [...categoryKeys.all, 'detail'] as const,
     detail: (id: string) => [...categoryKeys.details(), id] as const,
+    analytic: (type: CategoryType, searchParams?: AnalyticCategoryDto) =>
+        searchParams
+            ? [...categoryKeys.all, 'analytic', type, searchParams]
+            : ([...categoryKeys.all, 'analytic', type] as const),
 };
 
 export const useCategoriesList = (searchParams: CategorySearchParams) => {
@@ -136,4 +142,20 @@ export const useCategorySearchParams = (): CategorySearchParams => {
         keyword: searchParams.get('keyword') || undefined,
         type: (searchParams.get('type') as CategoryType) || undefined,
     };
+};
+
+export const useCategoryAnalytic = (
+    type: CategoryType,
+    searchParams?: AnalyticCategoryDto
+) => {
+    const { handleError } = useApiError();
+    return useQuery<PaginatedResponseDto<CategoryAnalytic>>({
+        queryKey: categoryKeys.analytic(type, searchParams),
+        queryFn: async () => {
+            const response = await categoryApi.analytic(type, searchParams);
+            return response.data;
+        },
+        onError: handleError,
+        placeholderData: (prev) => prev,
+    } as UseQueryOptions<PaginatedResponseDto<CategoryAnalytic>>);
 };

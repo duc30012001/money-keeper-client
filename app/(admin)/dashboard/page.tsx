@@ -1,56 +1,76 @@
 'use client';
 
+import { DataTableSkeleton } from '@/components/data-table/data-table-skeleton';
 import PageContainer from '@/components/page-container';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { Heading } from '@/components/ui/heading';
 import { useTotalBalance } from '@/modules/account/hooks/use-accounts';
-import { DashboardChart } from '@/modules/dashboard/components/dashboard-chart';
-import { DashboardFilter } from '@/modules/dashboard/components/dashboard-filter';
+import { CategoryAnalyticTable } from '@/modules/category/components/category-analytic-table';
+import { columns } from '@/modules/category/components/category-analytic-table-columns';
+import { CategoryType } from '@/modules/category/enums/category';
+import { useCategoryAnalytic } from '@/modules/category/hooks/use-categories';
 import { IncomeExpenseChart } from '@/modules/dashboard/components/income-expense-chart';
 import { StatisticCard } from '@/modules/dashboard/components/statistic-card';
 import { useTransactionAnalyticSearchParams } from '@/modules/dashboard/hooks/use-dashboard';
 import {
-    useExpenseByParentCategories,
-    useIncomeByParentCategories,
     useTransactionAnalytic,
     useTransactionChart,
 } from '@/modules/transaction/hooks/use-transactions';
+import { DateRange } from 'react-day-picker';
 
 export default function DashboardPage() {
-    const { searchParams } = useTransactionAnalyticSearchParams();
-    // const [from, to] = searchParams.transactionDate!.split(',').map(Number);
+    const { searchParams, setTransactionDate } =
+        useTransactionAnalyticSearchParams();
+    const [from, to] = searchParams.transactionDate!.split(',').map(Number);
 
     const { data: totalBalance, isFetching: isFetchingTotalBalance } =
         useTotalBalance();
     const { data: analytic, isFetching: isFetchingAnalytic } =
         useTransactionAnalytic(searchParams);
     const { data: chart } = useTransactionChart(searchParams);
-    const { data: expenseByParentCategories } =
-        useExpenseByParentCategories(searchParams);
-    const { data: incomeByParentCategories } =
-        useIncomeByParentCategories(searchParams);
+    // const { data: expenseByParentCategories } =
+    //     useExpenseByParentCategories(searchParams);
+    // const { data: incomeByParentCategories } =
+    //     useIncomeByParentCategories(searchParams);
+    const {
+        data: expenseByCategories,
+        isPending: isPendingExpenseByCategories,
+    } = useCategoryAnalytic(CategoryType.EXPENSE, {
+        transactionDate: searchParams.transactionDate,
+    });
+    const { data: incomeByCategories, isPending: isPendingIncomeByCategories } =
+        useCategoryAnalytic(CategoryType.INCOME, {
+            transactionDate: searchParams.transactionDate,
+        });
 
-    // const onDateSelect = (date: Date | DateRange | undefined) => {
-    //     if (!date) {
-    //         setTransactionDate(null);
-    //         return;
-    //     }
+    const onDateSelect = (date: Date | DateRange | undefined) => {
+        if (!date) {
+            setTransactionDate(null);
+            return;
+        }
 
-    //     if (!('getTime' in date)) {
-    //         const from = date.from?.getTime();
-    //         const to = date.to?.getTime();
-    //         setTransactionDate(from || to ? [from, to].join(',') : null);
-    //     }
-    // };
+        if (!('getTime' in date)) {
+            const from = date.from?.getTime();
+            const to = date.to?.getTime();
+            setTransactionDate(from || to ? [from, to].join(',') : null);
+        }
+    };
 
     return (
         <PageContainer>
             <div className="flex flex-1 flex-col space-y-4">
                 <div className="sticky top-0 z-10 flex items-start justify-between border-b bg-white py-3">
                     <Heading title="Dashboard" />
-                    <DashboardFilter />
-                    {/* <div className="flex items-center gap-2">
-                        <CalendarDatePicker
+                    {/* <DashboardFilter /> */}
+                    <div className="flex items-center gap-2">
+                        <DateRangePicker
+                            onUpdate={({ range }) => onDateSelect(range)}
+                            initialDateFrom={new Date(from)}
+                            initialDateTo={new Date(to)}
+                            align="start"
+                        />
+                        {/* <DateRangePicker
                             className="font-normal"
                             variant="outline"
                             date={{
@@ -58,12 +78,13 @@ export default function DashboardPage() {
                                 to: new Date(to),
                             }}
                             onDateSelect={onDateSelect}
-                        />
-                        <CategorySelect />
-                        <AccountSelect />
-                    </div> */}
+                        /> */}
+                        {/* <CategorySelect />
+                        <AccountSelect /> */}
+                    </div>
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <StatisticCard
                         isLoading={isFetchingTotalBalance}
                         title="💼 Total Balance"
@@ -89,6 +110,7 @@ export default function DashboardPage() {
                         percentage={analytic?.data?.change?.expenses ?? 0}
                     />
                 </div>
+
                 <Card className="shadow-none">
                     <CardHeader>
                         <CardTitle>Expenses vs Income</CardTitle>
@@ -97,7 +119,8 @@ export default function DashboardPage() {
                         <IncomeExpenseChart data={chart?.data ?? []} />
                     </CardContent>
                 </Card>
-                <div className="grid grid-cols-2 gap-4">
+
+                {/* <div className="grid grid-cols-2 gap-4">
                     <DashboardChart
                         title="Expense Categories"
                         data={expenseByParentCategories?.data ?? []}
@@ -106,6 +129,51 @@ export default function DashboardPage() {
                         title="Income Categories"
                         data={incomeByParentCategories?.data ?? []}
                     />
+                </div> */}
+
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    <div>
+                        {isPendingExpenseByCategories ? (
+                            <DataTableSkeleton
+                                columnCount={4}
+                                filterCount={2}
+                                cellWidths={['200px', '100px']}
+                            />
+                        ) : (
+                            <CategoryAnalyticTable
+                                title="Expense Categories"
+                                data={expenseByCategories?.data ?? []}
+                                columns={columns}
+                                totalItems={
+                                    expenseByCategories?.meta?.total ?? 0
+                                }
+                                pageSize={
+                                    expenseByCategories?.meta?.pageSize ?? 0
+                                }
+                            />
+                        )}
+                    </div>
+                    <div>
+                        {isPendingIncomeByCategories ? (
+                            <DataTableSkeleton
+                                columnCount={4}
+                                filterCount={2}
+                                cellWidths={['200px', '100px']}
+                            />
+                        ) : (
+                            <CategoryAnalyticTable
+                                title="Income Categories"
+                                data={incomeByCategories?.data ?? []}
+                                columns={columns}
+                                totalItems={
+                                    incomeByCategories?.meta?.total ?? 0
+                                }
+                                pageSize={
+                                    incomeByCategories?.meta?.pageSize ?? 0
+                                }
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </PageContainer>

@@ -1,3 +1,4 @@
+import { Transaction } from '@/modules/transaction/types/transaction';
 import { BaseEntity, BaseQuery } from '@/types/common';
 import { CategoryType } from '../enums/category';
 
@@ -7,7 +8,7 @@ export interface Category extends BaseEntity {
     type: CategoryType;
     description?: string;
     sortOrder: number;
-    parent?: Category;
+    parent?: Category | null;
     children: Category[];
     // depth: number;
 }
@@ -29,4 +30,14 @@ export interface UpdateSortOrderDto {
 
 export interface CategorySearchParams extends BaseQuery {
     type?: string;
+}
+
+export interface CategoryAnalytic extends Omit<Category, 'children'> {
+    transaction: Transaction[];
+    amount: number;
+    children: CategoryAnalytic[];
+}
+
+export interface AnalyticCategoryDto {
+    transactionDate?: string;
 }

@@ -1,7 +1,10 @@
 import axiosInstance from '@/lib/axios';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
+import { CategoryType } from '../enums/category';
 import {
+    AnalyticCategoryDto,
     Category,
+    CategoryAnalytic,
     CategorySearchParams,
     CreateCategoryDto,
     UpdateCategoryDto,
@@ -30,4 +33,10 @@ export const categoryApi = {
         ),
 
     remove: (id: string) => axiosInstance.delete(`/categories/${id}`),
+
+    analytic: (type: CategoryType, searchParams?: AnalyticCategoryDto) =>
+        axiosInstance.get<PaginatedResponseDto<CategoryAnalytic>>(
+            `/categories/analytic/${type}`,
+            { params: searchParams }
+        ),
 };
