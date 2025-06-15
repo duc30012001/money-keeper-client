@@ -57,7 +57,7 @@ export function AccountTable({
     });
 
     return (
-        <DataTable table={table}>
+        <DataTable table={table} className="max-h-[calc(100vh-14rem)]">
             <DataTableToolbar table={table} />
         </DataTable>
     );

@@ -67,7 +67,7 @@ export function TransactionTable({
     });
 
     return (
-        <DataTable table={table} className="max-h-[calc(100vh-10rem)]">
+        <DataTable table={table} className="max-h-[calc(100vh-13rem)]">
             <DataTableToolbar table={table}>
                 <DataTableSortList table={table} align="end" />
             </DataTableToolbar>
