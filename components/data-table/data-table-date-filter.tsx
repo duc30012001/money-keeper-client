@@ -14,7 +14,6 @@ import {
 } from '@/components/ui/popover';
 import { Separator } from '@/components/ui/separator';
 import { formatDate } from '@/lib/format';
-import { CalendarDatePicker } from '../ui/calendar-date-picker';
 
 type DateSelection = Date[] | DateRange;
 
@@ -173,6 +172,8 @@ export function DataTableDateFilter<TData>({
         );
     }, [selectedDates, multiple, formatDateRange, title]);
 
+    console.log('selectedDates', selectedDates);
+
     return (
         <Popover>
             <PopoverTrigger asChild>
@@ -195,27 +196,41 @@ export function DataTableDateFilter<TData>({
             </PopoverTrigger>
             <PopoverContent className="w-auto p-0" align="start">
                 {multiple ? (
-                    // <Calendar
-                    //   initialFocus
-                    //   mode="range"
-                    //   selected={
-                    //     getIsDateRange(selectedDates)
-                    //       ? selectedDates
-                    //       : { from: undefined, to: undefined }
-                    //   }
-                    //   onSelect={onSelect}
-                    // />
-                    <CalendarDatePicker
-                        // initialFocus
-                        // mode="range"
-                        date={
+                    <Calendar
+                        initialFocus
+                        mode="range"
+                        selected={
                             getIsDateRange(selectedDates)
                                 ? selectedDates
                                 : { from: undefined, to: undefined }
                         }
-                        onDateSelect={onSelect}
+                        onSelect={onSelect}
                     />
                 ) : (
+                    // <CalendarDatePicker
+                    //     // initialFocus
+                    //     // mode="range"
+                    //     date={
+                    //         getIsDateRange(selectedDates)
+                    //             ? selectedDates
+                    //             : { from: undefined, to: undefined }
+                    //     }
+                    //     onDateSelect={onSelect}
+                    // />
+                    // <DateRangePicker
+                    //     onUpdate={({ range }) => onSelect(range)}
+                    //     initialDateFrom={
+                    //         getIsDateRange(selectedDates) && selectedDates.from
+                    //             ? new Date(selectedDates.from)
+                    //             : undefined
+                    //     }
+                    //     initialDateTo={
+                    //         getIsDateRange(selectedDates) && selectedDates.to
+                    //             ? new Date(selectedDates.to)
+                    //             : undefined
+                    //     }
+                    //     align="start"
+                    // />
                     <Calendar
                         initialFocus
                         mode="single"
