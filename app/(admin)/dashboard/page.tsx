@@ -60,7 +60,7 @@ export default function DashboardPage() {
     return (
         <PageContainer>
             <div className="flex flex-1 flex-col space-y-4">
-                <div className="sticky top-0 z-10 flex items-start justify-between border-b bg-white py-3">
+                <div className="sticky top-0 z-10 flex flex-col items-start justify-between border-b bg-white py-3 md:flex-row">
                     <Heading title="Dashboard" />
                     {/* <DashboardFilter /> */}
                     <div className="flex items-center gap-2">

@@ -24,7 +24,7 @@ export function StatisticCard({
                 <CardTitle>{title}</CardTitle>
             </CardHeader>
             <CardContent className="">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col space-y-2 sm:flex-row sm:items-center sm:justify-between">
                     <h2 className="text-3xl font-semibold">
                         {isLoading ? (
                             <Skeleton className="h-9 w-[200px]" />
@@ -33,7 +33,7 @@ export function StatisticCard({
                         )}
                     </h2>
                     {percentage !== undefined && percentage !== null && (
-                        <p className="flex flex-col items-end">
+                        <p className="flex flex-row items-end gap-x-2 sm:flex-col">
                             <span
                                 className={cn(
                                     'flex items-center gap-1 font-semibold',
