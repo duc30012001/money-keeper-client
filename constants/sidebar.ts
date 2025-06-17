@@ -1,6 +1,7 @@
 import {
     CreditCard,
     Layers,
+    LayoutGrid,
     ListCheck,
     Tag,
     User,
@@ -15,6 +16,7 @@ export enum AppRoute {
     Accounts = '/accounts',
     Categories = '/categories',
     ActionTypes = '/action-types',
+    Icons = '/icons',
     Users = '/users',
     Signin = '/',
 }
@@ -35,5 +37,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     { title: 'Accounts', href: AppRoute.Accounts, icon: User },
     { title: 'Account Types', href: AppRoute.AccountTypes, icon: Layers },
     { title: 'Categories', href: AppRoute.Categories, icon: Tag },
+    { title: 'Icons', href: AppRoute.Icons, icon: LayoutGrid },
     { title: 'Users', href: AppRoute.Users, icon: Users },
 ];
