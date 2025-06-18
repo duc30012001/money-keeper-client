@@ -13,7 +13,7 @@ export function IconList({ data }: IconListProps) {
     };
 
     return (
-        <div className="grid grid-cols-3 gap-x-2 gap-y-5 lg:grid-cols-5 xl:grid-cols-8">
+        <div className="grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10">
             {data.map((icon: Icon) => (
                 <div
                     onClick={() => handleCopy(icon.name)}
@@ -21,7 +21,7 @@ export function IconList({ data }: IconListProps) {
                     key={icon.id}
                     className="flex cursor-pointer flex-col items-center justify-center rounded-xl px-2 py-4 hover:bg-gray-100"
                 >
-                    <div className="mb-2 h-10 w-auto overflow-hidden rounded-xl">
+                    <div className="mb-2 h-8 w-auto overflow-hidden rounded-xl">
                         <Image
                             alt={icon.name}
                             src={icon.url}
@@ -31,7 +31,9 @@ export function IconList({ data }: IconListProps) {
                         />
                     </div>
                     <div className="w-full">
-                        <p className="truncate text-center">{icon.name}</p>
+                        <p className="truncate text-center text-sm">
+                            {icon.name}
+                        </p>
                     </div>
                 </div>
             ))}
