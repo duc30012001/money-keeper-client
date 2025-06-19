@@ -135,8 +135,8 @@ export default function DashboardPage() {
                     <div>
                         {isPendingExpenseByCategories ? (
                             <DataTableSkeleton
-                                columnCount={4}
-                                filterCount={2}
+                                columnCount={2}
+                                filterCount={0}
                                 cellWidths={['200px', '100px']}
                             />
                         ) : (
@@ -156,8 +156,8 @@ export default function DashboardPage() {
                     <div>
                         {isPendingIncomeByCategories ? (
                             <DataTableSkeleton
-                                columnCount={4}
-                                filterCount={2}
+                                columnCount={2}
+                                filterCount={0}
                                 cellWidths={['200px', '100px']}
                             />
                         ) : (

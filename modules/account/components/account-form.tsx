@@ -12,6 +12,7 @@ import NumberInput from '@/components/ui/number-input';
 import { Textarea } from '@/components/ui/textarea';
 import { MaxLength } from '@/constants/rules';
 import { AccountTypeSelect } from '@/modules/account-type/components/account-type-select';
+import { IconPicker } from '@/modules/icon/components/icon-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -33,6 +34,7 @@ const formSchema = z.object({
         .optional(),
     sortOrder: z.number().nonnegative('Sort order must be positive').optional(),
     accountTypeId: z.string().uuid('Account type must be a valid UUID'),
+    iconId: z.string().uuid('Icon must be a valid UUID'),
 });
 
 interface AccountFormProps {
@@ -49,6 +51,7 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
             description: account?.description || '',
             sortOrder: account?.sortOrder || 1,
             initialBalance: Number(account?.initialBalance) || 0,
+            iconId: account?.icon?.id,
         },
     });
 
@@ -158,6 +161,22 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                 />
                 <FormField
                     control={form.control}
+                    name={'iconId'}
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Icon</FormLabel>
+                            <FormControl>
+                                <IconPicker
+                                    value={field.value}
+                                    onChange={(icon) => field.onChange(icon.id)}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                {/* <FormField
+                    control={form.control}
                     name="sortOrder"
                     render={({ field }) => (
                         <FormItem>
@@ -177,7 +196,7 @@ export function AccountForm({ account, onSuccess }: AccountFormProps) {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <Button
                     className="ml-auto mt-2"
                     type="submit"

@@ -2,6 +2,7 @@ import { DataTableColumnHeader } from '@/components/data-table/data-table-column
 import { formatDate } from '@/lib/format';
 import { formatNumber } from '@/lib/format-number';
 import { AccountType } from '@/modules/account-type/types/account-type';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { Column, ColumnDef } from '@tanstack/react-table';
 import { Account } from '../types/account';
 import { CellAction } from './account-table-action';
@@ -18,7 +19,6 @@ export function getAccountTableColumn({
             id: 'keyword',
             accessorKey: 'keyword',
             header: 'Name',
-            cell: ({ row }) => row.original.name,
             meta: {
                 label: 'Name',
                 placeholder: 'Search accounts...',
@@ -26,6 +26,10 @@ export function getAccountTableColumn({
             },
             enableColumnFilter: true,
             enableHiding: false,
+            cell: ({ row }) => {
+                const { name, icon } = row.original;
+                return <IconLabel name={name} url={icon?.url} />;
+            },
         },
         {
             id: 'balance',

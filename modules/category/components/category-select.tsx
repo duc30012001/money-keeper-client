@@ -13,8 +13,9 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { Check, ChevronsUpDown } from 'lucide-react';
-import { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import { useCategoriesList } from '../hooks/use-categories';
 import { Category } from '../types/category';
 
@@ -72,6 +73,7 @@ export function CategorySelect({
     const handleChange = (selectedValue: string) => {
         const newValue = selectedValue === value ? undefined : selectedValue;
         setCategoryId(newValue);
+        console.log('newValue', newValue);
         onChange?.(newValue);
         setOpen(false);
     };
@@ -83,20 +85,19 @@ export function CategorySelect({
         if (category.id === excludeId) return <></>;
 
         return (
-            <>
+            <React.Fragment key={category.id}>
                 <CommandItem
-                    key={category.id}
                     value={category.id}
                     onSelect={handleChange}
                     className="flex items-center gap-2"
                     keywords={[category.name]}
                 >
-                    <span
+                    <IconLabel
+                        name={category.name}
+                        url={category.icon?.url}
+                        avatarClassName="size-4"
                         style={{ paddingLeft: `${level * 20}px` }}
-                        className="flex items-center gap-2"
-                    >
-                        {category.name}
-                    </span>
+                    />
                     <Check
                         className={cn(
                             'ml-auto',
@@ -107,7 +108,7 @@ export function CategorySelect({
                 {category.children?.map((child) =>
                     renderCategoryItem(child, level + 1)
                 )}
-            </>
+            </React.Fragment>
         );
     };
 

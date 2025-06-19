@@ -14,6 +14,7 @@ import { formatDate } from '@/lib/format';
 import { formatNumber } from '@/lib/format-number';
 import { Account } from '@/modules/account/types/account';
 import { Category } from '@/modules/category/types/category';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { ColumnDef, ColumnMeta } from '@tanstack/react-table';
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
 import { Transaction } from '../types/transaction';
@@ -28,12 +29,20 @@ function getCategoriesOptions(categories: Category[], level = 0) {
     const result: ColumnMeta<Transaction, unknown>['options'] = [];
 
     // two non-breaking spaces per level
-    const indentUnit = '\u00A0';
+    // const indentUnit = '\u00A0';
 
     categories.forEach((category) => {
-        const indent = indentUnit.repeat(level * 5);
+        // const indent = indentUnit.repeat(level * 5);
         result.push({
-            label: `${indent}${category.name}`,
+            label: (
+                <IconLabel
+                    name={category.name}
+                    url={category.icon?.url}
+                    avatarClassName="size-4"
+                    style={{ paddingLeft: `${level * 20}px` }}
+                />
+            ) as unknown as string,
+            // label: `${indent}${category.name}`,
             value: category.id,
         });
         if (category.children.length) {
@@ -133,11 +142,24 @@ export function getTransactionTableColumn({
                 variant: 'multiSelect',
                 options:
                     accounts?.map((account) => ({
-                        label: account.name,
+                        label: (
+                            <IconLabel
+                                name={account.name}
+                                url={account.icon?.url}
+                                avatarClassName="size-4"
+                            />
+                        ) as unknown as string,
                         value: account.id,
                     })) ?? [],
             },
-            cell: ({ row }) => row.original.account?.name,
+            cell: ({ row }) => {
+                const name = row.original.account?.name;
+                const icon = row.original.account?.icon;
+
+                if (!name) return null;
+
+                return <IconLabel name={name} url={icon?.url} />;
+            },
             size: 150,
             // enableHiding: false,
             enableSorting: false,
@@ -152,7 +174,14 @@ export function getTransactionTableColumn({
                 variant: 'multiSelect',
                 options: getCategoriesOptions(categories),
             },
-            cell: ({ row }) => row.original.category?.name,
+            cell: ({ row }) => {
+                const name = row.original.category?.name;
+                const icon = row.original.category?.icon;
+
+                if (!name) return null;
+
+                return <IconLabel name={name} url={icon?.url} />;
+            },
             size: 150,
             // enableHiding: false,
             enableSorting: false,
@@ -167,11 +196,24 @@ export function getTransactionTableColumn({
                 variant: 'multiSelect',
                 options:
                     accounts?.map((account) => ({
-                        label: account.name,
+                        label: (
+                            <IconLabel
+                                name={account.name}
+                                url={account.icon?.url}
+                                avatarClassName="size-4"
+                            />
+                        ) as unknown as string,
                         value: account.id,
                     })) ?? [],
             },
-            cell: ({ row }) => row.original.senderAccount?.name,
+            cell: ({ row }) => {
+                const name = row.original.senderAccount?.name;
+                const icon = row.original.senderAccount?.icon;
+
+                if (!name) return null;
+
+                return <IconLabel name={name} url={icon?.url} />;
+            },
             size: 150,
             // enableHiding: false,
             enableSorting: false,
@@ -186,11 +228,24 @@ export function getTransactionTableColumn({
                 variant: 'multiSelect',
                 options:
                     accounts?.map((account) => ({
-                        label: account.name,
+                        label: (
+                            <IconLabel
+                                name={account.name}
+                                url={account.icon?.url}
+                                avatarClassName="size-4"
+                            />
+                        ) as unknown as string,
                         value: account.id,
                     })) ?? [],
             },
-            cell: ({ row }) => row.original.receiverAccount?.name,
+            cell: ({ row }) => {
+                const name = row.original.receiverAccount?.name;
+                const icon = row.original.receiverAccount?.icon;
+
+                if (!name) return null;
+
+                return <IconLabel name={name} url={icon?.url} />;
+            },
             size: 150,
             // enableHiding: false,
             enableSorting: false,

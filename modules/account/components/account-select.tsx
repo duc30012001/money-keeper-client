@@ -13,6 +13,7 @@ import {
     PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { ReactNode, useEffect, useState } from 'react';
 import { useAccountsList } from '../hooks/use-accounts';
@@ -89,7 +90,11 @@ export function AccountSelect({
                                     className="flex items-center gap-2"
                                     keywords={[account.name]}
                                 >
-                                    {account.name}
+                                    <IconLabel
+                                        name={account.name}
+                                        url={account.icon?.url}
+                                        avatarClassName="size-4"
+                                    />
                                     <Check
                                         className={cn(
                                             'ml-auto',

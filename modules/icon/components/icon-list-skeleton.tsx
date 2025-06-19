@@ -1,8 +1,14 @@
 import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
-export function IconListSkeleton() {
+export function IconListSkeleton({ className }: { className?: string }) {
     return (
-        <div className="grid grid-cols-3 gap-x-2 gap-y-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10">
+        <div
+            className={cn(
+                'grid grid-cols-3 gap-x-2 gap-y-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10',
+                className
+            )}
+        >
             {Array.from({ length: 40 }).map((_, index) => (
                 <div
                     key={index}

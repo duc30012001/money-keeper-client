@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { MaxLength } from '@/constants/rules';
 import { useLoading, UseLoadingType } from '@/hooks/use-loading';
+import { IconPicker } from '@/modules/icon/components/icon-picker';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -40,6 +41,7 @@ export const formSchema = z.object({
         .string()
         .uuid('Parent category must be a valid UUID')
         .optional(),
+    iconId: z.string().uuid('Icon must be a valid UUID'),
 });
 
 interface CategoryFormProps {
@@ -59,6 +61,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
             description: category?.description || '',
             sortOrder: category?.sortOrder || 1,
             parentId: category?.parent?.id,
+            iconId: category?.icon?.id,
         },
     });
 
@@ -67,12 +70,15 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
     const type = form.watch('type');
 
     useEffect(() => {
-        form.setValue('parentId', undefined);
-    }, [type, form]);
+        const newParentId =
+            type === category?.type ? category?.parent?.id : undefined;
+        form.setValue('parentId', newParentId);
+    }, [type, form, category]);
 
     const resetForm = () => {
         form.resetField('name');
         form.resetField('description');
+        form.resetField('iconId');
     };
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
@@ -160,6 +166,22 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                 />
                 <FormField
                     control={form.control}
+                    name={'iconId'}
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Icon</FormLabel>
+                            <FormControl>
+                                <IconPicker
+                                    value={field.value}
+                                    onChange={(icon) => field.onChange(icon.id)}
+                                />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                {/* <FormField
+                    control={form.control}
                     name="sortOrder"
                     render={({ field }) => (
                         <FormItem>
@@ -179,7 +201,7 @@ export function CategoryForm({ category, onSuccess }: CategoryFormProps) {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
+                /> */}
                 <Button
                     className="ml-auto mt-2"
                     type="submit"

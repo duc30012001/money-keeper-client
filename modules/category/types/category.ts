@@ -1,10 +1,11 @@
+import { Icon } from '@/modules/icon/types/icon';
 import { Transaction } from '@/modules/transaction/types/transaction';
 import { BaseEntity, BaseQuery } from '@/types/common';
 import { CategoryType } from '../enums/category';
 
 export interface Category extends BaseEntity {
     name: string;
-    icon?: string;
+    icon: Icon | null;
     type: CategoryType;
     description?: string;
     sortOrder: number;
@@ -17,7 +18,7 @@ export interface CreateCategoryDto {
     name: string;
     type: CategoryType;
     parentId?: string;
-    icon?: string;
+    iconId: Icon['id'];
     description?: string;
     sortOrder?: number;
 }
