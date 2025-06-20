@@ -20,7 +20,7 @@ export function IconList({ data, onSelect, className }: IconListProps) {
     const groupByData = Object.groupBy(filteredData, ({ type }) => type);
     return (
         <div>
-            <div className="sticky top-0 mb-2 bg-white p-1">
+            <div className="sticky top-0 z-[5] mb-2 bg-white p-1">
                 <Input
                     placeholder="Search icon..."
                     value={keyword}
@@ -31,7 +31,9 @@ export function IconList({ data, onSelect, className }: IconListProps) {
                 {Object.keys(groupByData).map((type) => {
                     return (
                         <div key={type} className="">
-                            <h2 className="mb-3 font-medium">{type}</h2>
+                            <h2 className="sticky top-10 z-[2] mb-3 bg-white py-2.5 font-medium">
+                                {type}
+                            </h2>
                             <div
                                 className={cn(
                                     'grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10',
