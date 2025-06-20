@@ -20,7 +20,7 @@ export function IconList({ data, onSelect, className }: IconListProps) {
     const groupByData = Object.groupBy(filteredData, ({ type }) => type);
     return (
         <div>
-            <div className="mb-2 p-1">
+            <div className="sticky top-0 mb-2 bg-white p-1">
                 <Input
                     placeholder="Search icon..."
                     value={keyword}
