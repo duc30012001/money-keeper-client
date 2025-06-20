@@ -89,7 +89,7 @@ export function getTransactionTableColumn({
             enableColumnFilter: true,
             enableHiding: false,
             enableSorting: true,
-            size: 200,
+            size: 180,
             cell: ({ row }) => formatDate(row.original.transactionDate),
         },
         {
@@ -160,7 +160,7 @@ export function getTransactionTableColumn({
 
                 return <IconLabel name={name} url={icon?.url} />;
             },
-            size: 150,
+            size: 180,
             // enableHiding: false,
             enableSorting: false,
         },
@@ -182,7 +182,7 @@ export function getTransactionTableColumn({
 
                 return <IconLabel name={name} url={icon?.url} />;
             },
-            size: 150,
+            size: 180,
             // enableHiding: false,
             enableSorting: false,
         },
@@ -214,7 +214,7 @@ export function getTransactionTableColumn({
 
                 return <IconLabel name={name} url={icon?.url} />;
             },
-            size: 150,
+            size: 180,
             // enableHiding: false,
             enableSorting: false,
         },
@@ -246,7 +246,7 @@ export function getTransactionTableColumn({
 
                 return <IconLabel name={name} url={icon?.url} />;
             },
-            size: 150,
+            size: 180,
             // enableHiding: false,
             enableSorting: false,
         },
@@ -290,7 +290,7 @@ export function getTransactionTableColumn({
                     </DropdownMenuContent>
                 </DropdownMenu>
             ),
-            size: 80,
+            size: 50,
         },
     ];
 }
