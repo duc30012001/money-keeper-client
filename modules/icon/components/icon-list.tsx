@@ -12,6 +12,12 @@ interface IconListProps {
 
 export function IconList({ data, onSelect, className }: IconListProps) {
     const [keyword, setKeyword] = useState<string>();
+
+    const filteredData = data.filter((icon: Icon) =>
+        icon.name.toLowerCase().includes(keyword?.toLowerCase() ?? '')
+    );
+
+    const groupByData = Object.groupBy(filteredData, ({ type }) => type);
     return (
         <div>
             <div className="mb-2 p-1">
@@ -21,25 +27,28 @@ export function IconList({ data, onSelect, className }: IconListProps) {
                     onChange={(e) => setKeyword(e.target.value)}
                 />
             </div>
-            <div
-                className={cn(
-                    'grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10',
-                    className
-                )}
-            >
-                {data
-                    .filter((icon: Icon) =>
-                        icon.name
-                            .toLowerCase()
-                            .includes(keyword?.toLowerCase() ?? '')
-                    )
-                    .map((icon: Icon) => (
-                        <IconItem
-                            data={icon}
-                            onSelect={onSelect}
-                            key={icon.id}
-                        />
-                    ))}
+            <div className="space-y-10">
+                {Object.keys(groupByData).map((type) => {
+                    return (
+                        <div key={type} className="">
+                            <h2 className="mb-3 font-medium">{type}</h2>
+                            <div
+                                className={cn(
+                                    'grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10',
+                                    className
+                                )}
+                            >
+                                {(groupByData[type] ?? []).map((icon: Icon) => (
+                                    <IconItem
+                                        data={icon}
+                                        onSelect={onSelect}
+                                        key={icon.id}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
