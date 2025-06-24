@@ -1,4 +1,3 @@
-import { DateTimePicker24h } from '@/components/date-n-time/date-time-picker-24h';
 import { Button } from '@/components/ui/button';
 import {
     Form,
@@ -8,6 +7,7 @@ import {
     FormLabel,
     FormMessage,
 } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import NumberInput from '@/components/ui/number-input';
 import { Textarea } from '@/components/ui/textarea';
 import { MaxLength } from '@/constants/rules';
@@ -170,19 +170,30 @@ export function TransactionForm({
                 <FormField
                     control={form.control}
                     name="transactionDate"
-                    render={({ field }) => (
-                        <FormItem className="flex flex-col">
-                            <FormLabel>Transaction date</FormLabel>
-                            <FormControl>
-                                <DateTimePicker24h
-                                    value={field.value}
-                                    onChange={field.onChange}
-                                    // className="w-full"
-                                />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
+                    render={({ field }) => {
+                        const value = field.value
+                            ? dayjs(field.value).format('YYYY-MM-DDTHH:mm')
+                            : undefined;
+                        return (
+                            <FormItem className="flex flex-col">
+                                <FormLabel>Transaction date</FormLabel>
+                                <FormControl>
+                                    <Input
+                                        value={value}
+                                        onChange={(e) => {
+                                            const newValue = new Date(
+                                                e.target.value
+                                            );
+                                            field.onChange(newValue);
+                                        }}
+                                        type="datetime-local"
+                                        className="w-full"
+                                    />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        );
+                    }}
                 />
                 <FormField
                     control={form.control}

@@ -172,8 +172,6 @@ export function DataTableDateFilter<TData>({
         );
     }, [selectedDates, multiple, formatDateRange, title]);
 
-    console.log('selectedDates', selectedDates);
-
     return (
         <Popover>
             <PopoverTrigger asChild>

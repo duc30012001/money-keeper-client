@@ -26,6 +26,7 @@ export function getAccountTableColumn({
             },
             enableColumnFilter: true,
             enableHiding: false,
+            size: 250,
             cell: ({ row }) => {
                 const { name, icon } = row.original;
                 return <IconLabel name={name} url={icon?.url} />;
@@ -45,6 +46,7 @@ export function getAccountTableColumn({
             // enableColumnFilter: true,
             enableHiding: false,
             enableSorting: true,
+            size: 150,
             cell: ({ row }) => formatNumber(row.original.balance),
         },
         {
@@ -62,6 +64,7 @@ export function getAccountTableColumn({
                 range: [0, 1000000000],
             },
             enableSorting: true,
+            size: 150,
             cell: ({ row }) => formatNumber(row.original.initialBalance),
         },
         {

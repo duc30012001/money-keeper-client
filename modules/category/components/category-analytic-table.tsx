@@ -49,7 +49,7 @@ export function CategoryAnalyticTable({
                 <DataTable
                     table={table}
                     showPagination={false}
-                    className="h-[400px]"
+                    className="h-[40rem]"
                 />
             </CardContent>
         </Card>

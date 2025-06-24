@@ -13,4 +13,5 @@ export enum PageSize {
     SMALL = 10,
     MEDIUM = 20,
     LARGE = 50,
+    XLARGE = 100,
 }

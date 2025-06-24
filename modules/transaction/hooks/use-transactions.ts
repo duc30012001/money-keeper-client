@@ -227,7 +227,7 @@ export const useTransactionSearchParams = (): TransactionSearchParams => {
 
     return {
         page: Number(searchParams.get('page') || 1),
-        pageSize: Number(searchParams.get('pageSize') || PageSize.MEDIUM),
+        pageSize: Number(searchParams.get('pageSize') || PageSize.LARGE),
         keyword: searchParams.get('keyword') || undefined,
         transactionDate: searchParams.get('transactionDate') || undefined,
         amount: searchParams.get('amount') || undefined,
