@@ -13,11 +13,11 @@ import {
     ChartConfig,
     ChartContainer,
     ChartLegend,
-    ChartLegendContent,
     ChartTooltip,
 } from '@/components/ui/chart';
 import { formatNumber } from '@/lib/format-number';
 import { ChartResult } from '@/modules/transaction/types/transaction';
+import { Props as LegendProps } from 'recharts/types/component/Legend';
 
 const chartConfig = {
     income: {
@@ -68,6 +68,25 @@ export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
         return null;
     };
 
+    const CustomLegend = ({ payload }: LegendProps) => {
+        return (
+            <div className="mx-auto flex w-fit items-center gap-10">
+                {payload?.map((entry, index) => (
+                    <div
+                        key={`legend-${index}`}
+                        className="flex items-center gap-1.5"
+                    >
+                        <div
+                            className="mt-0.5 size-3 rounded"
+                            style={{ backgroundColor: entry.color }}
+                        />
+                        <p className="text-sm capitalize">{entry.value}</p>
+                    </div>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
             <BarChart accessibilityLayer data={data}>
@@ -91,7 +110,7 @@ export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
                     tickMargin={10}
                 />
                 <ChartTooltip content={<CustomTooltip />} />
-                <ChartLegend content={<ChartLegendContent />} />
+                <ChartLegend content={<CustomLegend />} />
                 <Bar
                     dataKey="income"
                     fill="var(--color-income)"

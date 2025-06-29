@@ -76,7 +76,7 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
                             className="flex items-center gap-2"
                         >
                             <div
-                                className="size-3 rounded"
+                                className="mt-0.5 size-3 rounded"
                                 style={{ backgroundColor: entry.color }}
                             />
                             <p>
