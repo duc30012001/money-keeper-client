@@ -5,7 +5,7 @@ services:
         ports:
             - '${HOST_PORT:-3000}:3000'
         env_file:
-            - .env.local
+            - .env
         environment:
             - TZ=${TZ:-Asia/Ho_Chi_Minh}
         # command: yarn start
