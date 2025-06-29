@@ -1,35 +1,55 @@
-# Build stage
-FROM node:20-alpine AS builder
+# syntax=docker.io/docker/dockerfile:1
+
+FROM node:20-alpine AS base
+
+# 1. Install dependencies only when needed
+FROM base AS deps
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
+RUN apk add --no-cache libc6-compat
 
 WORKDIR /app
 
-# Copy package files
-COPY package.json yarn.lock ./
+# Install dependencies based on the preferred package manager
+COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* .npmrc* ./
+COPY ckeditor* ./ckeditor
+RUN \
+  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+  elif [ -f package-lock.json ]; then npm ci; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
 
-# Install dependencies
-RUN yarn install --frozen-lockfile
 
-# Copy the rest of the application
+# 2. Rebuild the source code only when needed
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# Build Next.js based on the preferred package manager
+RUN \
+  if [ -f yarn.lock ]; then yarn build; \
+  elif [ -f package-lock.json ]; then npm run build; \
+  elif [ -f pnpm-lock.yaml ]; then pnpm build; \
+  else npm run build; \
+  fi
 
-# Build the application
-RUN yarn build
-
-# Production stage
-FROM node:20-alpine AS runner
-
+# 3. Production image, copy all the files and run next
+FROM base AS runner
 WORKDIR /app
 
-# Set environment to production
 ENV NODE_ENV=production
 
-# Copy necessary files from builder
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S nextjs -u 1001
+USER nextjs
+
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
 
-# Expose the port the app runs on
-EXPOSE 3000
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Start the application
-CMD ["node", "server.js"] 
+
+
+CMD ["node", "server.js"]

@@ -1,20 +1,15 @@
-version: '3.8'
-
 services:
-    app:
-        image: money-keeper-client:latest
-        build:
-            context: .
-            target: ${TARGET:-builder}
+    app-prod:
+        image: money-keeper-client/prod:${TAG:-latest}
+        build: .
         ports:
-            - '3000:3000'
-        volumes:
-            - .:/app
-            - /app/node_modules
-            - /app/.next
-        environment:
-            - NODE_ENV=${NODE_ENV:-production}
-        command: ${COMMAND:-yarn start}
-        restart: unless-stopped
+            - '${HOST_PORT:-3000}:3000'
         env_file:
-            - .env
+            - .env.local
+        environment:
+            - TZ=${TZ:-Asia/Ho_Chi_Minh}
+        # command: yarn start
+        restart: unless-stopped
+        deploy:
+        mem_limit: 2g # Set max memory to 2 GB
+        cpus: 2 # Set max CPU to 2 CPU core
