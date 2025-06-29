@@ -1,6 +1,13 @@
 'use client';
 
-import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
+import {
+    Bar,
+    BarChart,
+    CartesianGrid,
+    TooltipProps,
+    XAxis,
+    YAxis,
+} from 'recharts';
 
 import {
     ChartConfig,
@@ -8,7 +15,6 @@ import {
     ChartLegend,
     ChartLegendContent,
     ChartTooltip,
-    ChartTooltipContent,
 } from '@/components/ui/chart';
 import { formatNumber } from '@/lib/format-number';
 import { ChartResult } from '@/modules/transaction/types/transaction';
@@ -29,6 +35,39 @@ export interface IncomeExpenseChartProps {
 }
 
 export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
+    const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="rounded-md border bg-white p-3 shadow">
+                    <p className="text-sm font-semibold">
+                        {payload[0].payload.label}
+                    </p>
+                    {payload.map((item, index) => {
+                        const { name, value, fill } = item;
+                        return (
+                            <div
+                                key={index}
+                                className="flex items-center justify-between gap-1"
+                            >
+                                <div
+                                    style={{ backgroundColor: fill }}
+                                    className="mt-0.5 size-3 rounded"
+                                />
+                                <p className="text-sm capitalize text-gray-500">
+                                    {name}
+                                </p>
+                                <p className="ml-3 flex-1 text-right text-sm font-semibold">
+                                    {formatNumber(value)}
+                                </p>
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        }
+        return null;
+    };
+
     return (
         <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
             <BarChart accessibilityLayer data={data}>
@@ -51,7 +90,7 @@ export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
                     axisLine={false}
                     tickMargin={10}
                 />
-                <ChartTooltip content={<ChartTooltipContent />} />
+                <ChartTooltip content={<CustomTooltip />} />
                 <ChartLegend content={<ChartLegendContent />} />
                 <Bar
                     dataKey="income"

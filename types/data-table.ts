@@ -4,6 +4,7 @@ import type { ColumnSort, Row, RowData } from '@tanstack/react-table';
 
 declare module '@tanstack/react-table' {
     // biome-ignore lint/correctness/noUnusedVariables: Interface type parameters required by @tanstack/react-table
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     interface ColumnMeta<TData extends RowData, TValue> {
         label?: string;
         placeholder?: string;
@@ -20,6 +21,8 @@ export interface Option {
     value: string;
     count?: number;
     icon?: React.FC<React.SVGProps<SVGSVGElement>>;
+    childrenIds?: string[] | number[];
+    parentId?: string | number;
 }
 
 export type FilterOperator = DataTableConfig['operators'][number];

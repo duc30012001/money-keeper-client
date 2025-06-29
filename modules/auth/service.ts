@@ -1,6 +1,6 @@
 import axios from '@/lib/axios';
 import { ResponseDto } from '@/types/common';
-import { User } from '../user/types';
+import { User } from '../user/types/user';
 import { GetTokenResponse, RefreshDto, SigninDto } from './types';
 
 const PATH = '/auth';

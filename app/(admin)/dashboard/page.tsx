@@ -10,10 +10,13 @@ import { CategoryAnalyticTable } from '@/modules/category/components/category-an
 import { columns } from '@/modules/category/components/category-analytic-table-columns';
 import { CategoryType } from '@/modules/category/enums/category';
 import { useCategoryAnalytic } from '@/modules/category/hooks/use-categories';
+import { DashboardChart } from '@/modules/dashboard/components/dashboard-chart';
 import { IncomeExpenseChart } from '@/modules/dashboard/components/income-expense-chart';
 import { StatisticCard } from '@/modules/dashboard/components/statistic-card';
 import { useTransactionAnalyticSearchParams } from '@/modules/dashboard/hooks/use-dashboard';
 import {
+    useExpenseByParentCategories,
+    useIncomeByParentCategories,
     useTransactionAnalytic,
     useTransactionChart,
 } from '@/modules/transaction/hooks/use-transactions';
@@ -28,11 +31,14 @@ export default function DashboardPage() {
         useTotalBalance();
     const { data: analytic, isFetching: isFetchingAnalytic } =
         useTransactionAnalytic(searchParams);
+
     const { data: chart } = useTransactionChart(searchParams);
-    // const { data: expenseByParentCategories } =
-    //     useExpenseByParentCategories(searchParams);
-    // const { data: incomeByParentCategories } =
-    //     useIncomeByParentCategories(searchParams);
+
+    const { data: expenseByParentCategories } =
+        useExpenseByParentCategories(searchParams);
+    const { data: incomeByParentCategories } =
+        useIncomeByParentCategories(searchParams);
+
     const {
         data: expenseByCategories,
         isPending: isPendingExpenseByCategories,
@@ -59,10 +65,9 @@ export default function DashboardPage() {
 
     return (
         <PageContainer>
-            <div className="flex flex-1 flex-col space-y-4">
+            <div className="flex flex-1 flex-col space-y-10">
                 <div className="sticky top-0 z-10 flex flex-col items-start justify-between border-b bg-white py-3 md:flex-row">
                     <Heading title="Dashboard" />
-                    {/* <DashboardFilter /> */}
                     <div className="flex items-center gap-2">
                         <DateRangePicker
                             onUpdate={({ range }) => onDateSelect(range)}
@@ -70,17 +75,6 @@ export default function DashboardPage() {
                             initialDateTo={new Date(to)}
                             align="start"
                         />
-                        {/* <DateRangePicker
-                            className="font-normal"
-                            variant="outline"
-                            date={{
-                                from: new Date(from),
-                                to: new Date(to),
-                            }}
-                            onDateSelect={onDateSelect}
-                        /> */}
-                        {/* <CategorySelect />
-                        <AccountSelect /> */}
                     </div>
                 </div>
 
@@ -120,7 +114,7 @@ export default function DashboardPage() {
                     </CardContent>
                 </Card>
 
-                {/* <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                     <DashboardChart
                         title="Expense Categories"
                         data={expenseByParentCategories?.data ?? []}
@@ -129,7 +123,7 @@ export default function DashboardPage() {
                         title="Income Categories"
                         data={incomeByParentCategories?.data ?? []}
                     />
-                </div> */}
+                </div>
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>

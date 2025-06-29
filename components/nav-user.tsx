@@ -17,7 +17,7 @@ import {
     SidebarMenuItem,
     useSidebar,
 } from '@/components/ui/sidebar';
-import { User } from '@/modules/user/types';
+import { User } from '@/modules/user/types/user';
 
 export function NavUser({ user }: { user: Pick<User, 'email'> }) {
     const { isMobile } = useSidebar();

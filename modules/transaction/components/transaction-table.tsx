@@ -9,6 +9,7 @@ import { useAccountsList } from '@/modules/account/hooks/use-accounts';
 import { useCategoriesList } from '@/modules/category/hooks/use-categories';
 import { ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { useTransactionSearchParams } from '../hooks/use-transactions';
 import { Transaction } from '../types/transaction';
 import { getTransactionTableColumn } from './transaction-table-column';
 
@@ -29,8 +30,12 @@ export function TransactionTable({
 }: TransactionTableParams<Transaction>) {
     const { openModal } = useModal<Transaction>();
 
+    const searchParams = useTransactionSearchParams();
     const { data: accounts } = useAccountsList({ pageSize: 1000 });
-    const { data: categories } = useCategoriesList({ pageSize: 1000 });
+    const { data: categories } = useCategoriesList({
+        pageSize: 1000,
+        type: searchParams.type,
+    });
 
     const columns = useMemo<ColumnDef<Transaction>[]>(
         () =>

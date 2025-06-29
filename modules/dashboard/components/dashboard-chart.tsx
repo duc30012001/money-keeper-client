@@ -50,9 +50,9 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
                 <div className="flex items-center gap-1 rounded-md border bg-white p-3 shadow">
                     <div
                         style={{ backgroundColor: color }}
-                        className="size-2 rounded-full"
+                        className="mt-0.5 size-2.5 rounded-full"
                     />
-                    <p className="text-sm">{name}</p>
+                    <p className="text-sm text-gray-500">{name}</p>
                     <p className="ml-3 text-sm font-semibold">
                         {formatNumber(value)} (
                         {((value / total) * 100).toFixed(2)}
@@ -67,18 +67,28 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
     const CustomLegend = ({ payload }: LegendProps) => {
         return (
             <div className="flex flex-col gap-2">
-                {payload?.map((entry, index) => (
-                    <div
-                        key={`legend-${index}`}
-                        className="flex items-center gap-2"
-                    >
+                {payload?.map((entry, index) => {
+                    const percent = // @ts-ignore
+                        (entry.payload?.percent * 100 || 0)?.toFixed(2);
+                    return (
                         <div
-                            className="size-3 rounded"
-                            style={{ backgroundColor: entry.color }}
-                        />
-                        <span>{entry.value}</span>
-                    </div>
-                ))}
+                            key={`legend-${index}`}
+                            className="flex items-center gap-2"
+                        >
+                            <div
+                                className="size-3 rounded"
+                                style={{ backgroundColor: entry.color }}
+                            />
+                            <p>
+                                {entry.value} (
+                                <span className="font-semibold">
+                                    {percent}%
+                                </span>
+                                )
+                            </p>
+                        </div>
+                    );
+                })}
             </div>
         );
     };
@@ -115,7 +125,6 @@ export function DashboardChart({ data, title }: DashboardChartProps) {
                             nameKey="label"
                             outerRadius={'100%'}
                             innerRadius={'65%'}
-                            // fill="#8884d8"
                             begin={0}
                             startAngle={90}
                             endAngle={450}

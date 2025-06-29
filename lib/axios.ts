@@ -34,10 +34,12 @@ const axiosInstance: AxiosInstance = axios.create(config);
 // Attach token if present
 axiosInstance.interceptors.request.use(
     async (cfg) => {
-        const session = await getSession();
-        const token = session?.accessToken;
-        if (token && cfg.headers) {
-            cfg.headers.Authorization = `Bearer ${token}`;
+        if (typeof window !== 'undefined') {
+            const session = await getSession();
+            const token = session?.accessToken;
+            if (token && cfg.headers) {
+                cfg.headers.Authorization = `Bearer ${token}`;
+            }
         }
         return cfg;
     },

@@ -45,7 +45,7 @@ export interface TransactionSearchParams extends BaseQuery {
     receiverAccountIds?: string;
     transactionDate?: string;
     amount?: string;
-    type?: TransactionType;
+    type?: string;
     sort?: string;
 }
 

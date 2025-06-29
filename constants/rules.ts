@@ -7,4 +7,8 @@ export const MaxLength = {
         VALUE: 100,
         MESSAGE: 'Name must be less than 100 characters',
     },
+    EMAIL: {
+        VALUE: 100,
+        MESSAGE: 'Email must be less than 100 characters',
+    },
 };

@@ -54,8 +54,18 @@ export function DataTableFacetedFilter<TData, TValue>({
                 const newSelectedValues = new Set(selectedValues);
                 if (isSelected) {
                     newSelectedValues.delete(option.value);
+                    if (option.childrenIds?.length) {
+                        option.childrenIds.forEach((id) => {
+                            newSelectedValues.delete(id);
+                        });
+                    }
                 } else {
                     newSelectedValues.add(option.value);
+                    if (option.childrenIds?.length) {
+                        option.childrenIds.forEach((id) => {
+                            newSelectedValues.add(id);
+                        });
+                    }
                 }
                 const filterValues = Array.from(newSelectedValues);
                 column.setFilterValue(

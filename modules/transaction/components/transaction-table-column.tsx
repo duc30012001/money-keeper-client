@@ -28,11 +28,7 @@ interface GetTransactionTableColumnProps {
 function getCategoriesOptions(categories: Category[], level = 0) {
     const result: ColumnMeta<Transaction, unknown>['options'] = [];
 
-    // two non-breaking spaces per level
-    // const indentUnit = '\u00A0';
-
     categories.forEach((category) => {
-        // const indent = indentUnit.repeat(level * 5);
         result.push({
             label: (
                 <IconLabel
@@ -42,8 +38,9 @@ function getCategoriesOptions(categories: Category[], level = 0) {
                     style={{ paddingLeft: `${level * 20}px` }}
                 />
             ) as unknown as string,
-            // label: `${indent}${category.name}`,
             value: category.id,
+            childrenIds: category.children.map((item) => item.id),
+            parentId: category.parent?.id,
         });
         if (category.children.length) {
             result.push(...getCategoriesOptions(category.children, level + 1));
