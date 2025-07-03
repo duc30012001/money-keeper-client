@@ -1,7 +1,7 @@
 import { Account } from '@/modules/account/types/account';
 import { Category } from '@/modules/category/types/category';
 import { BaseEntity, BaseQuery } from '@/types/common';
-import { TransactionType } from '../enums/transaction';
+import { AnalyticChartGroupBy, TransactionType } from '../enums/transaction';
 
 export interface Transaction extends BaseEntity {
     type: TransactionType;
@@ -69,6 +69,7 @@ export interface TransactionAnalyticSearchParams {
     transactionDate?: string;
     accountIds?: string;
     categoryIds?: string;
+    chartGroupBy?: AnalyticChartGroupBy;
 }
 
 export interface ChartResult {

@@ -5,15 +5,21 @@ import PageContainer from '@/components/page-container';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DateRangePicker } from '@/components/ui/date-range-picker';
 import { Heading } from '@/components/ui/heading';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useTotalBalance } from '@/modules/account/hooks/use-accounts';
 import { CategoryAnalyticTable } from '@/modules/category/components/category-analytic-table';
 import { columns } from '@/modules/category/components/category-analytic-table-columns';
 import { CategoryType } from '@/modules/category/enums/category';
 import { useCategoryAnalytic } from '@/modules/category/hooks/use-categories';
 import { DashboardChart } from '@/modules/dashboard/components/dashboard-chart';
-import { IncomeExpenseChart } from '@/modules/dashboard/components/income-expense-chart';
+import { IncomeExpenseBarChart } from '@/modules/dashboard/components/income-expense-bar-chart';
+import { IncomeExpenseLineChart } from '@/modules/dashboard/components/income-expense-line-chart';
 import { StatisticCard } from '@/modules/dashboard/components/statistic-card';
 import { useTransactionAnalyticSearchParams } from '@/modules/dashboard/hooks/use-dashboard';
+import {
+    AnalyticChartGroupBy,
+    ChartType,
+} from '@/modules/transaction/enums/transaction';
 import {
     useExpenseByParentCategories,
     useIncomeByParentCategories,
@@ -23,13 +29,18 @@ import {
 import { DateRange } from 'react-day-picker';
 
 export default function DashboardPage() {
-    const { searchParams, setTransactionDate } =
-        useTransactionAnalyticSearchParams();
+    const {
+        chartType,
+        searchParams,
+        setTransactionDate,
+        setChartGroupBy,
+        setChartType,
+    } = useTransactionAnalyticSearchParams();
     const [from, to] = searchParams.transactionDate!.split(',').map(Number);
 
-    const { data: totalBalance, isFetching: isFetchingTotalBalance } =
+    const { data: totalBalance, isLoading: isLoadingTotalBalance } =
         useTotalBalance();
-    const { data: analytic, isFetching: isFetchingAnalytic } =
+    const { data: analytic, isLoading: isLoadingAnalytic } =
         useTransactionAnalytic(searchParams);
 
     const { data: chart } = useTransactionChart(searchParams);
@@ -80,25 +91,25 @@ export default function DashboardPage() {
 
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <StatisticCard
-                        isLoading={isFetchingTotalBalance}
+                        isLoading={isLoadingTotalBalance}
                         title="💼 Total Balance"
                         value={totalBalance?.data ?? 0}
                     />
 
                     <StatisticCard
-                        isLoading={isFetchingAnalytic}
+                        isLoading={isLoadingAnalytic}
                         title={'💰 Total Income'}
                         value={analytic?.data?.current?.income ?? 0}
                         percentage={analytic?.data?.change?.income ?? 0}
                     />
                     <StatisticCard
-                        isLoading={isFetchingAnalytic}
+                        isLoading={isLoadingAnalytic}
                         title="📊 Net Savings"
                         value={analytic?.data?.current?.net ?? 0}
                         percentage={analytic?.data?.change?.net ?? 0}
                     />
                     <StatisticCard
-                        isLoading={isFetchingAnalytic}
+                        isLoading={isLoadingAnalytic}
                         title="💸 Total Expenses"
                         value={analytic?.data?.current?.expenses ?? 0}
                         percentage={analytic?.data?.change?.expenses ?? 0}
@@ -106,11 +117,58 @@ export default function DashboardPage() {
                 </div>
 
                 <Card className="shadow-none">
-                    <CardHeader>
+                    <CardHeader className="flex-row items-center justify-between">
                         <CardTitle>Expenses vs Income</CardTitle>
+                        <div className="flex gap-5">
+                            <Tabs
+                                value={searchParams.chartGroupBy}
+                                onValueChange={(value) =>
+                                    setChartGroupBy(
+                                        value as AnalyticChartGroupBy
+                                    )
+                                }
+                            >
+                                <TabsList>
+                                    <TabsTrigger
+                                        value={AnalyticChartGroupBy.DAY}
+                                    >
+                                        By Day
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value={AnalyticChartGroupBy.MONTH}
+                                    >
+                                        By Month
+                                    </TabsTrigger>
+                                    <TabsTrigger
+                                        value={AnalyticChartGroupBy.YEAR}
+                                    >
+                                        By Year
+                                    </TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                            <Tabs
+                                value={chartType}
+                                onValueChange={(value) =>
+                                    setChartType(value as ChartType)
+                                }
+                            >
+                                <TabsList>
+                                    <TabsTrigger value={ChartType.BAR}>
+                                        Bar
+                                    </TabsTrigger>
+                                    <TabsTrigger value={ChartType.LINE}>
+                                        Line
+                                    </TabsTrigger>
+                                </TabsList>
+                            </Tabs>
+                        </div>
                     </CardHeader>
                     <CardContent>
-                        <IncomeExpenseChart data={chart?.data ?? []} />
+                        {chartType === ChartType.BAR ? (
+                            <IncomeExpenseBarChart data={chart?.data ?? []} />
+                        ) : (
+                            <IncomeExpenseLineChart data={chart?.data ?? []} />
+                        )}
                     </CardContent>
                 </Card>
 

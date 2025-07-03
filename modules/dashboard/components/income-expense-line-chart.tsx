@@ -1,9 +1,9 @@
 'use client';
 
 import {
-    Bar,
-    BarChart,
     CartesianGrid,
+    Line,
+    LineChart,
     TooltipProps,
     XAxis,
     YAxis,
@@ -30,11 +30,11 @@ const chartConfig = {
     },
 } satisfies ChartConfig;
 
-export interface IncomeExpenseChartProps {
+export interface IncomeExpenseLineChartProps {
     data: ChartResult[];
 }
 
-export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
+export function IncomeExpenseLineChart({ data }: IncomeExpenseLineChartProps) {
     const CustomTooltip = ({ active, payload }: TooltipProps<any, any>) => {
         if (active && payload && payload.length) {
             return (
@@ -89,14 +89,14 @@ export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
 
     return (
         <ChartContainer config={chartConfig} className="max-h-[300px] w-full">
-            <BarChart accessibilityLayer data={data}>
+            <LineChart accessibilityLayer data={data}>
                 <CartesianGrid vertical={false} />
                 <XAxis
                     dataKey="label"
                     tickLine={false}
                     axisLine={false}
                     tickMargin={10}
-                    tickFormatter={(value) => value.slice(0, 3)}
+                    // tickFormatter={(value) => value.split(0, 3)}
                 />
                 <YAxis
                     tickFormatter={(value) =>
@@ -111,17 +111,19 @@ export function IncomeExpenseChart({ data }: IncomeExpenseChartProps) {
                 />
                 <ChartTooltip content={<CustomTooltip />} />
                 <ChartLegend content={<CustomLegend />} />
-                <Bar
+                <Line
+                    dot={false}
+                    type="monotone"
                     dataKey="income"
-                    fill="var(--color-income)"
-                    maxBarSize={50}
+                    stroke="var(--color-income)"
                 />
-                <Bar
+                <Line
+                    dot={false}
+                    type="monotone"
                     dataKey="expense"
-                    fill="var(--color-expense)"
-                    maxBarSize={50}
+                    stroke="var(--color-expense)"
                 />
-            </BarChart>
+            </LineChart>
         </ChartContainer>
     );
 }

@@ -8,3 +8,14 @@ export enum TransactionType {
     EXPENSE = 'expense',
     TRANSFER = 'transfer',
 }
+
+export enum AnalyticChartGroupBy {
+    DAY = 'day',
+    MONTH = 'month',
+    YEAR = 'year',
+}
+
+export enum ChartType {
+    BAR = 'bar',
+    LINE = 'line',
+}
