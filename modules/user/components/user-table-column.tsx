@@ -1,5 +1,4 @@
 import { DataTableColumnHeader } from '@/components/data-table/data-table-column-header';
-import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { formatDate } from '@/lib/format';
 import { Column, ColumnDef } from '@tanstack/react-table';
@@ -29,20 +28,11 @@ export function getUserTableColumn({
             cell: ({ row }) => row.original.email,
         },
         {
-            id: 'roles',
-            accessorKey: 'roles',
-            header: 'Roles',
+            id: 'role',
+            accessorKey: 'role',
+            header: 'Role',
             enableHiding: false,
             size: 250,
-            cell: ({ row }) => (
-                <div className="flex flex-wrap gap-2">
-                    {row.original.roles.map((item) => (
-                        <Badge key={item} variant="outline">
-                            {item}
-                        </Badge>
-                    ))}
-                </div>
-            ),
         },
         {
             id: 'isActive',

@@ -1,17 +1,18 @@
 import { BaseEntity, BaseQuery } from '@/types/common';
+import { UserRole } from '../enums/user';
 
 export interface User extends BaseEntity {
     email: string;
     password: string;
     isActive: boolean;
-    roles: string[];
+    role: UserRole;
 }
 
 export interface CreateUserDto {
     email: string;
     password: string;
     isActive?: boolean;
-    roles?: string[];
+    role?: UserRole;
 }
 
 export interface UpdateUserDto extends Partial<CreateUserDto> {}

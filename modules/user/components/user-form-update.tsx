@@ -11,11 +11,12 @@ import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
 import { MaxLength } from '@/constants/rules';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Tag, TagInput } from 'emblor';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { UserRole } from '../enums/user';
 import { useCreateUser, useUpdateUser } from '../hooks/use-users';
 import { UpdateUserDto, User } from '../types/user';
+import { UserRoleSelect } from './user-role-select';
 
 const formSchema = z.object({
     email: z
@@ -25,7 +26,7 @@ const formSchema = z.object({
         .max(MaxLength.EMAIL.VALUE, MaxLength.EMAIL.MESSAGE),
     password: z.string().optional(),
     isActive: z.boolean().optional(),
-    roles: z.array(z.string()).optional(),
+    role: z.nativeEnum(UserRole).optional(),
 });
 
 interface UserFormProps {
@@ -39,7 +40,7 @@ export function UserFormUpdate({ user, onSuccess }: UserFormProps) {
         defaultValues: {
             email: user.email,
             isActive: user.isActive,
-            roles: user.roles,
+            role: user.role,
         },
     });
 
@@ -124,26 +125,14 @@ export function UserFormUpdate({ user, onSuccess }: UserFormProps) {
                 />
                 <FormField
                     control={form.control}
-                    name={'roles'}
+                    name={'role'}
                     render={({ field }) => (
                         <FormItem className="flex flex-col">
-                            <FormLabel>Roles</FormLabel>
+                            <FormLabel>Role</FormLabel>
                             <FormControl>
-                                <TagInput
-                                    tags={(field.value || []).map((item) => ({
-                                        text: item,
-                                        id: item,
-                                    }))}
-                                    placeholder="Enter roles"
-                                    setTags={(newTags) => {
-                                        field.onChange(
-                                            (newTags as Tag[]).map(
-                                                (item) => item.text
-                                            )
-                                        );
-                                    }}
-                                    activeTagIndex={null}
-                                    setActiveTagIndex={() => {}}
+                                <UserRoleSelect
+                                    value={field.value}
+                                    onChange={field.onChange}
                                 />
                             </FormControl>
                             <FormMessage />
