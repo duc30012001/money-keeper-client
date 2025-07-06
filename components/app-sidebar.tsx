@@ -10,18 +10,23 @@ import {
     SidebarFooter,
 } from '@/components/ui/sidebar';
 import { SIDEBAR_ITEMS } from '@/constants/sidebar';
-import { getDataFromToken } from '@/modules/auth/utils';
 import { useSession } from 'next-auth/react';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { data: session } = useSession();
-    const tokenPayload = getDataFromToken(session?.accessToken);
+
+    const navMain = SIDEBAR_ITEMS.filter((item) => {
+        if (!item.role) {
+            return true;
+        }
+        return item.role === session?.user?.role;
+    });
 
     const data = {
         user: {
-            email: tokenPayload?.email ?? '',
+            email: session?.user?.email ?? '',
         },
-        navMain: SIDEBAR_ITEMS,
+        navMain: navMain,
     };
 
     return (

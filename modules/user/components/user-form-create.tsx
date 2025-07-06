@@ -1,3 +1,4 @@
+import { PasswordInput } from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import {
     Form,
@@ -36,6 +37,7 @@ export function UserFormCreate({}: UserFormProps) {
         resolver: zodResolver(formSchema),
         defaultValues: {
             isActive: true,
+            role: UserRole.USER,
         },
     });
 
@@ -86,11 +88,10 @@ export function UserFormCreate({}: UserFormProps) {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input
-                                    placeholder="Enter password"
-                                    {...field}
+                                <PasswordInput
+                                    placeholder="********"
                                     disabled={isLoading}
-                                    type="password"
+                                    {...field}
                                 />
                             </FormControl>
                             <FormMessage />

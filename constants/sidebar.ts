@@ -1,3 +1,4 @@
+import { UserRole } from '@/modules/user/enums/user';
 import {
     CreditCard,
     Layers,
@@ -25,6 +26,7 @@ export interface SidebarItem {
     title: string;
     href: AppRoute;
     icon: LucideIcon;
+    role?: UserRole;
 }
 
 export const SIDEBAR_ITEMS: SidebarItem[] = [
@@ -37,6 +39,11 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     { title: 'Accounts', href: AppRoute.Accounts, icon: User },
     { title: 'Account Types', href: AppRoute.AccountTypes, icon: Layers },
     { title: 'Categories', href: AppRoute.Categories, icon: Tag },
-    { title: 'Icons', href: AppRoute.Icons, icon: LayoutGrid },
-    { title: 'Users', href: AppRoute.Users, icon: Users },
+    {
+        title: 'Icons',
+        href: AppRoute.Icons,
+        icon: LayoutGrid,
+        role: UserRole.ADMIN,
+    },
+    { title: 'Users', href: AppRoute.Users, icon: Users, role: UserRole.ADMIN },
 ];

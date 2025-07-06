@@ -175,19 +175,30 @@ export function AccountTypesTable({}: AccountTypesTableProps) {
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        <SortableContext
-                            items={dataSource.map(
-                                (item: AccountType) => item.id
-                            )}
-                            strategy={verticalListSortingStrategy}
-                        >
-                            {dataSource.map((accountType: AccountType) => (
-                                <SortableRow
-                                    key={accountType.id}
-                                    accountType={accountType}
-                                />
-                            ))}
-                        </SortableContext>
+                        {(dataSource.length > 0 && (
+                            <SortableContext
+                                items={dataSource.map(
+                                    (item: AccountType) => item.id
+                                )}
+                                strategy={verticalListSortingStrategy}
+                            >
+                                {dataSource.map((accountType: AccountType) => (
+                                    <SortableRow
+                                        key={accountType.id}
+                                        accountType={accountType}
+                                    />
+                                ))}
+                            </SortableContext>
+                        )) || (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={5}
+                                    className="h-24 text-center"
+                                >
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        )}
                     </TableBody>
                 </Table>
             </DndContext>

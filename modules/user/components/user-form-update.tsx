@@ -1,3 +1,4 @@
+import { PasswordInput } from '@/components/password-input';
 import { Button } from '@/components/ui/button';
 import {
     Form,
@@ -95,11 +96,10 @@ export function UserFormUpdate({ user, onSuccess }: UserFormProps) {
                         <FormItem>
                             <FormLabel>Password</FormLabel>
                             <FormControl>
-                                <Input
-                                    placeholder="Enter password"
-                                    {...field}
+                                <PasswordInput
+                                    placeholder="********"
                                     disabled={isLoading}
-                                    type="password"
+                                    {...field}
                                 />
                             </FormControl>
                             <FormMessage />
