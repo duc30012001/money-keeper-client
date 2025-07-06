@@ -1,4 +1,4 @@
-import { AppRoute } from '@/constants/sidebar';
+import { AppRoute, SIDEBAR_ITEMS } from '@/constants/sidebar';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { getToken } from './lib/auth';
@@ -32,6 +32,16 @@ export async function middleware(req: NextRequest) {
         const dashUrl = req.nextUrl.clone();
         dashUrl.pathname = AppRoute.Dashboard;
         return NextResponse.redirect(dashUrl);
+    }
+
+    const currentRoute = SIDEBAR_ITEMS.find((item) => item.href === pathname);
+    if (token && currentRoute?.role) {
+        const userRole = token.role;
+        if (userRole !== currentRoute.role) {
+            const forbiddenUrl = req.nextUrl.clone();
+            forbiddenUrl.pathname = AppRoute.Forbidden;
+            return NextResponse.redirect(forbiddenUrl);
+        }
     }
 
     // 4. Otherwise allow

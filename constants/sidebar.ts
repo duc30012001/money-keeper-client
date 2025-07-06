@@ -20,6 +20,7 @@ export enum AppRoute {
     Icons = '/icons',
     Users = '/users',
     Signin = '/',
+    Forbidden = '/forbidden',
 }
 
 export interface SidebarItem {
