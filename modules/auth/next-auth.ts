@@ -78,16 +78,6 @@ export const authOptions: NextAuthOptions = {
         },
         // Truyền accessToken vào session trả về cho client
         async session({ session, token }) {
-            try {
-                const res = await authService.getCurrentUser();
-                const user = res.data.data;
-                session.user = user;
-            } catch (error) {
-                session.error =
-                    (error as AxiosError).message ||
-                    (token.error as string | undefined);
-            }
-
             const { accessToken } = token;
 
             axiosInstance.interceptors.request.use(
@@ -99,6 +89,16 @@ export const authOptions: NextAuthOptions = {
                 },
                 (error) => Promise.reject(error)
             );
+
+            try {
+                const res = await authService.getCurrentUser(accessToken);
+                const user = res.data.data;
+                session.user = user;
+            } catch (error) {
+                session.error =
+                    (error as AxiosError).message ||
+                    (token.error as string | undefined);
+            }
 
             session.accessToken = accessToken;
             return session;

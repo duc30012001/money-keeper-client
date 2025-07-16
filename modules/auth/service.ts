@@ -9,7 +9,12 @@ export const authService = {
     signin: (payload: SigninDto) =>
         axios.post<ResponseDto<GetTokenResponse>>(`${PATH}/signin`, payload),
 
-    getCurrentUser: () => axios.get<ResponseDto<User>>(`${PATH}/me`),
+    getCurrentUser: (token?: string) =>
+        axios.get<ResponseDto<User>>(`${PATH}/me`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }),
 
     refreshToken: (payload: RefreshDto) =>
         axios.post<ResponseDto<GetTokenResponse>>(`${PATH}/refresh`, payload),
