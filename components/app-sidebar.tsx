@@ -15,18 +15,18 @@ import { useSession } from 'next-auth/react';
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     const { data: session } = useSession();
 
-    const navMain = SIDEBAR_ITEMS.filter((item) => {
-        if (!item.role) {
-            return true;
-        }
-        return item.role === session?.user?.role;
-    });
+    // const navMain = SIDEBAR_ITEMS.filter((item) => {
+    //     if (!item.role) {
+    //         return true;
+    //     }
+    //     return item.role === session?.user?.role;
+    // });
 
     const data = {
         user: {
             email: session?.user?.email ?? '',
         },
-        navMain: navMain,
+        navMain: SIDEBAR_ITEMS,
     };
 
     return (
