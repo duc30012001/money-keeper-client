@@ -1,6 +1,7 @@
 'use client';
 
 import AppLocale from '@/components/app-locale';
+import AppTheme from '@/components/app-theme';
 import { appConfig } from '@/constants/app';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -8,10 +9,12 @@ import { cn } from '@/lib/utils';
 import { ProConfigProvider, ProLayout } from '@ant-design/pro-components';
 import { Avatar, ConfigProvider, Dropdown } from 'antd';
 import { AvatarProps } from 'antd/lib';
-import { LogOut, PanelLeft } from 'lucide-react';
+import { LogOut, Menu } from 'lucide-react';
 import { signOut, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { ReactNode, useState } from 'react';
+
+const ID = 'antd-pro-layout';
 
 export default function CMSLayout({ children }: { children: React.ReactNode }) {
     const [collapsed, setCollapsed] = useState(false);
@@ -74,21 +77,18 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
     );
 
     return (
-        <div id="antd-pro-layout" className="h-screen overflow-auto">
+        <div id={ID} className="h-screen overflow-auto">
             <ProConfigProvider hashed={false}>
                 <ConfigProvider
                     getTargetContainer={() => {
-                        return (
-                            document.getElementById('antd-pro-layout') ||
-                            document.body
-                        );
+                        return document.getElementById(ID) || document.body;
                     }}
                 >
                     <ProLayout
                         layout="mix"
+                        fixSiderbar
                         logo={appConfig.logo}
                         title={appConfig.title}
-                        fixSiderbar
                         collapsed={collapsed}
                         onCollapse={setCollapsed}
                         collapsedButtonRender={false}
@@ -98,7 +98,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
                                     className="hidden w-fit cursor-pointer rounded-lg p-2 hover:bg-gray-100 md:block"
                                     onClick={() => setCollapsed(!collapsed)}
                                 >
-                                    <PanelLeft />
+                                    <Menu />
                                 </div>
                             );
                         }}
@@ -116,6 +116,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
                             //     {messages('transaction.create')}
                             // </Button>,
                             <AppLocale key="app-locale" />,
+                            <AppTheme key="app-theme" />,
                         ]}
                         avatarProps={{
                             className: '!bg-orange-500',

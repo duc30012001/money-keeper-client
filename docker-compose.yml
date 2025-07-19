@@ -1,6 +1,6 @@
 services:
     app-prod:
-        image: money-keeper-client/prod:${TAG:-latest}
+        image: money-keeper-client-v2/prod:${TAG:-latest}
         build: .
         ports:
             - '${HOST_PORT:-3000}:3000'

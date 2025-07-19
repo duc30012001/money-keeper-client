@@ -1,12 +1,17 @@
 import { Button, ButtonProps } from 'antd';
 import { useTranslations } from 'next-intl';
+import { ReactNode } from 'react';
 
-export function CreateButton(props: ButtonProps) {
+interface CreateButtonProps extends ButtonProps {
+    label?: ReactNode;
+}
+
+export function CreateButton({ label, ...props }: CreateButtonProps) {
     const messages = useTranslations();
 
     return (
         <Button type="primary" {...props}>
-            {messages('common.create')}
+            {label ?? messages('common.create')}
         </Button>
     );
 }

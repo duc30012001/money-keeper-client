@@ -1,0 +1,39 @@
+name: Deploy production
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+
+            - name: Start SSH agent
+              uses: webfactory/ssh-agent@v0.9.0
+              with:
+                  ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+
+            - name: Deploy via SSH
+              env:
+                  HOST: ${{ secrets.VPS_HOST }}
+                  USER: ${{ secrets.VPS_USER }}
+                  PORT: ${{ secrets.VPS_PORT }} # omit or set to 22
+              run: |
+                  # disable host checking (only if you trust the server)
+                  # run each step with sudo
+                    ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} '
+                        git config --global --add safe.directory /www/wwwroot/dev/money-keeper-client-v2
+
+                        cd /www/wwwroot/dev/money-keeper-client-v2 || exit 1
+                        sudo git pull origin main
+
+                        TAG=$(git rev-parse --short HEAD || echo "latest")
+
+                        echo "Build và chạy Docker Compose với tag: $TAG"
+                        sudo TAG=$TAG docker compose -f docker-compose.yml up --build -d
+                    '

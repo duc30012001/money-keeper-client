@@ -1,4 +1,5 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { signOut } from 'next-auth/react';
 
 const replacer = (_key: string, value: any) =>
     value === undefined ? null : value;
@@ -29,14 +30,14 @@ const config: AxiosRequestConfig = {
 const axiosInstance: AxiosInstance = axios.create(config);
 
 // Global error handling
-// axiosInstance.interceptors.response.use(
-//     (res: AxiosResponse) => res,
-//     (error) => {
-//         if (error.response?.status === 401) {
-//             signOut();
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+axiosInstance.interceptors.response.use(
+    (res: AxiosResponse) => res,
+    (error) => {
+        if (error.response?.status === 401) {
+            signOut();
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default axiosInstance;

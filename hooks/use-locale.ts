@@ -1,6 +1,6 @@
 'use client';
 
-import { Locale } from '@/enums/locale';
+import { Locale } from '@/enums/common';
 import { usePathname, useRouter } from '@/i18n/navigation';
 import { useLocale as useLocaleIntl } from 'next-intl';
 import { useSearchParams } from 'next/navigation';

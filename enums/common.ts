@@ -24,3 +24,14 @@ export enum Screen {
     XXL = 1400,
     XXXL = 1600,
 }
+
+export enum Locale {
+    EN = 'en',
+    VI = 'vi',
+}
+
+export enum ThemeMode {
+    LIGHT = 'light',
+    DARK = 'dark',
+    SYSTEM = 'system',
+}

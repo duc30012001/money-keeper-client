@@ -1,4 +1,4 @@
-import { Locale } from '@/enums/locale';
+import { Locale } from '@/enums/common';
 import { useLocale } from '@/hooks/use-locale';
 import { Button, Dropdown, DropdownProps } from 'antd';
 import { useTranslations } from 'next-intl';
@@ -51,6 +51,7 @@ export default function AppLocale(props: DropdownProps) {
                     label: option.label,
                 })),
                 onClick: ({ key }) => switchLocale(key as Locale),
+                activeKey: locale,
             }}
         >
             <Button>{currentLocale?.label}</Button>

@@ -2,18 +2,12 @@
 
 import { CreateButton } from '@/components/ui/button/create-button';
 import { PageContainer, ProCard } from '@ant-design/pro-components';
-import { useTranslations } from 'next-intl';
 
 export default function DashboardPage() {
-    const messages = useTranslations();
-
     return (
-        <PageContainer
-            extra={[<CreateButton key={'create'} />]}
-            title={messages('dashboard.title')}
-        >
+        <PageContainer extra={[<CreateButton key={'create'} />]}>
             <ProCard>
-                <div />
+                <h2 className="text-gray-900 dark:text-gray-100">Hello</h2>
             </ProCard>
         </PageContainer>
     );
