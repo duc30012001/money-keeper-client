@@ -1,5 +1,6 @@
 'use client';
 
+import AppContainer from '@/components/app-container';
 import { CreateButton } from '@/components/ui/button/create-button';
 import { EditButton } from '@/components/ui/button/edit-button';
 import AppSearch from '@/components/ui/input/search';
@@ -8,11 +9,7 @@ import { useFilter } from '@/hooks/use-filter';
 import { formatDate, formatNumber } from '@/lib/format';
 import { useUpdateUser, useUsersList } from '@/modules/user/hooks/use-users';
 import { User, UserSearchParams } from '@/modules/user/types/user';
-import {
-    PageContainer,
-    ProColumns,
-    ProTable,
-} from '@ant-design/pro-components';
+import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { Switch } from 'antd';
 import { useTranslations } from 'next-intl';
 import { parseAsInteger, parseAsString } from 'nuqs';
@@ -85,11 +82,8 @@ export default function UsersPage() {
     ];
 
     return (
-        <PageContainer
-            token={{
-                paddingBlockPageContainerContent: 10,
-                paddingInlinePageContainerContent: 20,
-            }}
+        <AppContainer
+            title={messages('user.title')}
             extra={[<CreateButton key={'create'} />]}
         >
             <ProTable<User>
@@ -125,6 +119,6 @@ export default function UsersPage() {
                         }),
                 }}
             />
-        </PageContainer>
+        </AppContainer>
     );
 }

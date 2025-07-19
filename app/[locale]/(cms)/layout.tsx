@@ -122,6 +122,9 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
                             icon: email[0].toUpperCase(),
                             render: renderAvatar,
                         }}
+                        contentStyle={{
+                            padding: '10px 20px',
+                        }}
                     >
                         {children}
                     </ProLayout>

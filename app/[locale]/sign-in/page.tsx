@@ -58,13 +58,18 @@ export default function SignInPage() {
 
     return (
         <div className="bg-gray-50">
-            <div className="flex min-h-screen flex-col items-center justify-center px-4 py-6">
-                <div className="w-full max-w-[480px]">
+            <div
+                className="flex min-h-screen flex-col items-center justify-center px-4 py-6"
+                style={{
+                    backgroundImage: 'url(/images/bg-auth0-signin.svg)',
+                }}
+            >
+                <div className="w-full max-w-[400px]">
                     <div className="mb-8">
                         <AppLogo className="mx-auto" />
                     </div>
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
-                        <h1 className="mb-10 text-center text-3xl font-semibold text-slate-900">
+                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-xl sm:p-8">
+                        <h1 className="mb-10 text-center text-2xl font-semibold text-slate-900">
                             {messages('auth.signIn')}
                         </h1>
 
