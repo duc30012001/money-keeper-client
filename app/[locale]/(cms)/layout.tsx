@@ -123,7 +123,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
                             render: renderAvatar,
                         }}
                         contentStyle={{
-                            padding: '10px 20px',
+                            padding: 20,
                         }}
                     >
                         {children}

@@ -15,9 +15,7 @@ function AppLogo({ className }: AppLogoProps) {
             className={cn('flex w-fit items-center gap-2', className)}
         >
             <Image src={appConfig.logo} alt="logo" width={32} height={32} />
-            <h1 className="hidden text-2xl font-bold sm:block">
-                {appConfig.title}
-            </h1>
+            <h1 className="text-2xl font-bold">{appConfig.title}</h1>
         </Link>
     );
 }

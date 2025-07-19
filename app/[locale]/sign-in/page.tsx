@@ -1,5 +1,6 @@
 'use client';
 
+import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import { AppRoute } from '@/enums/routes';
 import { Link } from '@/i18n/navigation';
@@ -59,7 +60,7 @@ export default function SignInPage() {
     return (
         <div className="bg-gray-50">
             <div
-                className="flex min-h-screen flex-col items-center justify-center px-4 py-6"
+                className="flex min-h-screen flex-col items-center justify-center bg-cover bg-center px-4 py-6"
                 style={{
                     backgroundImage: 'url(/images/bg-auth0-signin.svg)',
                 }}
@@ -68,15 +69,27 @@ export default function SignInPage() {
                     <div className="mb-8">
                         <AppLogo className="mx-auto" />
                     </div>
-                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-xl sm:p-8">
-                        <h1 className="mb-10 text-center text-2xl font-semibold text-slate-900">
-                            {messages('auth.signIn')}
-                        </h1>
+                    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-xl sm:p-8 lg:p-10">
+                        <div className="mb-10 text-center">
+                            <h1 className="text-center text-2xl font-semibold text-slate-900">
+                                {messages('auth.signIn.title')}
+                            </h1>
+                            <p className="text-sm text-gray-400">
+                                {messages('auth.signIn.description')}
+                            </p>
+                        </div>
 
                         <Form
                             size="large"
                             layout="vertical"
-                            requiredMark
+                            requiredMark={(label, info) => (
+                                <div>
+                                    {label}{' '}
+                                    {info.required && (
+                                        <span className="text-red-500">*</span>
+                                    )}
+                                </div>
+                            )}
                             onFinish={onFinish}
                             disabled={isLoading}
                         >
@@ -116,7 +129,7 @@ export default function SignInPage() {
                                 block
                                 loading={isLoading}
                             >
-                                {messages('auth.signIn')}
+                                {messages('auth.signIn.submit')}
                             </Button>
                             <p className="!mt-6 text-center text-sm text-slate-900">
                                 {messages('auth.dontHaveAccount')}{' '}
@@ -129,6 +142,14 @@ export default function SignInPage() {
                             </p>
                         </Form>
                     </div>
+                </div>
+                <div className="fixed right-10 top-10">
+                    <AppLocale
+                        buttonProps={{
+                            type: 'text',
+                            block: true,
+                        }}
+                    />
                 </div>
             </div>
         </div>

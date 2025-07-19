@@ -1,5 +1,7 @@
 import createNextIntlMiddleware from 'next-intl/middleware';
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { Locale } from './enums/common';
 import { AppRoute } from './enums/routes';
 import { routing } from './i18n/routing';
 import { getToken } from './modules/auth/utils';
@@ -8,6 +10,7 @@ const nextIntl = createNextIntlMiddleware(routing);
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
+    console.log('pathname:', pathname);
 
     if (pathname.startsWith('/api') && !pathname.startsWith('/api/v1')) {
         return NextResponse.next();
@@ -25,7 +28,7 @@ export async function middleware(req: NextRequest) {
 
     // 2. Do your session check + redirects
     const token = await getToken(req);
-    const locale = req.nextUrl.locale || 'en';
+    const locale = cookies().get('NEXT_LOCALE')?.value || Locale.EN;
     const onSignInPage = pathname === `/${locale}${AppRoute.SIGN_IN}`;
 
     if (!token && !onSignInPage) {

@@ -1,6 +1,10 @@
 {
     "auth": {
-        "signIn": "Đăng nhập",
+        "signIn": {
+            "title": "Chào mừng trở lại",
+            "description": "Vui lòng nhập thông tin đăng nhập",
+            "submit": "Đăng nhập"
+        },
         "dontHaveAccount": "Chưa có tài khoản?",
         "alreadyHaveAccount": "Đã có tài khoản?",
         "register": "Đăng ký",

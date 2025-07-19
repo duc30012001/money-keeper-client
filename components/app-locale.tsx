@@ -1,10 +1,14 @@
 import { Locale } from '@/enums/common';
 import { useLocale } from '@/hooks/use-locale';
-import { Button, Dropdown, DropdownProps } from 'antd';
+import { Button, ButtonProps, Dropdown, DropdownProps } from 'antd';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
-export default function AppLocale(props: DropdownProps) {
+interface AppLocaleProps extends DropdownProps {
+    buttonProps?: ButtonProps;
+}
+
+export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
     const { locale, switchLocale } = useLocale();
     const messages = useTranslations();
 
@@ -54,7 +58,7 @@ export default function AppLocale(props: DropdownProps) {
                 activeKey: locale,
             }}
         >
-            <Button>{currentLocale?.label}</Button>
+            <Button {...buttonProps}>{currentLocale?.label}</Button>
         </Dropdown>
     );
 }

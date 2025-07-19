@@ -1,6 +1,10 @@
 {
     "auth": {
-        "signIn": "Sign in",
+        "signIn": {
+            "title": "Welcome back",
+            "description": "Please enter your details to sigin in",
+            "submit": "Sign in"
+        },
         "dontHaveAccount": "Don't have an account?",
         "alreadyHaveAccount": "Already have an account?",
         "register": "Register",
