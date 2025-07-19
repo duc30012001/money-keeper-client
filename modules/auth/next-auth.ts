@@ -56,7 +56,7 @@ export const authOptions: NextAuthOptions = {
             const { accessToken } = token;
             const now = Date.now();
             const accessTokenPayload = getDataFromToken(accessToken);
-            const exp = (accessTokenPayload?.exp as number) * 1000;
+            const exp = (accessTokenPayload?.exp || 0) * 1000;
             // refresh nếu còn 1 phút hoặc đã quá hạn
             if (now > exp - 60 * 1000) {
                 try {
@@ -76,16 +76,6 @@ export const authOptions: NextAuthOptions = {
         // Truyền accessToken vào session trả về cho client
         async session({ session, token }) {
             const { accessToken } = token;
-
-            // try {
-            //     const res = await authService.getCurrentUser();
-            //     const user = res.data.data;
-            //     session.user = user;
-            // } catch (error) {
-            //     session.error =
-            //         (error as AxiosError).message ||
-            //         (token.error as string | undefined);
-            // }
 
             const data = getDataFromToken(accessToken);
             if (data) {

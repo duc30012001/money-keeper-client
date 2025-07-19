@@ -1,7 +1,6 @@
 'use client';
 
 import AppLocale from '@/components/app-locale';
-import AppTheme from '@/components/app-theme';
 import { appConfig } from '@/constants/app';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { Link, usePathname } from '@/i18n/navigation';
@@ -116,7 +115,7 @@ export default function CMSLayout({ children }: { children: React.ReactNode }) {
                             //     {messages('transaction.create')}
                             // </Button>,
                             <AppLocale key="app-locale" />,
-                            <AppTheme key="app-theme" />,
+                            // <AppTheme key="app-theme" />,
                         ]}
                         avatarProps={{
                             className: '!bg-orange-500',
