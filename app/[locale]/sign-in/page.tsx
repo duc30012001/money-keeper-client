@@ -2,9 +2,10 @@
 
 import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
+import AppForm from '@/components/ui/form/app-form';
 import { AppRoute } from '@/enums/routes';
 import { Link } from '@/i18n/navigation';
-import { Button, Form, Input } from 'antd';
+import { Button, Input } from 'antd';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
@@ -79,21 +80,13 @@ export default function SignInPage() {
                             </p>
                         </div>
 
-                        <Form
+                        <AppForm
                             size="large"
                             layout="vertical"
-                            requiredMark={(label, info) => (
-                                <div>
-                                    {label}{' '}
-                                    {info.required && (
-                                        <span className="text-red-500">*</span>
-                                    )}
-                                </div>
-                            )}
                             onFinish={onFinish}
                             disabled={isLoading}
                         >
-                            <Form.Item
+                            <AppForm.Item
                                 label={messages('user.email')}
                                 name={'email'}
                                 rules={[
@@ -107,11 +100,31 @@ export default function SignInPage() {
                                             'validation.emailFormat'
                                         ),
                                     },
+                                    {
+                                        min: 5,
+                                        message: messages(
+                                            'validation.stringMin',
+                                            {
+                                                field: messages('user.email'),
+                                                min: 5,
+                                            }
+                                        ),
+                                    },
+                                    {
+                                        max: 50,
+                                        message: messages(
+                                            'validation.stringMax',
+                                            {
+                                                field: messages('user.email'),
+                                                max: 50,
+                                            }
+                                        ),
+                                    },
                                 ]}
                             >
                                 <Input />
-                            </Form.Item>
-                            <Form.Item
+                            </AppForm.Item>
+                            <AppForm.Item
                                 label={messages('user.password')}
                                 name={'password'}
                                 rules={[
@@ -119,10 +132,34 @@ export default function SignInPage() {
                                         required: true,
                                         message: messages('validation.input'),
                                     },
+                                    {
+                                        min: 5,
+                                        message: messages(
+                                            'validation.stringMin',
+                                            {
+                                                field: messages(
+                                                    'user.password'
+                                                ),
+                                                min: 5,
+                                            }
+                                        ),
+                                    },
+                                    {
+                                        max: 50,
+                                        message: messages(
+                                            'validation.stringMax',
+                                            {
+                                                field: messages(
+                                                    'user.password'
+                                                ),
+                                                max: 50,
+                                            }
+                                        ),
+                                    },
                                 ]}
                             >
                                 <Input.Password />
-                            </Form.Item>
+                            </AppForm.Item>
                             <Button
                                 type="primary"
                                 htmlType="submit"
@@ -140,16 +177,11 @@ export default function SignInPage() {
                                     {messages('auth.registerHere')}
                                 </Link>
                             </p>
-                        </Form>
+                        </AppForm>
                     </div>
                 </div>
                 <div className="fixed right-10 top-10">
-                    <AppLocale
-                        buttonProps={{
-                            type: 'text',
-                            block: true,
-                        }}
-                    />
+                    <AppLocale buttonProps={{ type: 'text' }} />
                 </div>
             </div>
         </div>

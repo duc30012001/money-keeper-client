@@ -30,6 +30,8 @@ export enum Locale {
     VI = 'vi',
 }
 
+export const defaultLocale = Locale.EN;
+
 export enum ThemeMode {
     LIGHT = 'light',
     DARK = 'dark',

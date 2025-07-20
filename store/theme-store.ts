@@ -1,7 +1,5 @@
-import { ModalType, ThemeMode } from '@/enums/common';
+import { ThemeMode } from '@/enums/common';
 import { create } from 'zustand';
-
-export type TypeModal = ModalType | null;
 
 interface ThemeStore {
     theme: ThemeMode;

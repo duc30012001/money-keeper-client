@@ -1,15 +1,13 @@
 import { ModalType } from '@/enums/common';
 import { create } from 'zustand';
 
-export type TypeModal = ModalType | null;
-
 interface ModalStore<T> {
-    typeModal: TypeModal;
+    typeModal: ModalType | null;
     editingData: T | null;
     isOpen: boolean;
-    setTypeModal: (type: TypeModal) => void;
+    setTypeModal: (type: ModalType | null) => void;
     setEditingData: (data: T | null) => void;
-    openModal: (type: TypeModal, data?: T) => void;
+    openModal: (type: ModalType | null, data?: T) => void;
     closeModal: () => void;
     reset: () => void;
 }

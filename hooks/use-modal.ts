@@ -1,4 +1,5 @@
-import { createModalStore, TypeModal } from '@/store/modal-store';
+import { ModalType } from '@/enums/common';
+import { createModalStore } from '@/store/modal-store';
 
 // Create a default store instance
 const defaultStore = createModalStore<any>();
@@ -6,7 +7,7 @@ const defaultStore = createModalStore<any>();
 export const useModal = <T = any>() => {
     const store = defaultStore();
 
-    const handleOpenModal = (type: TypeModal, data?: T) => {
+    const handleOpenModal = (type: ModalType | null, data?: T) => {
         store.openModal(type, data);
     };
 

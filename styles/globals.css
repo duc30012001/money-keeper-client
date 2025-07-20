@@ -26,10 +26,6 @@ body {
     }
 }
 
-.ant-form-item-label > label {
-    @apply font-semibold;
-}
-
 div.ant-pro-table-list-toolbar-title {
     @apply font-normal;
 }
@@ -39,3 +35,8 @@ div.ant-pro-table-list-toolbar-title {
     height: 18px;
     stroke-width: 1.75;
 }
+
+/* .ant-menu-light .ant-menu-item-selected {
+    background-color: #e6f4ff !important;
+    color: #1677ff !important;
+} */

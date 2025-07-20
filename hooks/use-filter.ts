@@ -36,9 +36,16 @@ export function useFilter<
     };
 
     const onChangeFilter = (newValues: FilterValues, backToFirst = true) => {
+        const sanitized = Object.fromEntries(
+            Object.entries(newValues as {}).map(([key, value]) => [
+                key,
+                value === undefined ? null : value,
+            ])
+        ) as Values<KeyMap>;
+
         setFilterValues({
-            ...(backToFirst ? { page: 1 } : {}),
-            ...(newValues as Values<KeyMap>),
+            ...(backToFirst && { page: 1 }),
+            ...sanitized,
         });
     };
 

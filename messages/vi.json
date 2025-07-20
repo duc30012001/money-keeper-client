@@ -19,28 +19,22 @@
         "url": "Đường dẫn không hợp lệ!",
         "passwordMisMatch": "Mật khẩu không khớp!",
         "passwordFormat": "Mật khẩu bao gồm chữ cái viết hoa và có ít nhất 6 kí tự",
-        "unique": "Dữ liệu không được trùng nhau",
-        "mustBeNumber": "Must be number",
-        "min": "Tối thiểu {number} ký tự",
-        "minValid": "Tối thiểu {number} ký tự hợp lệ",
-        "minWithValid": "Tối thiểu {number} ký tự hợp lệ",
-        "max": "Tối đa {number} ký tự",
-        "numberMin": "Tối thiểu {number}",
-        "numberMax": "Tối đa {number}",
-        "image": "Xin vui lòng chọn ảnh hợp lệ",
-        "video": "Xin vui lòng chọn video hợp lệ",
-        "phoneNumber": "Số điện thoại phải gồm đúng 10 số",
-        "inputPhoneNumber": "Nhập số điện thoại",
-        "selectUsedStatus": "Chọn trạng thái sử dụng",
-        "inputNumberGreaterOrEqualThan0": "Nhập số lớn hơn hoặc bằng 0",
-        "fromCannotBeGreaterThanTo": "Từ không được lớn hơn đến"
+        "required": "Vui lòng nhập {field}.",
+        "stringMin": "{field} cần ít nhất {min} ký tự.",
+        "stringMax": "{field} chỉ được tối đa {max} ký tự.",
+        "numberMin": "{field} phải từ {min} trở lên.",
+        "numberMax": "{field} không được lớn hơn {max}.",
+        "invalidType": "{field} không hợp lệ."
     },
     "common": {
         "loading": "Đang tải...",
         "save": "Lưu",
         "cancel": "Hủy",
         "delete": "Xóa",
-        "edit": "Chỉnh sửa",
+        "edit": {
+            "title": "Chỉnh sửa {label}",
+            "action": "Chỉnh sửa"
+        },
         "view": "Xem",
         "create": "Thêm mới",
         "search": "Tìm kiếm",
@@ -49,7 +43,8 @@
         "no": "Không",
         "description": "Mô tả",
         "createdAt": "Ngày tạo",
-        "updatedAt": "Ngày cập nhật"
+        "updatedAt": "Ngày cập nhật",
+        "submit": "Đồng ý"
     },
     "table": {
         "showTotal": "{from} - {to} trên {total}"
@@ -57,7 +52,7 @@
     "status": {
         "title": "Trạng thái",
         "active": "Kích hoạt",
-        "inactive": "Không kích hoạt"
+        "inactive": "Khoá"
     },
     "language": {
         "english": "English",
@@ -124,5 +119,13 @@
     },
     "dashboard": {
         "title": "Thống kê"
+    },
+    "setting": {
+        "appearance": {
+            "light": "Giao diện tối",
+            "dark": "Giao diện sáng",
+            "device": "Dùng giao diện thiết bị",
+            "alert": "Tùy chọn cài đặt chỉ áp dụng cho trình duyệt này"
+        }
     }
 }

@@ -1,4 +1,5 @@
 import { AxiosError } from 'axios';
+import { useTranslations } from 'next-intl';
 import { toast } from 'react-toastify';
 
 interface ApiErrorResponse {
@@ -8,34 +9,29 @@ interface ApiErrorResponse {
 }
 
 export function useApiError() {
+    const messages = useTranslations();
     const handleError = (error: unknown) => {
+        let messageList: string[] = [];
+
         if (error instanceof AxiosError) {
             const errorResponse = error.response?.data as ApiErrorResponse;
             if (errorResponse?.message) {
                 if (Array.isArray(errorResponse.message)) {
-                    // Show multiple toasts for array messages
-                    errorResponse.message.forEach((message: string) => {
-                        toast.error(message, {
-                            toastId: message,
-                        });
-                    });
-                    return;
+                    messageList = messageList.concat(errorResponse.message);
+                } else {
+                    messageList.push(errorResponse.message);
                 }
-                // Single message
-                toast.error(errorResponse.message, {
-                    toastId: errorResponse.message,
-                });
-                return;
             }
+        } else if (error instanceof Error) {
+            messageList.push(error.message);
+        } else {
+            messageList.push('An unknown error occurred');
         }
 
-        // Handle other error types
-        const message =
-            error instanceof Error
-                ? error.message
-                : 'An unknown error occurred';
-        toast.error(message, {
-            toastId: message,
+        messageList.forEach((message) => {
+            toast.error(messages(message), {
+                toastId: message,
+            });
         });
     };
 

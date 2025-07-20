@@ -29,7 +29,7 @@ function AppContainer({
             <div className="flex gap-3">
                 <div
                     className={cn(
-                        'flex-1 overflow-hidden rounded-2xl border-0 bg-white',
+                        'flex-1 rounded-2xl border-0 bg-white',
                         contentClassName
                     )}
                 >

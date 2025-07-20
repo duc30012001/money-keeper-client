@@ -9,7 +9,7 @@ interface Props extends ButtonProps {
 export function EditButton({ tooltipProps, ...props }: Props) {
     const messages = useTranslations();
     return (
-        <Tooltip title={messages('common.edit')} {...tooltipProps}>
+        <Tooltip title={messages('common.edit.action')} {...tooltipProps}>
             <Button type="text" icon={<Pencil />} {...props} />
         </Tooltip>
     );

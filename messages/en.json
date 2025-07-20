@@ -19,28 +19,22 @@
         "url": "Please enter a valid link format!",
         "passwordMisMatch": "Password mis match!",
         "passwordFormat": "Password must contain 1 uppercase character and at least 6 character",
-        "unique": "Data must not be duplicated",
-        "mustBeNumber": "Must be number",
-        "min": "Must be min {number} characters",
-        "minValid": "Must be min {number} valid characters",
-        "max": "Must be less than {number} characters",
-        "numberMin": "Must be greater than {number} ",
-        "numberMax": "Must be less than {number}",
-        "image": "Please select a image file",
-        "video": "Please select a video file",
-        "phoneNumber": "Phone number must be 10 digits",
-        "inputPhoneNumber": "Enter phone number",
-        "selectUsedStatus": "Select used status",
-        "minWithValid": "Must be min at least {number} valid characters",
-        "inputNumberGreaterOrEqualThan0": "Must be greater than or equal to 0",
-        "fromCannotBeGreaterThanTo": "From cannot be greater than to"
+        "required": "Please enter your {field}.",
+        "stringMin": "{field} must have at least {min} characters.",
+        "stringMax": "{field} can have up to {max} characters only.",
+        "numberMin": "{field} must be at least {min}.",
+        "numberMax": "{field} must not exceed {max}.",
+        "invalidType": "{field} must be a valid value."
     },
     "common": {
         "loading": "Loading...",
         "save": "Save",
         "cancel": "Cancel",
         "delete": "Delete",
-        "edit": "Edit",
+        "edit": {
+            "title": "Edit {label}",
+            "action": "Edit"
+        },
         "view": "View",
         "create": "Create",
         "search": "Search",
@@ -49,7 +43,8 @@
         "no": "No",
         "description": "Description",
         "createdAt": "Created at",
-        "updatedAt": "Updated at"
+        "updatedAt": "Updated at",
+        "submit": "Submit"
     },
     "table": {
         "showTotal": "{from} - {to} of {total}"
@@ -124,5 +119,13 @@
     },
     "dashboard": {
         "title": "Dashboard"
+    },
+    "setting": {
+        "appearance": {
+            "light": "Light theme",
+            "dark": "Dark theme",
+            "device": "Use device theme",
+            "alert": "Setting applies to this browser only"
+        }
     }
 }
