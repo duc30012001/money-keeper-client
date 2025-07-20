@@ -2,7 +2,6 @@
 
 import AppContainer from '@/components/app-container';
 import { CreateButton } from '@/components/ui/button/create-button';
-import { ProCard } from '@ant-design/pro-components';
 import { useTranslations } from 'next-intl';
 
 export default function AccountsPage() {
@@ -13,9 +12,7 @@ export default function AccountsPage() {
             extra={[<CreateButton key={'create'} />]}
             title={messages('account.title')}
         >
-            <ProCard>
-                <div />
-            </ProCard>
+            <div className="h-full bg-zinc-700">AccountsPage</div>
         </AppContainer>
     );
 }

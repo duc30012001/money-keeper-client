@@ -8,7 +8,8 @@
         "dontHaveAccount": "Don't have an account?",
         "alreadyHaveAccount": "Already have an account?",
         "register": "Register",
-        "registerHere": "Register here"
+        "registerHere": "Register here",
+        "signOut": "Sign out"
     },
     "validation": {
         "emailFormat": "Please enter a valid email!",

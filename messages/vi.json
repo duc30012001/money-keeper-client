@@ -8,7 +8,8 @@
         "dontHaveAccount": "Chưa có tài khoản?",
         "alreadyHaveAccount": "Đã có tài khoản?",
         "register": "Đăng ký",
-        "registerHere": "Đăng ký tại đây"
+        "registerHere": "Đăng ký tại đây",
+        "signOut": "Đăng xuất"
     },
     "validation": {
         "emailFormat": "Vui lòng nhập đúng định dạng Email!",

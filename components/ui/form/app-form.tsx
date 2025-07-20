@@ -2,7 +2,6 @@ import { cn } from '@/lib/utils';
 import { Button, ButtonProps, Form, FormProps } from 'antd';
 import { useTranslations } from 'next-intl';
 import React, { ReactNode } from 'react';
-import AppFormItem from './app-form-item';
 
 const FORM_LAYOUT: FormProps = {
     labelCol: { xs: 9, md: 8, lg: 7, xl: 6 },
@@ -30,7 +29,7 @@ type AppFormComponent = React.FC<AppFormProps> & {
     useForm: typeof Form.useForm;
     useFormInstance: typeof Form.useFormInstance;
     useWatch: typeof Form.useWatch;
-    Item: typeof AppFormItem;
+    Item: typeof Form.Item;
     List: typeof Form.List;
     ErrorList: typeof Form.ErrorList;
     Provider: typeof Form.Provider;
@@ -81,7 +80,7 @@ const AppForm: AppFormComponent = ({
 AppForm.useForm = Form.useForm;
 AppForm.useFormInstance = Form.useFormInstance;
 AppForm.useWatch = Form.useWatch;
-AppForm.Item = AppFormItem;
+AppForm.Item = Form.Item;
 AppForm.List = Form.List;
 AppForm.ErrorList = Form.ErrorList;
 AppForm.Provider = Form.Provider;

@@ -6,11 +6,12 @@ import { IconListSkeleton } from '@/modules/icon/components/icon-list-skeleton';
 import { useIconsList } from '@/modules/icon/hooks/use-icons';
 import { Icon } from '@/modules/icon/types/icon';
 import { BaseQuery } from '@/types/common';
-import { Anchor, Col, Row } from 'antd';
+import { Anchor, Col, Row, theme } from 'antd';
 import { parseAsString } from 'nuqs';
 import { toast } from 'react-toastify';
 
 export default function IconsPage() {
+    const { token } = theme.useToken();
     const { filterValues, onSearch } = useFilter<BaseQuery>({
         keyword: parseAsString,
     });
@@ -31,9 +32,13 @@ export default function IconsPage() {
     };
 
     return (
-        <Row>
+        <Row
+            style={{
+                backgroundColor: token.colorBgContainer,
+            }}
+        >
             <Col span={20}>
-                <div className="rounded-lg bg-white p-5">
+                <div className="rounded-lg p-5">
                     {isLoading ? (
                         <IconListSkeleton />
                     ) : (
@@ -50,6 +55,7 @@ export default function IconsPage() {
             </Col>
             <Col span={4}>
                 <Anchor
+                    offsetTop={64}
                     items={Object.keys(groupByTypeData).map((type) => {
                         return {
                             key: type,

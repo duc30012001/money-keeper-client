@@ -1,5 +1,6 @@
 import AppSearch, { AppSearchProps } from '@/components/ui/input/search';
 import { cn } from '@/lib/utils';
+import { theme } from 'antd';
 import Image from 'next/image';
 import { Icon } from '../types/icon';
 
@@ -16,16 +17,25 @@ export function IconList({
     className,
     searchProps,
 }: IconListProps) {
+    const { token } = theme.useToken();
     return (
         <div className="">
-            <div className="sticky top-0 z-[5] mb-2 bg-white p-1">
+            <div
+                className="sticky top-16 z-[5] mb-2 p-1"
+                style={{ backgroundColor: token.colorBgContainer }}
+            >
                 <AppSearch {...searchProps} />
             </div>
             <div className="space-y-10">
                 {Object.keys(data).map((type) => {
                     return (
                         <div id={type} key={type} className="">
-                            <h2 className="sticky top-9 z-[2] mb-3 bg-white py-2.5 font-medium">
+                            <h2
+                                className="sticky top-24 z-[2] mb-3 py-2.5 font-medium"
+                                style={{
+                                    backgroundColor: token.colorBgContainer,
+                                }}
+                            >
                                 {type}
                             </h2>
                             <div
@@ -63,7 +73,7 @@ export function IconItem({ data, onSelect, className }: IconItemProps) {
             title={data.name}
             key={data.id}
             className={cn(
-                'flex cursor-pointer flex-col items-center justify-center rounded-lg px-2 py-4 hover:bg-gray-100',
+                'flex cursor-pointer flex-col items-center justify-center rounded-lg px-2 py-4 hover:bg-gray-100 dark:hover:bg-zinc-800',
                 className
             )}
         >

@@ -1,11 +1,15 @@
 import { ThemeMode } from '@/enums/common';
 import { useThemeMode } from '@/hooks/use-theme-mode';
-import { Button, Dropdown } from 'antd';
-import { ItemType } from 'antd/lib/menu/interface';
+import { Button, ButtonProps, Dropdown, DropdownProps } from 'antd';
+import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 
-export default function AppTheme() {
+interface AppThemeProps extends DropdownProps {
+    buttonProps?: ButtonProps;
+}
+
+export default function AppTheme({ buttonProps, ...props }: AppThemeProps) {
     const messages = useTranslations();
     const { themeMode, setThemeMode } = useThemeMode();
 
@@ -31,19 +35,19 @@ export default function AppTheme() {
         },
     ];
 
-    const data = items.find((item) => item?.key === themeMode);
+    const data = items.find((item) => item?.key === themeMode) as MenuItemType;
 
     return (
         <Dropdown
+            trigger={['click']}
+            {...props}
             menu={{
                 items,
                 onClick: (e) => setThemeMode(e.key as ThemeMode),
                 activeKey: themeMode,
             }}
-            trigger={['click']}
         >
-            {/* @ts-ignore */}
-            <Button>{data?.icon}</Button>
+            <Button {...buttonProps}>{data?.icon}</Button>
         </Dropdown>
     );
 }

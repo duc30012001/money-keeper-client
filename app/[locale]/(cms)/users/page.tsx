@@ -88,7 +88,7 @@ export default function UsersPage() {
                 return [
                     <EditButton
                         key={'edit'}
-                        className="invisible !transition-none group-hover:visible"
+                        className="!transition-none lg:invisible lg:group-hover:visible"
                         onClick={() => openModal(ModalType.EDIT, record)}
                     />,
                 ];
@@ -105,6 +105,7 @@ export default function UsersPage() {
                     onClick={() => openModal(ModalType.CREATE)}
                 />,
             ]}
+            className="overflow-auto"
         >
             <ProTable<User>
                 search={false}
@@ -122,7 +123,7 @@ export default function UsersPage() {
                     x: Screen.XL,
                 }}
                 headerTitle={
-                    <div className="flex gap-2">
+                    <div className="flex w-full flex-col gap-2 md:flex-row">
                         <AppSearch
                             defaultValue={filterValues.keyword}
                             onChange={onSearch}
@@ -143,7 +144,6 @@ export default function UsersPage() {
                 }
                 pagination={{
                     current: data?.meta?.page,
-                    hideOnSinglePage: true,
                     pageSize: data?.meta?.pageSize,
                     total: data?.meta?.total,
                     onChange: onChangePage,

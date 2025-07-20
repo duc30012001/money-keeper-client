@@ -26,17 +26,19 @@ body {
     }
 }
 
-div.ant-pro-table-list-toolbar-title {
-    @apply font-normal;
-}
-
 .lucide {
     width: 18px;
     height: 18px;
     stroke-width: 1.75;
 }
 
-/* .ant-menu-light .ant-menu-item-selected {
-    background-color: #e6f4ff !important;
-    color: #1677ff !important;
-} */
+div.ant-pro-table-list-toolbar-title {
+    @apply font-normal;
+}
+
+@media (max-width: 768px) {
+    .ant-pro-table-list-toolbar .ant-pro-table-list-toolbar-left,
+    .ant-pro-table-list-toolbar-title {
+        width: 100%;
+    }
+}

@@ -1,6 +1,7 @@
 import { Locale } from '@/enums/common';
 import { useLocale } from '@/hooks/use-locale';
 import { Button, ButtonProps, Dropdown, DropdownProps } from 'antd';
+import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 
@@ -12,7 +13,11 @@ export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
     const { locale, switchLocale } = useLocale();
     const messages = useTranslations();
 
-    const options = [
+    const items: ItemType[] = [
+        {
+            type: 'group',
+            label: messages('setting.appearance.alert'),
+        },
         {
             label: (
                 <p className="flex items-center justify-start gap-2">
@@ -25,7 +30,7 @@ export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
                     {messages('language.vietnamese')}
                 </p>
             ),
-            value: Locale.VI,
+            key: Locale.VI,
         },
         {
             label: (
@@ -39,21 +44,20 @@ export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
                     {messages('language.english')}
                 </p>
             ),
-            value: Locale.EN,
+            key: Locale.EN,
         },
     ];
 
-    const currentLocale = options.find((option) => option.value === locale);
+    const currentLocale = items.find(
+        (item) => item?.key === locale
+    ) as MenuItemType;
 
     return (
         <Dropdown
-            {...props}
             trigger={['click']}
+            {...props}
             menu={{
-                items: options.map((option) => ({
-                    key: option.value,
-                    label: option.label,
-                })),
+                items,
                 onClick: ({ key }) => switchLocale(key as Locale),
                 activeKey: locale,
             }}
