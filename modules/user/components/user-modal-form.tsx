@@ -64,7 +64,7 @@ export default function UserModalForm(props: Props) {
             title={
                 editingData
                     ? messages('common.edit.title', {
-                          label: editingData.id,
+                          label: editingData.email,
                       })
                     : messages('common.create')
             }

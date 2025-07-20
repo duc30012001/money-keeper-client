@@ -128,5 +128,20 @@
             "device": "Dùng giao diện thiết bị",
             "alert": "Tùy chọn cài đặt chỉ áp dụng cho trình duyệt này"
         }
+    },
+    "action": {
+        "create": {
+            "title": "Thêm {label}",
+            "success": "Thêm {label} thành công"
+        },
+        "update": {
+            "title": "Cập nhật {label}",
+            "success": "Cập nhật {label} thành công"
+        },
+        "delete": {
+            "title": "Xoá {label}",
+            "alert": "Bạn có chắc muốn xóa {label}? Hành động này không thể hoàn tác.",
+            "success": "Xoá {label} thành công"
+        }
     }
 }

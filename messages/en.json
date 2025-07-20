@@ -128,5 +128,20 @@
             "device": "Use device theme",
             "alert": "Setting applies to this browser only"
         }
+    },
+    "action": {
+        "create": {
+            "title": "Create {label}",
+            "success": "{label} created successfully"
+        },
+        "update": {
+            "title": "Update {label}",
+            "success": "{label} updated successfully"
+        },
+        "delete": {
+            "title": "Delete {label}",
+            "alert": "Are you sure you want to delete {label}? This action cannot be undone.",
+            "success": "{label} deleted successfully"
+        }
     }
 }

@@ -48,7 +48,6 @@ export default function UsersPage() {
         {
             title: messages('user.email'),
             dataIndex: 'email',
-            copyable: true,
             ellipsis: true,
             width: 350,
         },
@@ -88,7 +87,6 @@ export default function UsersPage() {
                 return [
                     <EditButton
                         key={'edit'}
-                        className="!transition-none lg:invisible lg:group-hover:visible"
                         onClick={() => openModal(ModalType.EDIT, record)}
                     />,
                 ];
@@ -108,6 +106,7 @@ export default function UsersPage() {
             className="overflow-auto"
         >
             <ProTable<User>
+                sticky
                 search={false}
                 columns={columns}
                 rowKey="id"
@@ -154,7 +153,6 @@ export default function UsersPage() {
                             total: formatNumber(total),
                         }),
                 }}
-                rowClassName={'group'}
             />
 
             {typeModal &&

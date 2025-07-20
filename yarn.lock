@@ -390,6 +390,11 @@
   dependencies:
     tslib "^2.0.0"
 
+"@edge-runtime/cookies@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@edge-runtime/cookies/-/cookies-5.0.2.tgz#c1ddd8cc740bdd5fcd9b482eddb33f4c096d4d2a"
+  integrity sha512-Sd8LcWpZk/SWEeKGE8LT6gMm5MGfX/wm+GPnh1eBEtCpya3vYqn37wYknwAHw92ONoyyREl1hJwxV/Qx2DWNOg==
+
 "@emnapi/core@^1.4.3":
   version "1.4.5"
   resolved "https://registry.yarnpkg.com/@emnapi/core/-/core-1.4.5.tgz#bfbb0cbbbb9f96ec4e2c4fd917b7bbe5495ceccb"
@@ -1744,6 +1749,11 @@ deep-is@^0.1.3:
   resolved "https://registry.yarnpkg.com/deep-is/-/deep-is-0.1.4.tgz#a6f2dce612fadd2ef1f519b73551f17e85199831"
   integrity sha512-oIPzksmTg4/MriiaYGO+okXDT7ztn/w3Eptv/+gSIdMdKsJo0u4CfYNFJPy+4SKMuCqGw2wxnA+URMg3t8a/bQ==
 
+deepmerge@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/deepmerge/-/deepmerge-4.3.1.tgz#44b5f2147cd3b00d4b56137685966f26fd25dd4a"
+  integrity sha512-3sUqbMEc77XqpdNO7FRyRog+eW3ph+GYCbj+rK+uYyRMuwsVy0rMiVtPn+QJlKFvWP/1PYpapqYn0Me2knFn+A==
+
 define-data-property@^1.0.1, define-data-property@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/define-data-property/-/define-data-property-1.1.4.tgz#894dc141bb7d3060ae4366f6a0107e68fbe48c5e"
@@ -3063,6 +3073,15 @@ next-auth@^4.24.11:
     preact-render-to-string "^5.1.19"
     uuid "^8.3.2"
 
+next-extra@^0.6.3:
+  version "0.6.3"
+  resolved "https://registry.yarnpkg.com/next-extra/-/next-extra-0.6.3.tgz#306f850b3b8ff44caf9bec5d08b46714b8031124"
+  integrity sha512-3odahHou4zWYv71jyFiEPg7idw03OQ8rXZJjmu2LjNgM3YAo8xzruCgchmeOXkV0u+MhUdxzqKJmFr9f+1ykVg==
+  dependencies:
+    "@edge-runtime/cookies" "^5.0.2"
+    deepmerge "^4.3.1"
+    p-safe "^1.0.0"
+
 next-intl@^4.3.4:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/next-intl/-/next-intl-4.3.4.tgz#247ae789f1490b6518e8b18fe13d44cce703098b"
@@ -3257,6 +3276,11 @@ p-locate@^5.0.0:
   integrity sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==
   dependencies:
     p-limit "^3.0.2"
+
+p-safe@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/p-safe/-/p-safe-1.0.0.tgz#4cc37946080653ed50358d3d5d183237df1fe61d"
+  integrity sha512-hEKmRlhj105fU/6G2AGLH8Hn/D4F5hhEMn0h1D4pt1868l1LUv4u3yq/MqNE/Kvyg192Y/pHZgBaFykDiIIB+A==
 
 package-json-from-dist@^1.0.0:
   version "1.0.1"

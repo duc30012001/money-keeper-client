@@ -5,6 +5,7 @@ import { ReactNode } from 'react';
 type Props = {
     children: ReactNode;
     title?: ReactNode;
+    description?: ReactNode;
     className?: string;
     contentClassName?: string;
     extra?: ReactNode[];
@@ -13,6 +14,7 @@ type Props = {
 function AppContainer({
     children,
     title,
+    description,
     className,
     contentClassName,
     extra,
@@ -25,7 +27,18 @@ function AppContainer({
                     'mb-0': !title,
                 })}
             >
-                {title && <h2 className="text-lg font-semibold">{title}</h2>}
+                <div>
+                    {title && <h2 className="text-xl font-bold">{title}</h2>}
+                    {description && (
+                        <p
+                            style={{
+                                color: token.colorTextSecondary,
+                            }}
+                        >
+                            {description}
+                        </p>
+                    )}
+                </div>
                 <div>{extra?.map((item) => item)}</div>
             </div>
             <div

@@ -7,6 +7,7 @@ import {
     useQueryClient,
     UseQueryOptions,
 } from '@tanstack/react-query';
+import { useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { userApi } from '../api/user.api';
@@ -56,6 +57,7 @@ export const useUserDetail = (id: string) => {
 };
 
 export const useCreateUser = () => {
+    const messages = useTranslations();
     const queryClient = useQueryClient();
     const { handleError } = useApiError();
 
@@ -68,13 +70,18 @@ export const useCreateUser = () => {
             queryClient.invalidateQueries({
                 queryKey: userKeys.totalBalance(),
             });
-            toast.success('User created successfully!');
+            toast.success(
+                messages('action.create.success', {
+                    label: messages('user.title'),
+                })
+            );
         },
         onError: handleError,
     });
 };
 
 export const useUpdateUser = () => {
+    const messages = useTranslations();
     const queryClient = useQueryClient();
     const { handleError } = useApiError();
 
@@ -91,7 +98,11 @@ export const useUpdateUser = () => {
             queryClient.invalidateQueries({
                 queryKey: userKeys.totalBalance(),
             });
-            toast.success('User updated successfully!');
+            toast.success(
+                messages('action.update.success', {
+                    label: messages('user.title'),
+                })
+            );
         },
         onError: handleError,
     });
