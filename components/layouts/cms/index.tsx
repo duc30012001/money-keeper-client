@@ -2,7 +2,6 @@ import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
 import AppTheme from '@/components/app-theme';
-import { Screen } from '@/enums/common';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { usePathname } from '@/i18n/navigation';
 import { Button, Drawer, Layout, Menu, theme } from 'antd';
@@ -23,7 +22,7 @@ export default function CMSLayout({ children }: Props) {
     const [collapsed, setCollapsed] = useState(false);
     const messages = useTranslations();
     const pathname = usePathname();
-    const isDesktop = useMediaQuery(`(min-width: ${Screen.LG}px)`);
+    const isDesktop = useMediaQuery(`(min-width: 1024px)`);
 
     const items = SIDEBAR_ITEMS.map((item) => ({
         key: item.href,
@@ -57,33 +56,35 @@ export default function CMSLayout({ children }: Props) {
                     </div>
                 </Header>
                 <Layout>
-                    {isDesktop ? (
-                        <Sider
-                            width={250}
-                            style={{
-                                background: token.colorBgContainer,
-                                height: 'calc(100vh - 4rem)',
-                                position: 'sticky',
-                                top: 64,
-                                borderRightWidth: 1,
-                                borderColor: token.colorBorder,
-                                padding: 4,
-                                paddingBottom: 0,
-                            }}
-                            collapsed={collapsed}
-                            collapsedWidth={64}
-                        >
-                            {/* @ts-ignore */}
-                            <Scrollbars autoHide>
-                                <Menu
-                                    mode="inline"
-                                    selectedKeys={[pathname]}
-                                    style={{ height: '100%', borderRight: 0 }}
-                                    items={items}
-                                />
-                            </Scrollbars>
-                        </Sider>
-                    ) : (
+                    {/* DESKTOP */}
+                    <Sider
+                        className="hidden lg:block"
+                        width={250}
+                        style={{
+                            background: token.colorBgContainer,
+                            height: 'calc(100vh - 4rem)',
+                            position: 'sticky',
+                            top: 64,
+                            borderRightWidth: 1,
+                            borderColor: token.colorBorder,
+                            padding: 4,
+                            paddingBottom: 0,
+                        }}
+                        collapsed={collapsed}
+                        collapsedWidth={64}
+                    >
+                        {/* @ts-ignore */}
+                        <Scrollbars autoHide>
+                            <Menu
+                                mode="inline"
+                                selectedKeys={[pathname]}
+                                style={{ height: '100%', borderRight: 0 }}
+                                items={items}
+                            />
+                        </Scrollbars>
+                    </Sider>
+                    {/* MOBILE */}
+                    {!isDesktop && (
                         <Drawer
                             open={collapsed}
                             placement="left"
