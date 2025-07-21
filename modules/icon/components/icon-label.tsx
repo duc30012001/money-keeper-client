@@ -1,9 +1,11 @@
 import { cn } from '@/lib/utils';
 import { Avatar } from 'antd';
+import { ReactNode } from 'react';
 
 interface IconLabelProps {
     url?: string;
-    name: string;
+    name: ReactNode;
+    description?: ReactNode;
     className?: string;
     avatarClassName?: string;
     style?: React.CSSProperties;
@@ -12,24 +14,24 @@ interface IconLabelProps {
 export function IconLabel({
     url,
     name,
+    description,
     className,
     avatarClassName,
     style,
 }: IconLabelProps) {
     return (
-        <div
-            title={name}
-            className={cn('flex items-center gap-2', className)}
-            style={style}
-        >
+        <div className={cn('flex items-center gap-2', className)} style={style}>
             <Avatar
                 className={cn('rounded-none', avatarClassName)}
                 src={url}
-                alt={name}
+                alt={''}
                 size={24}
                 shape="square"
             />
-            <p className="text-sm">{name}</p>
+            <div>
+                <div className="text-sm">{name}</div>
+                <div className="text-sm">{description}</div>
+            </div>
         </div>
     );
 }

@@ -100,7 +100,8 @@
         "create": "Create account",
         "balance": "Balance",
         "initialBalance": "Initial balance",
-        "count": "Account count"
+        "count": "Account count",
+        "totalBalance": "Total balance: {balance}"
     },
     "transaction": {
         "title": "Transaction",

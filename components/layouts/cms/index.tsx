@@ -2,6 +2,7 @@ import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
 import AppTheme from '@/components/app-theme';
+import { Screen } from '@/enums/common';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { usePathname } from '@/i18n/navigation';
 import { Button, Drawer, Layout, Menu, theme } from 'antd';
@@ -22,7 +23,7 @@ export default function CMSLayout({ children }: Props) {
     const [collapsed, setCollapsed] = useState(false);
     const messages = useTranslations();
     const pathname = usePathname();
-    const isDesktop = useMediaQuery('(min-width: 992px)');
+    const isDesktop = useMediaQuery(`(min-width: ${Screen.LG}px)`);
 
     const items = SIDEBAR_ITEMS.map((item) => ({
         key: item.href,

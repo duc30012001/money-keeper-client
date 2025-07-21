@@ -18,8 +18,10 @@ import { AccountType } from '@/modules/account-type/types/account-type';
 import { DragSortTable, ProColumns } from '@ant-design/pro-components';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'usehooks-ts';
 
 export default function UsersPage() {
+    const isDesktop = useMediaQuery(`(min-width: ${Screen.MD}px)`);
     const messages = useTranslations();
     const { editingData, typeModal, openModal, closeModal } =
         useModal<AccountType>();
@@ -66,12 +68,12 @@ export default function UsersPage() {
             key: 'name',
             dataIndex: 'name',
             ellipsis: true,
-            width: 250,
+            width: isDesktop ? 200 : undefined,
         },
         {
             title: messages('account.count'),
             dataIndex: 'accountCount',
-            width: 150,
+            width: 130,
             render: (_, record) => formatNumber(record.accountCount),
         },
         {
@@ -79,24 +81,28 @@ export default function UsersPage() {
             key: 'name',
             dataIndex: 'description',
             ellipsis: true,
-            width: 250,
+            responsive: ['lg'],
+            width: 200,
         },
         {
             title: messages('common.createdAt'),
             dataIndex: 'createdAt',
-            width: 150,
+            width: 130,
+            responsive: ['xl'],
             render: (_, record) => formatDate(record.createdAt),
         },
         {
             title: messages('common.updatedAt'),
             dataIndex: 'updatedAt',
-            width: 150,
+            width: 130,
+            responsive: ['xl'],
             render: (_, record) => formatDate(record.updatedAt),
         },
         {
             dataIndex: 'action',
-            width: 100,
+            width: 80,
             className: '',
+            fixed: 'right',
             render: (_, record) => {
                 const node = [
                     <EditButton
@@ -119,7 +125,7 @@ export default function UsersPage() {
 
     return (
         <AppContainer
-            title={messages('user.title')}
+            title={messages('accountType.title')}
             extra={[
                 <CreateButton
                     key={'create'}
@@ -141,7 +147,7 @@ export default function UsersPage() {
                     density: false,
                 }}
                 scroll={{
-                    x: Screen.XL,
+                    x: Screen.SM,
                 }}
                 pagination={false}
                 dragSortKey="sort"

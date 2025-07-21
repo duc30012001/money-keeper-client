@@ -20,10 +20,14 @@ import {
 import { Account, AccountSearchParams } from '@/modules/account/types/account';
 import { IconLabel } from '@/modules/icon/components/icon-label';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
+import { theme } from 'antd';
 import { useTranslations } from 'next-intl';
 import { parseAsInteger, parseAsString } from 'nuqs';
+import { useMediaQuery } from 'usehooks-ts';
 
 export default function AccountsPage() {
+    const { token } = theme.useToken();
+    const isDesktop = useMediaQuery(`(min-width: ${Screen.LG}px)`);
     const messages = useTranslations();
     const { editingData, typeModal, openModal, closeModal } =
         useModal<Account>();
@@ -56,9 +60,25 @@ export default function AccountsPage() {
             key: 'name',
             dataIndex: 'name',
             ellipsis: true,
-            width: 250,
+            width: isDesktop ? 250 : undefined,
             render: (_, record) => (
-                <IconLabel name={record.name} url={record.icon?.url} />
+                <IconLabel
+                    name={record.name}
+                    description={
+                        <p
+                            style={{
+                                color:
+                                    Number(record.balance) >= 0
+                                        ? token.colorText
+                                        : token.colorErrorText,
+                            }}
+                            className={'block lg:hidden'}
+                        >
+                            {formatNumber(record.balance)}
+                        </p>
+                    }
+                    url={record.icon?.url}
+                />
             ),
         },
         {
@@ -66,6 +86,7 @@ export default function AccountsPage() {
             key: 'balance',
             dataIndex: 'balance',
             width: 150,
+            responsive: ['lg'],
             render: (_, record) => formatNumber(record.balance),
         },
         {
@@ -73,7 +94,7 @@ export default function AccountsPage() {
             key: 'initialBalance',
             dataIndex: 'initialBalance',
             width: 150,
-
+            responsive: ['xl'],
             render: (_, record) => formatNumber(record.initialBalance),
         },
         {
@@ -81,6 +102,7 @@ export default function AccountsPage() {
             key: 'accountType.name',
             dataIndex: 'accountType.name',
             width: 150,
+            responsive: ['md'],
             render: (_, record) => record.accountType.name,
         },
         {
@@ -89,23 +111,27 @@ export default function AccountsPage() {
             dataIndex: 'description',
             ellipsis: true,
             width: 200,
+            responsive: ['lg'],
         },
         {
             title: messages('common.createdAt'),
             dataIndex: 'createdAt',
-            width: 150,
+            width: 130,
+            responsive: ['xl'],
             render: (_, record) => formatDate(record.createdAt),
         },
         {
             title: messages('common.updatedAt'),
             dataIndex: 'updatedAt',
-            width: 150,
+            width: 130,
+            responsive: ['xl'],
             render: (_, record) => formatDate(record.updatedAt),
         },
         {
             dataIndex: 'action',
             width: 80,
             className: '',
+            fixed: 'right',
             render: (_, record) => {
                 return [
                     <EditButton
@@ -124,7 +150,9 @@ export default function AccountsPage() {
     return (
         <AppContainer
             title={messages('account.title')}
-            description={`Total Balance: ${formatNumber(totalBalance?.data)}`}
+            description={messages('account.totalBalance', {
+                value: formatNumber(totalBalance?.data),
+            })}
             extra={[
                 <CreateButton
                     key={'create'}
@@ -149,7 +177,7 @@ export default function AccountsPage() {
                     density: false,
                 }}
                 scroll={{
-                    x: Screen.XL,
+                    x: isDesktop ? Screen.MD : undefined,
                 }}
                 headerTitle={
                     <div className="flex w-full flex-col gap-2 md:flex-row">

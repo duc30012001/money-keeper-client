@@ -49,17 +49,17 @@ export default function UsersPage() {
             title: messages('user.email'),
             dataIndex: 'email',
             ellipsis: true,
-            width: 350,
+            width: 300,
         },
         {
             title: messages('user.role.title'),
             dataIndex: 'role',
-            width: 150,
+            width: 130,
         },
         {
             title: messages('status.title'),
             dataIndex: 'status',
-            width: 150,
+            width: 130,
             render: (_, record) => (
                 <Switch
                     checked={record.isActive}
@@ -70,19 +70,22 @@ export default function UsersPage() {
         {
             title: messages('common.createdAt'),
             dataIndex: 'createdAt',
-            width: 150,
+            width: 130,
+            responsive: ['xl'],
             render: (_, record) => formatDate(record.createdAt),
         },
         {
             title: messages('common.updatedAt'),
             dataIndex: 'updatedAt',
-            width: 150,
+            width: 130,
+            responsive: ['xl'],
             render: (_, record) => formatDate(record.updatedAt),
         },
         {
             dataIndex: 'action',
-            width: 100,
+            width: 80,
             className: '',
+            fixed: 'right',
             render: (_, record) => {
                 return [
                     <EditButton
@@ -119,7 +122,7 @@ export default function UsersPage() {
                     density: false,
                 }}
                 scroll={{
-                    x: Screen.XL,
+                    x: Screen.SM,
                 }}
                 headerTitle={
                     <div className="flex w-full flex-col gap-2 md:flex-row">

@@ -100,7 +100,8 @@
         "create": "Thêm tài khoản",
         "balance": "Số dư",
         "initialBalance": "Số dư ban đầu",
-        "count": "Số lượng tài khoản"
+        "count": "Số lượng tài khoản",
+        "totalBalance": "Tổng số dư: {value}"
     },
     "transaction": {
         "title": "Giao dịch",
