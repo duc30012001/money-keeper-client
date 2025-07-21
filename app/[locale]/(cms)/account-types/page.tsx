@@ -62,6 +62,7 @@ export default function UsersPage() {
             dataIndex: 'sort',
             width: 60,
             className: 'drag-visible',
+            hideInSetting: true,
         },
         {
             title: messages('accountType.title'),
@@ -101,7 +102,7 @@ export default function UsersPage() {
         {
             dataIndex: 'action',
             width: 80,
-            className: '',
+            hideInSetting: true,
             fixed: 'right',
             render: (_, record) => {
                 const node = [
@@ -159,16 +160,16 @@ export default function UsersPage() {
                     <AccountTypeModalForm open />
                 )}
 
-            {typeModal === ModalType.DELETE && (
+            {editingData && typeModal === ModalType.DELETE && (
                 <ConfirmModal
                     open
                     onCancel={closeModal}
                     onOk={confirmDelete}
                     title={messages('action.delete.title', {
-                        label: editingData?.name ?? '',
+                        label: editingData.name,
                     })}
                     description={messages('action.delete.alert', {
-                        label: editingData?.name ?? '',
+                        label: editingData.name,
                     })}
                 />
             )}

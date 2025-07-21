@@ -84,7 +84,7 @@ export default function UsersPage() {
         {
             dataIndex: 'action',
             width: 80,
-            className: '',
+            hideInSetting: true,
             fixed: 'right',
             render: (_, record) => {
                 return [

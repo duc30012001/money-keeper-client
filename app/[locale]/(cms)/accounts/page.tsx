@@ -128,7 +128,7 @@ export default function AccountsPage() {
         {
             dataIndex: 'action',
             width: 80,
-            className: '',
+            hideInSetting: true,
             fixed: 'right',
             render: (_, record) => {
                 return [
@@ -160,9 +160,6 @@ export default function AccountsPage() {
             className="overflow-auto"
         >
             <ProTable<Account>
-                sticky={{
-                    offsetHeader: 64,
-                }}
                 search={false}
                 columns={columns}
                 rowKey="id"
@@ -213,16 +210,16 @@ export default function AccountsPage() {
                     <AccountModalForm open />
                 )}
 
-            {typeModal === ModalType.DELETE && (
+            {editingData && typeModal === ModalType.DELETE && (
                 <ConfirmModal
                     open
                     onCancel={closeModal}
                     onOk={confirmDelete}
                     title={messages('action.delete.title', {
-                        label: editingData?.name ?? '',
+                        label: editingData.name,
                     })}
                     description={messages('action.delete.alert', {
-                        label: editingData?.name ?? '',
+                        label: editingData.name,
                     })}
                 />
             )}
