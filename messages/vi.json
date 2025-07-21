@@ -124,8 +124,8 @@
     },
     "setting": {
         "appearance": {
-            "light": "Giao diện tối",
-            "dark": "Giao diện sáng",
+            "light": "Giao diện sáng",
+            "dark": "Giao diện tối",
             "device": "Dùng giao diện thiết bị",
             "alert": "Tùy chọn cài đặt chỉ áp dụng cho trình duyệt này"
         }
