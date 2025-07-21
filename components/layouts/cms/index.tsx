@@ -58,7 +58,6 @@ export default function CMSLayout({ children }: Props) {
                 <Layout>
                     {/* DESKTOP */}
                     <Sider
-                        className="hidden lg:block"
                         width={250}
                         style={{
                             background: token.colorBgContainer,
@@ -67,11 +66,11 @@ export default function CMSLayout({ children }: Props) {
                             top: 64,
                             borderRightWidth: 1,
                             borderColor: token.colorBorder,
-                            padding: 4,
+                            padding: isDesktop ? 4 : 0,
                             paddingBottom: 0,
                         }}
-                        collapsed={collapsed}
-                        collapsedWidth={64}
+                        collapsed={isDesktop ? collapsed : true}
+                        collapsedWidth={isDesktop ? 64 : 0}
                     >
                         {/* @ts-ignore */}
                         <Scrollbars autoHide>
