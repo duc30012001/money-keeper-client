@@ -28,7 +28,7 @@ function IconSelect({ ...props }: Props) {
             showSearch
             allowClear
             {...props}
-            className={cn('w-full lg:w-48', props.className)}
+            className={cn('w-full lg:w-56', props.className)}
             filterOption={(input, option) =>
                 option?.string.toLowerCase().includes(input.toLowerCase()) ??
                 false

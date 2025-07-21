@@ -10,7 +10,6 @@ const nextIntl = createNextIntlMiddleware(routing);
 
 export async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
-    console.log('pathname:', pathname);
 
     if (pathname.startsWith('/api') && !pathname.startsWith('/api/v1')) {
         return NextResponse.next();
@@ -45,7 +44,6 @@ export async function middleware(req: NextRequest) {
 
     // 3. Proxy Authorization header for your /api/v1 calls
     if (pathname.startsWith('/api/v1') && token?.accessToken) {
-        console.log('api call');
         const res = NextResponse.next();
         res.headers.set('Authorization', `Bearer ${token.accessToken}`);
         // *don’t* call nextIntl here—this is an API route

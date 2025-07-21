@@ -101,7 +101,7 @@
         "balance": "Balance",
         "initialBalance": "Initial balance",
         "count": "Account count",
-        "totalBalance": "Total balance: {balance}"
+        "totalBalance": "Total balance: {value}"
     },
     "transaction": {
         "title": "Transaction",

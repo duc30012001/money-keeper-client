@@ -10,6 +10,7 @@ import { ModalType, PageSize, Screen } from '@/enums/common';
 import { useFilter } from '@/hooks/use-filter';
 import { useModal } from '@/hooks/use-modal';
 import { formatDate, formatNumber } from '@/lib/format';
+import { arrayFromString, arrayToString } from '@/lib/utils';
 import AccountTypeSelect from '@/modules/account-type/components/account-type-select';
 import AccountModalForm from '@/modules/account/components/account-modal-form';
 import {
@@ -63,20 +64,17 @@ export default function AccountsPage() {
             width: isDesktop ? 250 : undefined,
             render: (_, record) => (
                 <IconLabel
-                    name={record.name}
-                    description={
-                        <p
-                            style={{
-                                color:
-                                    Number(record.balance) >= 0
-                                        ? token.colorText
-                                        : token.colorErrorText,
-                            }}
-                            className={'block lg:hidden'}
-                        >
-                            {formatNumber(record.balance)}
-                        </p>
-                    }
+                    title={record.name}
+                    description={formatNumber(record.balance)}
+                    descriptionClassname="block lg:hidden"
+                    styles={{
+                        description: {
+                            color:
+                                Number(record.balance) >= 0
+                                    ? token.colorTextSecondary
+                                    : token.colorErrorText,
+                        },
+                    }}
                     url={record.icon?.url}
                 />
             ),
@@ -186,9 +184,12 @@ export default function AccountsPage() {
                             onChange={onSearch}
                         />
                         <AccountTypeSelect
-                            value={filterValues.accountTypeIds}
+                            mode="multiple"
+                            value={arrayFromString(filterValues.accountTypeIds)}
                             onChange={(value) =>
-                                onChangeFilter({ accountTypeIds: value })
+                                onChangeFilter({
+                                    accountTypeIds: arrayToString(value),
+                                })
                             }
                         />
                     </div>

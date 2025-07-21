@@ -23,7 +23,7 @@ export default function UserStatusSelect(props: Props) {
             allowClear
             placeholder={messages('status.title')}
             {...props}
-            className={cn('w-full lg:w-48', props.className)}
+            className={cn('w-full lg:w-56', props.className)}
             options={options}
         />
     );

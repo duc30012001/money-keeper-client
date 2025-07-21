@@ -20,7 +20,7 @@ export default function AppSearch({
 
     const debounceSearchChange = debounce(onChange, delay);
     return (
-        <div className={cn('w-full lg:w-48', wrapperClassName)}>
+        <div className={cn('w-full lg:w-56', wrapperClassName)}>
             <Input
                 id={props.defaultValue?.toString() ?? Math.random().toString()}
                 onChange={(e) => debounceSearchChange(e)}

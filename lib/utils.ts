@@ -32,3 +32,23 @@ export function getErrorMessage(error: unknown): string {
 
     return 'An unknown error occurred';
 }
+
+export function arrayToString(
+    value: any,
+    separator: string = ','
+): string | undefined {
+    if (Array.isArray(value) && value.length > 0) {
+        return value.join(separator);
+    }
+    return undefined;
+}
+
+export function arrayFromString(
+    value: any,
+    separator: string = ','
+): string[] | undefined {
+    if (typeof value === 'string') {
+        return value.split(separator);
+    }
+    return undefined;
+}

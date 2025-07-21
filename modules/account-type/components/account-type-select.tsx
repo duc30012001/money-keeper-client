@@ -20,8 +20,9 @@ function AccountTypeSelect({ ...props }: Props) {
             placeholder={messages('accountType.title')}
             showSearch
             allowClear
+            maxTagCount="responsive"
             {...props}
-            className={cn('w-full lg:w-48', props.className)}
+            className={cn('w-full lg:w-56', props.className)}
             filterOption={(input, option) =>
                 option?.label.toLowerCase().includes(input.toLowerCase()) ??
                 false
