@@ -45,7 +45,8 @@
         "description": "Mô tả",
         "createdAt": "Ngày tạo",
         "updatedAt": "Ngày cập nhật",
-        "submit": "Đồng ý"
+        "submit": "Đồng ý",
+        "viewMore": "Xem thêm"
     },
     "table": {
         "showTotal": "{from} - {to} trên {total}"
@@ -101,26 +102,49 @@
         "balance": "Số dư",
         "initialBalance": "Số dư ban đầu",
         "count": "Số lượng tài khoản",
-        "totalBalance": "Tổng số dư: {value}"
+        "totalBalance": "Tổng số dư: {value}",
+        "currentBalance": "Số dư hiện tại"
     },
     "transaction": {
         "title": "Giao dịch",
         "select": "Chọn giao dịch",
         "create": "Thêm giao dịch",
+        "edit": {
+            "title": "Chỉnh sửa giao dịch {label}",
+            "action": "Chỉnh sửa giao dịch"
+        },
         "amount": "Số tiền",
         "date": "Ngày giao dịch",
         "type": {
+            "title": "Loại giao dịch",
             "income": "Thu nhập",
-            "expense": "Chi phí",
+            "expense": "Chi tiêu",
             "transfer": {
                 "title": "Chuyển khoản",
                 "from": "Từ tài khoản",
-                "to": "Đến tài khoản"
+                "to": "Đến tài khoản",
+                "message": "Chuyển khoản đến {value}"
             }
-        }
+        },
+        "dateFilter": {
+            "today": "Hôm nay",
+            "thisMonth": "Tháng này",
+            "lastMonth": "Tháng trước",
+            "thisQuarter": "Quý này",
+            "lastQuarter": "Quý trước",
+            "thisYear": "Năm nay",
+            "lastYear": "Năm trước",
+            "lastNDay": "{day} ngày qua"
+        },
+        "recent": "Giao dịch gần đây"
     },
     "dashboard": {
-        "title": "Thống kê"
+        "title": "Thống kê",
+        "saving": "Tiết kiệm",
+        "fromPreviousPeriod": "So với khoảng thời gian trước đó",
+        "topIncomeByCategory": "Top Thu Nhập Theo Danh Mục",
+        "topExpenseByCategory": "Top Chi Tiêu Theo Danh Mục",
+        "calendar": "Lịch Tài Chính"
     },
     "setting": {
         "appearance": {
@@ -144,5 +168,9 @@
             "alert": "Bạn có chắc muốn xóa {label}? Hành động này không thể hoàn tác.",
             "success": "Xoá {label} thành công"
         }
+    },
+    "date": {
+        "month": "Tháng",
+        "year": "Năm"
     }
 }

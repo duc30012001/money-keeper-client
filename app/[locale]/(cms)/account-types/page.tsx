@@ -1,9 +1,8 @@
 'use client';
 
 import AppContainer from '@/components/app-container';
+import ActionButton from '@/components/ui/button/action-button';
 import { CreateButton } from '@/components/ui/button/create-button';
-import { DeleteButton } from '@/components/ui/button/delete-button';
-import { EditButton } from '@/components/ui/button/edit-button';
 import ConfirmModal from '@/components/ui/modal/confirm-modal';
 import { ModalType, Screen } from '@/enums/common';
 import { useModal } from '@/hooks/use-modal';
@@ -16,12 +15,12 @@ import {
 } from '@/modules/account-type/hooks/use-account-types';
 import { AccountType } from '@/modules/account-type/types/account-type';
 import { DragSortTable, ProColumns } from '@ant-design/pro-components';
+import { useResponsive } from 'antd-style';
 import { useTranslations } from 'next-intl';
 import { useEffect, useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
 
 export default function UsersPage() {
-    const isDesktop = useMediaQuery(`(min-width: ${Screen.MD}px)`);
+    const responsive = useResponsive();
     const messages = useTranslations();
     const { editingData, typeModal, openModal, closeModal } =
         useModal<AccountType>();
@@ -69,7 +68,7 @@ export default function UsersPage() {
             key: 'name',
             dataIndex: 'name',
             ellipsis: true,
-            width: isDesktop ? 200 : undefined,
+            width: responsive.lg ? 200 : undefined,
         },
         {
             title: messages('account.count'),
@@ -101,25 +100,22 @@ export default function UsersPage() {
         },
         {
             dataIndex: 'action',
-            width: 80,
+            width: responsive.lg ? 80 : 50,
             hideInSetting: true,
             fixed: 'right',
             render: (_, record) => {
-                const node = [
-                    <EditButton
-                        key={'edit'}
-                        onClick={() => openModal(ModalType.EDIT, record)}
+                return [
+                    <ActionButton
+                        key="action"
+                        editProps={{
+                            onClick: () => openModal(ModalType.EDIT, record),
+                        }}
+                        deleteProps={{
+                            onClick: () => openModal(ModalType.DELETE, record),
+                            show: record.accountCount === 0,
+                        }}
                     />,
                 ];
-                if (record.accountCount === 0) {
-                    node.push(
-                        <DeleteButton
-                            key={'delete'}
-                            onClick={() => openModal(ModalType.DELETE, record)}
-                        />
-                    );
-                }
-                return node;
             },
         },
     ];
@@ -136,6 +132,13 @@ export default function UsersPage() {
             className="overflow-auto"
         >
             <DragSortTable<AccountType>
+                columnsState={{
+                    persistenceType: 'localStorage',
+                    defaultValue: {
+                        createdAt: { show: false },
+                        updatedAt: { show: false },
+                    },
+                }}
                 search={false}
                 columns={columns}
                 rowKey="id"

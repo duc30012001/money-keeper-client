@@ -1,12 +1,12 @@
 import { UserRole } from '@/modules/user/enums/user';
 import {
-    CreditCard,
+    ChartColumnBig,
     Layers,
     LayoutGrid,
-    ListCheck,
+    ScrollText,
     Tag,
-    User,
     Users,
+    Wallet,
     type LucideIcon,
 } from 'lucide-react';
 
@@ -39,19 +39,19 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         title: 'Dashboard',
         name: 'dashboard.title',
         href: AppRoute.DASHBOARD,
-        icon: ListCheck,
+        icon: ChartColumnBig,
     },
     {
         title: 'Transactions',
         name: 'transaction.title',
         href: AppRoute.TRANSACTIONS,
-        icon: CreditCard,
+        icon: ScrollText,
     },
     {
         title: 'Accounts',
         name: 'account.title',
         href: AppRoute.ACCOUNTS,
-        icon: User,
+        icon: Wallet,
     },
     {
         title: 'Account Types',

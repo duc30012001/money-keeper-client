@@ -58,7 +58,9 @@ export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
             {...props}
             menu={{
                 items,
-                onClick: ({ key }) => switchLocale(key as Locale),
+                onClick: ({ key }) => {
+                    switchLocale(key as Locale);
+                },
                 activeKey: locale,
             }}
         >

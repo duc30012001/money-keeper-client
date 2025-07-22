@@ -10,9 +10,9 @@ function AccountTypeSelect({ ...props }: Props) {
 
     const { data } = useAccountTypesList();
 
-    const options = (data?.data ?? []).map((data) => ({
-        value: data.id,
-        label: data.name,
+    const options = (data?.data ?? []).map((item) => ({
+        value: item.id,
+        label: item.name,
     }));
 
     return (
@@ -22,7 +22,7 @@ function AccountTypeSelect({ ...props }: Props) {
             allowClear
             maxTagCount="responsive"
             {...props}
-            className={cn('w-full lg:w-56', props.className)}
+            className={cn('w-full', props.className)}
             filterOption={(input, option) =>
                 option?.label.toLowerCase().includes(input.toLowerCase()) ??
                 false

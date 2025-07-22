@@ -24,7 +24,7 @@ export default function UserRoleSelect(props: Props) {
             allowClear
             placeholder={messages('user.role.title')}
             {...props}
-            className={cn('w-full lg:w-56', props.className)}
+            className={cn('w-full', props.className)}
             options={options}
         />
     );

@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { Select, SelectProps } from 'antd';
 import { useTranslations } from 'next-intl';
 import { useAccountsList } from '../hooks/use-accounts';
@@ -10,9 +11,10 @@ function AccountSelect({ className, ...props }: Props) {
 
     const { data } = useAccountsList({ pageSize: 1000 });
 
-    const options = (data?.data ?? []).map((data) => ({
-        value: data.id,
-        label: data.name,
+    const options = (data?.data ?? []).map((item) => ({
+        value: item.id,
+        label: item.name,
+        icon: item.icon?.url,
     }));
 
     return (
@@ -20,12 +22,17 @@ function AccountSelect({ className, ...props }: Props) {
             placeholder={messages('account.title')}
             showSearch
             className={cn('w-full', className)}
+            maxTagCount={'responsive'}
+            allowClear
             {...props}
             filterOption={(input, option) =>
                 option?.label.toLowerCase().includes(input.toLowerCase()) ??
                 false
             }
             options={options}
+            optionRender={({ data }) => (
+                <IconLabel title={data.label} url={data.icon} />
+            )}
         />
     );
 }

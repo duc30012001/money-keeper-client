@@ -1,9 +1,8 @@
 'use client';
 
 import AppContainer from '@/components/app-container';
+import ActionButton from '@/components/ui/button/action-button';
 import { CreateButton } from '@/components/ui/button/create-button';
-import { DeleteButton } from '@/components/ui/button/delete-button';
-import { EditButton } from '@/components/ui/button/edit-button';
 import AppSearch from '@/components/ui/input/search';
 import ConfirmModal from '@/components/ui/modal/confirm-modal';
 import { ModalType, PageSize, Screen } from '@/enums/common';
@@ -22,13 +21,13 @@ import { Account, AccountSearchParams } from '@/modules/account/types/account';
 import { IconLabel } from '@/modules/icon/components/icon-label';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { theme } from 'antd';
+import { useResponsive } from 'antd-style';
 import { useTranslations } from 'next-intl';
 import { parseAsInteger, parseAsString } from 'nuqs';
-import { useMediaQuery } from 'usehooks-ts';
 
 export default function AccountsPage() {
     const { token } = theme.useToken();
-    const isDesktop = useMediaQuery(`(min-width: ${Screen.LG}px)`);
+    const responsive = useResponsive();
     const messages = useTranslations();
     const { editingData, typeModal, openModal, closeModal } =
         useModal<Account>();
@@ -61,7 +60,7 @@ export default function AccountsPage() {
             key: 'name',
             dataIndex: 'name',
             ellipsis: true,
-            width: isDesktop ? 250 : undefined,
+            width: responsive.lg ? 250 : undefined,
             render: (_, record) => (
                 <IconLabel
                     title={record.name}
@@ -127,18 +126,19 @@ export default function AccountsPage() {
         },
         {
             dataIndex: 'action',
-            width: 80,
+            width: responsive.lg ? 80 : 50,
             hideInSetting: true,
             fixed: 'right',
             render: (_, record) => {
                 return [
-                    <EditButton
-                        key={'edit'}
-                        onClick={() => openModal(ModalType.EDIT, record)}
-                    />,
-                    <DeleteButton
-                        key={'delete'}
-                        onClick={() => openModal(ModalType.DELETE, record)}
+                    <ActionButton
+                        key="action"
+                        editProps={{
+                            onClick: () => openModal(ModalType.EDIT, record),
+                        }}
+                        deleteProps={{
+                            onClick: () => openModal(ModalType.DELETE, record),
+                        }}
                     />,
                 ];
             },
@@ -160,6 +160,15 @@ export default function AccountsPage() {
             className="overflow-auto"
         >
             <ProTable<Account>
+                sticky
+                columnsState={{
+                    persistenceType: 'localStorage',
+                    defaultValue: {
+                        initialBalance: { show: false },
+                        createdAt: { show: false },
+                        updatedAt: { show: false },
+                    },
+                }}
                 search={false}
                 columns={columns}
                 rowKey="id"
@@ -172,10 +181,10 @@ export default function AccountsPage() {
                     density: false,
                 }}
                 scroll={{
-                    x: isDesktop ? Screen.MD : undefined,
+                    x: responsive.lg ? Screen.MD : undefined,
                 }}
                 headerTitle={
-                    <div className="flex w-full flex-col gap-2 md:flex-row">
+                    <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         <AppSearch
                             defaultValue={filterValues.keyword}
                             onChange={onSearch}

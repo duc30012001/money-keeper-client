@@ -43,8 +43,12 @@ export default function CMSLayout({ children }: Props) {
                     }}
                     className="sticky top-0 z-50 flex items-center justify-between border-b !px-2"
                 >
-                    <div className="flex items-center gap-2">
-                        <Button type="text" onClick={toggleSidebar}>
+                    <div className="flex items-center gap-3">
+                        <Button
+                            type="text"
+                            onClick={toggleSidebar}
+                            className="!px-2"
+                        >
                             <MenuIcon />
                         </Button>
                         <AppLogo labelClassName="hidden lg:block" />
@@ -71,7 +75,7 @@ export default function CMSLayout({ children }: Props) {
                             paddingBottom: 0,
                         }}
                         collapsed={collapsed}
-                        collapsedWidth={64}
+                        collapsedWidth={57}
                     >
                         {/* @ts-ignore */}
                         <Scrollbars autoHide>

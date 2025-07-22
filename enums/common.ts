@@ -37,3 +37,11 @@ export enum ThemeMode {
     DARK = 'dark',
     SYSTEM = 'system',
 }
+
+export enum DateFormat {
+    /** Day/Month/Year */
+    DATE = 'DD/MM/YYYY',
+
+    /** Hour:Minute Day/Month/Year */
+    DATETIME = 'HH:mm DD/MM/YYYY',
+}

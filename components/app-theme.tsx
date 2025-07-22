@@ -1,5 +1,6 @@
 import { ThemeMode } from '@/enums/common';
 import { useThemeMode } from '@/hooks/use-theme-mode';
+import { cn } from '@/lib/utils';
 import { Button, ButtonProps, Dropdown, DropdownProps } from 'antd';
 import { ItemType, MenuItemType } from 'antd/es/menu/interface';
 import { MonitorIcon, MoonIcon, SunIcon } from 'lucide-react';
@@ -47,7 +48,12 @@ export default function AppTheme({ buttonProps, ...props }: AppThemeProps) {
                 activeKey: themeMode,
             }}
         >
-            <Button {...buttonProps}>{data?.icon}</Button>
+            <Button
+                {...buttonProps}
+                className={cn('!px-2', buttonProps?.className)}
+            >
+                {data?.icon}
+            </Button>
         </Dropdown>
     );
 }

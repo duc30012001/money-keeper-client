@@ -1,8 +1,9 @@
+import { DateFormat } from '@/enums/common';
 import dayjs from 'dayjs';
 
 export function formatDate(
     date: Date | string | number | undefined,
-    format = 'HH:mm DD/MM/YYYY'
+    format = DateFormat.DATETIME
 ) {
     if (!date) return '';
 
@@ -19,4 +20,8 @@ export function formatNumber(
     options?: Intl.NumberFormatOptions
 ): string {
     return new Intl.NumberFormat([], options).format(Number(value));
+}
+
+export function calculatePercent(value: number, total: number) {
+    return ((value / total) * 100).toFixed(2);
 }

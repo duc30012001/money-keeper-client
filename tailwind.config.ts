@@ -14,6 +14,17 @@ const config: Config = {
                 background: 'var(--background)',
                 foreground: 'var(--foreground)',
             },
+            screens: {
+                // extra‐small: everything below 576px (you can omit xs: if you don't need a prefix)
+                xs: '0px',
+
+                // AntD sm/md/lg/xl/xxl
+                sm: '576px',
+                md: '768px',
+                lg: '992px',
+                xl: '1200px',
+                xxl: '1600px',
+            },
         },
     },
     plugins: [],

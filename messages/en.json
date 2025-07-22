@@ -45,7 +45,8 @@
         "description": "Description",
         "createdAt": "Created at",
         "updatedAt": "Updated at",
-        "submit": "Submit"
+        "submit": "Submit",
+        "viewMore": "View more"
     },
     "table": {
         "showTotal": "{from} - {to} of {total}"
@@ -101,26 +102,49 @@
         "balance": "Balance",
         "initialBalance": "Initial balance",
         "count": "Account count",
-        "totalBalance": "Total balance: {value}"
+        "totalBalance": "Total balance: {value}",
+        "currentBalance": "Current balance"
     },
     "transaction": {
         "title": "Transaction",
         "select": "Select transaction",
         "create": "Create transaction",
+        "edit": {
+            "title": "Edit transaction {label}",
+            "action": "Edit transaction"
+        },
         "amount": "Amount",
         "date": "Transaction date",
         "type": {
+            "title": "Transaction type",
             "income": "Income",
             "expense": "Expense",
             "transfer": {
                 "title": "Transfer",
                 "from": "From account",
-                "to": "To account"
+                "to": "To account",
+                "message": "Transform to {value}"
             }
-        }
+        },
+        "dateFilter": {
+            "today": "Today",
+            "thisMonth": "This month",
+            "lastMonth": "Last month",
+            "thisQuarter": "This quarter",
+            "lastQuarter": "Last quarter",
+            "thisYear": "This year",
+            "lastYear": "Last year",
+            "lastNDay": "Last {day} day(s)"
+        },
+        "recent": "Recent transactions"
     },
     "dashboard": {
-        "title": "Dashboard"
+        "title": "Dashboard",
+        "saving": "Saving",
+        "fromPreviousPeriod": "Compare to previous period",
+        "topIncomeByCategory": "Top Income by Category",
+        "topExpenseByCategory": "Top Expense by Category",
+        "calendar": "Financial Calendar"
     },
     "setting": {
         "appearance": {
@@ -144,5 +168,9 @@
             "alert": "Are you sure you want to delete {label}? This action cannot be undone.",
             "success": "{label} deleted successfully"
         }
+    },
+    "date": {
+        "month": "Month",
+        "year": "Year"
     }
 }

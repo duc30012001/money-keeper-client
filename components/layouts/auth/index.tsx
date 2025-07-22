@@ -12,7 +12,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
     return (
         <div
             className="flex min-h-screen flex-col items-center justify-center bg-cover bg-center px-4 py-6"
-            style={{ backgroundColor: token.colorBgContainer }}
+            style={{ backgroundColor: token.colorBgLayout }}
         >
             <div className="w-full max-w-[400px]">
                 <div className="mb-8">

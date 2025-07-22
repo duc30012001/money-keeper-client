@@ -36,6 +36,10 @@ div.ant-pro-table-list-toolbar-title {
     @apply font-normal;
 }
 
+.recharts-tooltip-wrapper {
+    @apply z-10;
+}
+
 @media (max-width: 768px) {
     .ant-pro-table-list-toolbar .ant-pro-table-list-toolbar-left,
     .ant-pro-table-list-toolbar-title {

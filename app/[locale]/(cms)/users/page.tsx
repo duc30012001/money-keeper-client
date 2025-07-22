@@ -1,8 +1,8 @@
 'use client';
 
 import AppContainer from '@/components/app-container';
+import ActionButton from '@/components/ui/button/action-button';
 import { CreateButton } from '@/components/ui/button/create-button';
-import { EditButton } from '@/components/ui/button/edit-button';
 import AppSearch from '@/components/ui/input/search';
 import { ModalType, PageSize, Screen } from '@/enums/common';
 import { useFilter } from '@/hooks/use-filter';
@@ -83,14 +83,20 @@ export default function UsersPage() {
         },
         {
             dataIndex: 'action',
-            width: 80,
+            width: 50,
             hideInSetting: true,
             fixed: 'right',
             render: (_, record) => {
                 return [
-                    <EditButton
-                        key={'edit'}
-                        onClick={() => openModal(ModalType.EDIT, record)}
+                    <ActionButton
+                        key="action"
+                        editProps={{
+                            onClick: () => openModal(ModalType.EDIT, record),
+                        }}
+                        deleteProps={{
+                            onClick: () => openModal(ModalType.DELETE, record),
+                            show: false,
+                        }}
                     />,
                 ];
             },
@@ -110,6 +116,7 @@ export default function UsersPage() {
         >
             <ProTable<User>
                 sticky
+                columnsState={{ persistenceType: 'localStorage' }}
                 search={false}
                 columns={columns}
                 rowKey="id"
@@ -125,7 +132,7 @@ export default function UsersPage() {
                     x: Screen.SM,
                 }}
                 headerTitle={
-                    <div className="flex w-full flex-col gap-2 md:flex-row">
+                    <div className="grid w-full grid-cols-1 gap-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                         <AppSearch
                             defaultValue={filterValues.keyword}
                             onChange={onSearch}

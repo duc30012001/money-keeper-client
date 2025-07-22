@@ -1,4 +1,3 @@
-import { PageSize } from '@/enums/common';
 import { useApiError } from '@/hooks/use-api-error';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
@@ -7,7 +6,6 @@ import {
     useQueryClient,
     UseQueryOptions,
 } from '@tanstack/react-query';
-import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { accountApi } from '../api/account.api';
 import {
@@ -145,16 +143,4 @@ export const useDeleteAccount = () => {
         },
         onError: handleError,
     });
-};
-
-export const useAccountSearchParams = (): AccountSearchParams => {
-    const searchParams = useSearchParams();
-
-    return {
-        page: Number(searchParams.get('page') || 1),
-        pageSize: Number(searchParams.get('pageSize') || PageSize.MEDIUM),
-        keyword: searchParams.get('keyword') || undefined,
-        accountTypeIds: searchParams.get('accountTypeIds') || undefined,
-        sort: searchParams.get('sort') || undefined,
-    };
 };

@@ -1,6 +1,6 @@
 import { ThemeMode } from '@/enums/common';
 import { theme } from 'antd';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { create } from 'zustand';
 
 interface Store {
@@ -42,27 +42,37 @@ export const useThemeMode = () => {
         return () => mql.removeEventListener('change', listener);
     }, []);
 
+    const isDark = useRef(false);
+
     // decide which algorithm to apply
     const algorithm = useMemo(() => {
         if (typeof window === 'undefined') return;
 
         if (themeMode === ThemeMode.LIGHT) {
             document.documentElement.classList.remove('dark');
+            isDark.current = false;
             return theme.defaultAlgorithm;
         }
+
         if (themeMode === ThemeMode.DARK) {
             document.documentElement.classList.add('dark');
+            isDark.current = true;
             return theme.darkAlgorithm;
         }
+
         if (prefersDark) {
             document.documentElement.classList.add('dark');
+            isDark.current = true;
             return theme.darkAlgorithm;
         }
+
         document.documentElement.classList.remove('dark');
+        isDark.current = false;
         return theme.defaultAlgorithm;
     }, [themeMode, prefersDark]);
 
     return {
+        isDark: isDark.current,
         algorithm,
         themeMode,
         setThemeMode: onChangeTheme,

@@ -17,7 +17,7 @@ const FORM_LAYOUT_VERTICAL: FormProps = {
     labelAlign: 'left',
 };
 
-export interface AppFormProps extends FormProps {
+export interface AppFormProps<T = any> extends FormProps<T> {
     children?: ReactNode;
     submitText?: ReactNode;
     submitProps?: ButtonProps & {

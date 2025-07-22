@@ -1,15 +1,18 @@
+'use client';
+
+import { useThemeMode } from '@/hooks/use-theme-mode';
 import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-type Props = {};
+export default function AppToast() {
+    const { isDark } = useThemeMode();
 
-function AppToast({}: Props) {
     return (
         <ToastContainer
-            pauseOnFocusLoss={false}
             position="bottom-right"
-            pauseOnHover
+            newestOnTop
+            closeOnClick
+            theme={isDark ? 'dark' : 'light'}
         />
     );
 }
-
-export default AppToast;

@@ -1,5 +1,4 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { signOut } from 'next-auth/react';
 
 const replacer = (_key: string, value: any) =>
     value === undefined ? null : value;
@@ -33,9 +32,10 @@ const axiosInstance: AxiosInstance = axios.create(config);
 axiosInstance.interceptors.response.use(
     (res: AxiosResponse) => res,
     (error) => {
-        if (error.response?.status === 401) {
-            signOut();
-        }
+        console.log('error:', error);
+        // if (error.response?.status === 401) {
+        //     signOut();
+        // }
         return Promise.reject(error);
     }
 );

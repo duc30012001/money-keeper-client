@@ -122,7 +122,7 @@ export default function AccountModalForm(props: Props) {
                         },
                     ]}
                 >
-                    <AccountTypeSelect className="lg:w-full" />
+                    <AccountTypeSelect />
                 </AppForm.Item>
                 <AppForm.Item
                     label={messages('icon.title')}
@@ -134,7 +134,7 @@ export default function AccountModalForm(props: Props) {
                         },
                     ]}
                 >
-                    <IconSelect className="lg:w-full" />
+                    <IconSelect />
                 </AppForm.Item>
                 <AppForm.Item
                     label={messages('common.description')}

@@ -1,4 +1,3 @@
-import { PageSize } from '@/enums/common';
 import { useApiError } from '@/hooks/use-api-error';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
@@ -8,7 +7,6 @@ import {
     UseQueryOptions,
 } from '@tanstack/react-query';
 import { useTranslations } from 'next-intl';
-import { useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { userApi } from '../api/user.api';
 import {
@@ -106,15 +104,4 @@ export const useUpdateUser = () => {
         },
         onError: handleError,
     });
-};
-
-export const useUserSearchParams = (): UserSearchParams => {
-    const searchParams = useSearchParams();
-
-    return {
-        page: Number(searchParams.get('page') || 1),
-        pageSize: Number(searchParams.get('pageSize') || PageSize.MEDIUM),
-        keyword: searchParams.get('keyword') || undefined,
-        isActive: searchParams.get('isActive') || undefined,
-    };
 };

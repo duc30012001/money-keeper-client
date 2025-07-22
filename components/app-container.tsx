@@ -21,7 +21,10 @@ function AppContainer({
 }: Props) {
     const { token } = theme.useToken();
     return (
-        <div className={cn('flex h-full flex-col p-2 lg:p-4', className)}>
+        <div
+            id="app-container"
+            className={cn('flex h-full flex-col p-2 lg:p-4', className)}
+        >
             <div
                 className={cn('mb-4 flex items-center justify-between gap-2', {
                     'mb-0': !title,

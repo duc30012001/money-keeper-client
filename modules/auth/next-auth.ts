@@ -54,8 +54,10 @@ export const authOptions: NextAuthOptions = {
 
             // Tự động refresh nếu token sắp hết hạn
             const { accessToken } = token;
+            console.log('callbacks accessToken:', accessToken);
             const now = Date.now();
             const accessTokenPayload = getDataFromToken(accessToken);
+            console.log('callbacks accessTokenPayload:', accessTokenPayload);
             const exp = (accessTokenPayload?.exp || 0) * 1000;
             // refresh nếu còn 1 phút hoặc đã quá hạn
             if (now > exp - 60 * 1000) {
@@ -66,7 +68,8 @@ export const authOptions: NextAuthOptions = {
                     const data = res.data.data;
                     token.accessToken = data.accessToken;
                     token.refreshToken = data.refreshToken;
-                } catch {
+                } catch (error) {
+                    console.log('callbacks error:', error);
                     token.error = 'RefreshFailed';
                 }
             }

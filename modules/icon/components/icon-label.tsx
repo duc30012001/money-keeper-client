@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Avatar, theme } from 'antd';
+import { Avatar, AvatarProps, theme, Tooltip } from 'antd';
 import { ReactNode } from 'react';
 
 interface IconLabelProps {
@@ -7,7 +7,6 @@ interface IconLabelProps {
     title: ReactNode;
     description?: ReactNode;
     className?: string;
-    avatarClassName?: string;
     titleClassName?: string;
     descriptionClassname?: string;
     styles?: {
@@ -15,6 +14,7 @@ interface IconLabelProps {
         title?: React.CSSProperties;
         description?: React.CSSProperties;
     };
+    iconProps?: AvatarProps;
 }
 
 export function IconLabel({
@@ -22,10 +22,10 @@ export function IconLabel({
     title,
     description,
     className,
-    avatarClassName,
     titleClassName,
     descriptionClassname,
     styles,
+    iconProps,
 }: IconLabelProps) {
     const { token } = theme.useToken();
     return (
@@ -34,11 +34,12 @@ export function IconLabel({
             style={styles?.root}
         >
             <Avatar
-                className={cn('flex-none rounded-none', avatarClassName)}
                 src={url}
                 alt={''}
-                size={24}
+                size={20}
                 shape="square"
+                {...iconProps}
+                className={cn('flex-none rounded-none', iconProps?.className)}
             />
             <div className="flex-1 truncate">
                 <div
@@ -51,7 +52,9 @@ export function IconLabel({
                     )}
                     style={styles?.title}
                 >
-                    {title}
+                    <Tooltip title={typeof title === 'string' ? title : ''}>
+                        {title}
+                    </Tooltip>
                 </div>
                 <div
                     style={{
