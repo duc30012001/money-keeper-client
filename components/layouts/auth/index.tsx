@@ -3,6 +3,7 @@
 import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppTheme from '@/components/app-theme';
+import SupportButton from '@/components/ui/button/support-button';
 import { theme } from 'antd';
 import { PropsWithChildren } from 'react';
 
@@ -28,6 +29,7 @@ export default function AuthLayout({ children }: PropsWithChildren) {
                     {children}
                 </div>
             </div>
+            <SupportButton />
             <div className="fixed right-10 top-10 flex items-center">
                 <AppLocale buttonProps={{ type: 'text' }} />
                 <AppTheme buttonProps={{ type: 'text' }} />
