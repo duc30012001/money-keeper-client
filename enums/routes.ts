@@ -22,6 +22,8 @@ export enum AppRoute {
     USERS = '/users',
     SIGN_IN = '/sign-in',
     REGISTER = '/register',
+    FORGOT_PASSWORD = '/forgot-password',
+    RESET_PASSWORD = '/reset-password',
     FORBIDDEN = '/forbidden',
     NOT_FOUND = '/not-found',
 }
@@ -79,4 +81,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         icon: Users,
         role: UserRole.ADMIN,
     },
+];
+
+export const PUBLIC_ROUTES = [AppRoute.NOT_FOUND];
+export const AUTH_ROUTES = [
+    AppRoute.SIGN_IN,
+    AppRoute.REGISTER,
+    AppRoute.FORGOT_PASSWORD,
+    AppRoute.RESET_PASSWORD,
 ];

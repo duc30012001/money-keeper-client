@@ -7,9 +7,18 @@
         },
         "dontHaveAccount": "Don't have an account?",
         "alreadyHaveAccount": "Already have an account?",
-        "register": "Register",
-        "registerHere": "Register here",
-        "signOut": "Sign out"
+        "register": {
+            "title": "Join us today",
+            "description": "Create a free account and get started",
+            "submit": "Register"
+        },
+        "signOut": "Sign out",
+        "forgotPassword": {
+            "title": "Forgot your password?",
+            "description": "Enter your email and we'll send you a link to reset your password",
+            "submit": "Send password reset link",
+            "back": "Back to sign in"
+        }
     },
     "validation": {
         "emailFormat": "Please enter a valid email!",

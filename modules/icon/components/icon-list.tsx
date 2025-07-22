@@ -8,6 +8,8 @@ interface IconListProps {
     data: Partial<Record<string, Icon[]>>;
     onSelect?: (icon: Icon) => void;
     className?: string;
+    titleClassName?: string;
+    rootClassName?: string;
     searchProps?: AppSearchProps;
 }
 
@@ -15,13 +17,15 @@ export function IconList({
     data,
     onSelect,
     className,
+    titleClassName,
+    rootClassName,
     searchProps,
 }: IconListProps) {
     const { token } = theme.useToken();
     return (
         <div className="">
             <div
-                className="sticky top-16 z-[5] mb-2 p-1"
+                className={cn('sticky top-16 z-[5] mb-2 p-1', rootClassName)}
                 style={{ backgroundColor: token.colorBgContainer }}
             >
                 <AppSearch {...searchProps} />
@@ -31,7 +35,10 @@ export function IconList({
                     return (
                         <div id={type} key={type} className="">
                             <h2
-                                className="sticky top-24 z-[2] mb-3 py-2.5 font-medium"
+                                className={cn(
+                                    'sticky top-24 z-[2] mb-3 py-2.5 font-medium',
+                                    titleClassName
+                                )}
                                 style={{
                                     backgroundColor: token.colorBgContainer,
                                 }}

@@ -7,9 +7,18 @@
         },
         "dontHaveAccount": "Chưa có tài khoản?",
         "alreadyHaveAccount": "Đã có tài khoản?",
-        "register": "Đăng ký",
-        "registerHere": "Đăng ký tại đây",
-        "signOut": "Đăng xuất"
+        "register": {
+            "title": " Tham gia ngay hôm nay",
+            "description": "Tạo tài khoản miễn phí và bắt đầu sử dụng",
+            "submit": "Đăng ký"
+        },
+        "signOut": "Đăng xuất",
+        "forgotPassword": {
+            "title": "Quên mật khẩu?",
+            "description": "Nhập email của bạn và chúng tôi sẽ gửi liên kết đặt lại mật khẩu",
+            "submit": "Gửi liên kết đặt lại mật khẩu",
+            "back": "Trở về trang đăng nhập"
+        }
     },
     "validation": {
         "emailFormat": "Vui lòng nhập đúng định dạng Email!",

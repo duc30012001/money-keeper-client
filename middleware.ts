@@ -2,7 +2,7 @@ import createNextIntlMiddleware from 'next-intl/middleware';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { defaultLocale } from './enums/common';
-import { AppRoute } from './enums/routes';
+import { AppRoute, AUTH_ROUTES, PUBLIC_ROUTES } from './enums/routes';
 import { routing } from './i18n/routing';
 import { getToken } from './modules/auth/utils';
 
@@ -28,15 +28,24 @@ export async function middleware(req: NextRequest) {
     // 2. Do your session check + redirects
     const token = await getToken(req);
     const locale = cookies().get('NEXT_LOCALE')?.value || defaultLocale;
-    const onSignInPage = pathname === `/${locale}${AppRoute.SIGN_IN}`;
+    const isPublicRoutes =
+        PUBLIC_ROUTES.findIndex((item) => pathname === `/${locale}${item}`) !==
+        -1;
+    const isAuthRoutes =
+        AUTH_ROUTES.findIndex((item) => pathname === `/${locale}${item}`) !==
+        -1;
 
-    if (!token && !onSignInPage) {
+    if (isPublicRoutes) {
+        return nextIntl(req);
+    }
+
+    if (!token && !isAuthRoutes) {
         const url = req.nextUrl.clone();
         url.pathname = `/${locale}${AppRoute.SIGN_IN}`;
         return NextResponse.redirect(url);
     }
 
-    if (token && onSignInPage) {
+    if (token && isAuthRoutes) {
         const url = req.nextUrl.clone();
         url.pathname = `/${locale}${AppRoute.DASHBOARD}`;
         return NextResponse.redirect(url);

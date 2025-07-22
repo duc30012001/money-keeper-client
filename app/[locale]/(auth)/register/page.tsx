@@ -15,7 +15,7 @@ interface FormValues {
     password: string;
 }
 
-export default function SignInPage() {
+export default function RegisterPage() {
     const { token } = theme.useToken();
     const [isLoading, setIsLoading] = useState(false);
     const messages = useTranslations();
@@ -66,7 +66,7 @@ export default function SignInPage() {
                         color: token.colorText,
                     }}
                 >
-                    {messages('auth.signIn.title')}
+                    {messages('auth.register.title')}
                 </h1>
                 <p
                     className="text-sm text-gray-400"
@@ -74,7 +74,7 @@ export default function SignInPage() {
                         color: token.colorTextTertiary,
                     }}
                 >
-                    {messages('auth.signIn.description')}
+                    {messages('auth.register.description')}
                 </p>
             </div>
 
@@ -115,13 +115,6 @@ export default function SignInPage() {
                     <Input />
                 </AppForm.Item>
                 <AppForm.Item
-                    extra={
-                        <p className="mt-2 text-right">
-                            <Link href={AppRoute.FORGOT_PASSWORD}>
-                                {messages('auth.forgotPassword.submit')}
-                            </Link>
-                        </p>
-                    }
                     label={messages('user.password')}
                     name={'password'}
                     rules={[
@@ -153,7 +146,7 @@ export default function SignInPage() {
                     block
                     loading={isLoading}
                 >
-                    {messages('auth.signIn.submit')}
+                    {messages('auth.register.submit')}
                 </Button>
                 <p
                     className="!mt-5 text-center text-sm"
@@ -161,12 +154,12 @@ export default function SignInPage() {
                         color: token.colorText,
                     }}
                 >
-                    {messages('auth.dontHaveAccount')}{' '}
+                    {messages('auth.alreadyHaveAccount')}{' '}
                     <Link
                         className="ml-1 whitespace-nowrap font-semibold hover:underline"
-                        href={AppRoute.REGISTER}
+                        href={AppRoute.SIGN_IN}
                     >
-                        {messages('auth.register.submit')}
+                        {messages('auth.signIn.submit')}
                     </Link>
                 </p>
             </AppForm>

@@ -73,17 +73,17 @@ function RecentTransaction({}: Props) {
                 const { amount, type } = record;
                 const value = formatNumber(amount);
 
-                let color: string = 'gray';
+                let color: string = 'default';
 
                 switch (type) {
                     case TransactionType.EXPENSE:
-                        color = 'red';
+                        color = 'error';
                         break;
                     case TransactionType.INCOME:
-                        color = 'green';
+                        color = 'success';
                         break;
                     case TransactionType.TRANSFER:
-                        color = 'blue';
+                        color = 'processing';
                         break;
                     default:
                         break;

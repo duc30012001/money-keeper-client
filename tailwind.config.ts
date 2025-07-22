@@ -10,10 +10,6 @@ const config: Config = {
     ],
     theme: {
         extend: {
-            colors: {
-                background: 'var(--background)',
-                foreground: 'var(--foreground)',
-            },
             screens: {
                 // extra‐small: everything below 576px (you can omit xs: if you don't need a prefix)
                 xs: '0px',

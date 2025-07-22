@@ -15,7 +15,7 @@ interface FormValues {
     password: string;
 }
 
-export default function SignInPage() {
+export default function ForgotPasswordPage() {
     const { token } = theme.useToken();
     const [isLoading, setIsLoading] = useState(false);
     const messages = useTranslations();
@@ -66,7 +66,7 @@ export default function SignInPage() {
                         color: token.colorText,
                     }}
                 >
-                    {messages('auth.signIn.title')}
+                    {messages('auth.forgotPassword.title')}
                 </h1>
                 <p
                     className="text-sm text-gray-400"
@@ -74,7 +74,7 @@ export default function SignInPage() {
                         color: token.colorTextTertiary,
                     }}
                 >
-                    {messages('auth.signIn.description')}
+                    {messages('auth.forgotPassword.description')}
                 </p>
             </div>
 
@@ -114,46 +114,13 @@ export default function SignInPage() {
                 >
                     <Input />
                 </AppForm.Item>
-                <AppForm.Item
-                    extra={
-                        <p className="mt-2 text-right">
-                            <Link href={AppRoute.FORGOT_PASSWORD}>
-                                {messages('auth.forgotPassword.submit')}
-                            </Link>
-                        </p>
-                    }
-                    label={messages('user.password')}
-                    name={'password'}
-                    rules={[
-                        {
-                            required: true,
-                            message: messages('validation.input'),
-                        },
-                        {
-                            min: 5,
-                            message: messages('validation.stringMin', {
-                                field: messages('user.password'),
-                                min: 5,
-                            }),
-                        },
-                        {
-                            max: 50,
-                            message: messages('validation.stringMax', {
-                                field: messages('user.password'),
-                                max: 50,
-                            }),
-                        },
-                    ]}
-                >
-                    <Input.Password />
-                </AppForm.Item>
                 <Button
                     type="primary"
                     htmlType="submit"
                     block
                     loading={isLoading}
                 >
-                    {messages('auth.signIn.submit')}
+                    {messages('auth.forgotPassword.submit')}
                 </Button>
                 <p
                     className="!mt-5 text-center text-sm"
@@ -161,12 +128,11 @@ export default function SignInPage() {
                         color: token.colorText,
                     }}
                 >
-                    {messages('auth.dontHaveAccount')}{' '}
                     <Link
                         className="ml-1 whitespace-nowrap font-semibold hover:underline"
-                        href={AppRoute.REGISTER}
+                        href={AppRoute.SIGN_IN}
                     >
-                        {messages('auth.register.submit')}
+                        {messages('auth.forgotPassword.back')}
                     </Link>
                 </p>
             </AppForm>

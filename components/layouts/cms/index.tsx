@@ -2,6 +2,7 @@ import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
 import AppTheme from '@/components/app-theme';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { usePathname } from '@/i18n/navigation';
 import { Button, Drawer, Layout, Menu, theme } from 'antd';
@@ -9,7 +10,6 @@ import { Menu as MenuIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React, { PropsWithChildren, useState } from 'react';
-import Scrollbars from 'react-custom-scrollbars';
 import { useMediaQuery } from 'usehooks-ts';
 
 interface Props extends PropsWithChildren {}
@@ -77,15 +77,14 @@ export default function CMSLayout({ children }: Props) {
                         collapsed={collapsed}
                         collapsedWidth={57}
                     >
-                        {/* @ts-ignore */}
-                        <Scrollbars autoHide>
+                        <ScrollArea className="h-[calc(100vh-5rem)]">
                             <Menu
                                 mode="inline"
                                 selectedKeys={[pathname]}
                                 style={{ height: '100%', borderRight: 0 }}
                                 items={items}
                             />
-                        </Scrollbars>
+                        </ScrollArea>
                     </Sider>
                     {/* MOBILE */}
                     {!isDesktop && (

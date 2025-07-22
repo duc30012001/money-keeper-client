@@ -8,6 +8,7 @@ import {
     theme,
     Typography,
 } from 'antd';
+import { useResponsive } from 'antd-style';
 import dayjs from 'dayjs';
 import dayLocaleData from 'dayjs/plugin/localeData';
 import { useTranslations } from 'next-intl';
@@ -28,6 +29,7 @@ function getRangeDay(value: dayjs.Dayjs) {
 }
 
 function DashboardCalendar({}: Props) {
+    const responsive = useResponsive();
     const { token } = theme.useToken();
     const messages = useTranslations();
 
@@ -51,6 +53,13 @@ function DashboardCalendar({}: Props) {
 
             if (!data) return null;
 
+            const options = responsive.mobile
+                ? ({
+                      notation: 'compact',
+                      maximumFractionDigits: 2,
+                  } as Intl.NumberFormatOptions)
+                : undefined;
+
             return (
                 <div className="mt-3 text-right">
                     {data.expense > 0 && (
@@ -60,7 +69,7 @@ function DashboardCalendar({}: Props) {
                                 color: token.colorErrorText,
                             }}
                         >
-                            {formatNumber(data.expense)}
+                            {formatNumber(data.expense, options)}
                         </p>
                     )}
                     {data.income > 0 && (
@@ -70,7 +79,7 @@ function DashboardCalendar({}: Props) {
                                 color: token.colorSuccessText,
                             }}
                         >
-                            {formatNumber(data.income)}
+                            {formatNumber(data.income, options)}
                         </p>
                     )}
                 </div>

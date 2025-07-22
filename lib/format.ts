@@ -19,7 +19,7 @@ export function formatNumber(
     value: number | string = 0,
     options?: Intl.NumberFormatOptions
 ): string {
-    return new Intl.NumberFormat([], options).format(Number(value));
+    return new Intl.NumberFormat(undefined, options).format(Number(value));
 }
 
 export function calculatePercent(value: number, total: number) {

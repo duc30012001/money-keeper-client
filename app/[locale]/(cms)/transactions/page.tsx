@@ -124,8 +124,9 @@ export default function TransactionsPage() {
                     <IconLabel
                         title={title}
                         url={url}
-                        description={formatDate(record.transactionDate)}
-                        descriptionClassname="block xl:hidden"
+                        description={
+                            !responsive.xl && formatDate(record.transactionDate)
+                        }
                         iconProps={{
                             size: responsive.xl ? 20 : 30,
                         }}
@@ -137,22 +138,23 @@ export default function TransactionsPage() {
             title: messages('transaction.amount'),
             key: 'amount',
             dataIndex: 'amount',
+            align: responsive.xl ? 'left' : 'right',
             width: 130,
             render: (_, record) => {
                 const { amount, type } = record;
                 const value = formatNumber(amount);
 
-                let color: string = 'gray';
+                let color: string = 'default';
 
                 switch (type) {
                     case TransactionType.EXPENSE:
-                        color = 'red';
+                        color = 'error';
                         break;
                     case TransactionType.INCOME:
-                        color = 'green';
+                        color = 'success';
                         break;
                     case TransactionType.TRANSFER:
-                        color = 'blue';
+                        color = 'processing';
                         break;
                     default:
                         break;
@@ -337,6 +339,7 @@ export default function TransactionsPage() {
                             total: formatNumber(total),
                         }),
                     showSizeChanger: true,
+                    size: 'default',
                 }}
             />
 

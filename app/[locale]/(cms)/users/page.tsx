@@ -152,6 +152,7 @@ export default function UsersPage() {
                     </div>
                 }
                 pagination={{
+                    size: 'default',
                     current: data?.meta?.page,
                     pageSize: data?.meta?.pageSize,
                     total: data?.meta?.total,
