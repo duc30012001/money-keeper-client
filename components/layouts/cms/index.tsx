@@ -2,15 +2,15 @@ import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
 import AppTheme from '@/components/app-theme';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { usePathname } from '@/i18n/navigation';
 import { Button, Drawer, Layout, Menu, theme } from 'antd';
+import { useResponsive } from 'antd-style';
 import { Menu as MenuIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import React, { PropsWithChildren, useState } from 'react';
-import { useMediaQuery } from 'usehooks-ts';
+import Scrollbars from 'react-custom-scrollbars';
 
 interface Props extends PropsWithChildren {}
 
@@ -22,7 +22,7 @@ export default function CMSLayout({ children }: Props) {
     const [collapsed, setCollapsed] = useState(false);
     const messages = useTranslations();
     const pathname = usePathname();
-    const isDesktop = useMediaQuery(`(min-width: 1024px)`);
+    const responsive = useResponsive();
 
     const items = SIDEBAR_ITEMS.map((item) => ({
         key: item.href,
@@ -77,17 +77,18 @@ export default function CMSLayout({ children }: Props) {
                         collapsed={collapsed}
                         collapsedWidth={57}
                     >
-                        <ScrollArea className="h-[calc(100vh-5rem)]">
+                        {/* @ts-ignore */}
+                        <Scrollbars autoHide>
                             <Menu
                                 mode="inline"
                                 selectedKeys={[pathname]}
                                 style={{ height: '100%', borderRight: 0 }}
                                 items={items}
                             />
-                        </ScrollArea>
+                        </Scrollbars>
                     </Sider>
                     {/* MOBILE */}
-                    {!isDesktop && (
+                    {!responsive.lg && (
                         <Drawer
                             open={collapsed}
                             placement="left"
@@ -99,6 +100,7 @@ export default function CMSLayout({ children }: Props) {
                                     padding: 0,
                                 },
                             }}
+                            destroyOnHidden
                         >
                             <Menu
                                 mode="inline"

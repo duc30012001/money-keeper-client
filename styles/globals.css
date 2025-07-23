@@ -27,4 +27,8 @@ div.ant-pro-table-list-toolbar-title {
     .ant-pro-table-list-toolbar-title {
         width: 100%;
     }
+
+    .ant-pro-table .ant-pro-card .ant-pro-card-body {
+        @apply pe-0 ps-0;
+    }
 }

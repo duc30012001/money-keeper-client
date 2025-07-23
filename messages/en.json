@@ -132,7 +132,7 @@
                 "title": "Transfer",
                 "from": "From account",
                 "to": "To account",
-                "message": "Transform to {value}"
+                "message": "Transfer to {value}"
             }
         },
         "dateFilter": {

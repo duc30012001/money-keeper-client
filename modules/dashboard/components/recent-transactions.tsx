@@ -2,11 +2,11 @@ import { PageSize } from '@/enums/common';
 import { AppRoute } from '@/enums/routes';
 import { Link } from '@/i18n/navigation';
 import { formatDate, formatNumber } from '@/lib/format';
+import { getAmountColor } from '@/modules/transaction/utils/transaction';
 import { Card, Table, TableProps, Tag, theme } from 'antd';
 import { useResponsive } from 'antd-style';
 import { useTranslations } from 'next-intl';
 import { IconLabel } from '../../icon/components/icon-label';
-import { TransactionType } from '../../transaction/enums/transaction';
 import { useTransactionsList } from '../../transaction/hooks/use-transactions';
 import { Transaction } from '../../transaction/types/transaction';
 
@@ -18,7 +18,7 @@ function RecentTransaction({}: Props) {
 
     const messages = useTranslations();
 
-    const { data, isLoading } = useTransactionsList({
+    const { data, isFetching } = useTransactionsList({
         pageSize: PageSize.MEDIUM,
     });
 
@@ -73,28 +73,12 @@ function RecentTransaction({}: Props) {
                 const { amount, type } = record;
                 const value = formatNumber(amount);
 
-                let color: string = 'default';
-
-                switch (type) {
-                    case TransactionType.EXPENSE:
-                        color = 'error';
-                        break;
-                    case TransactionType.INCOME:
-                        color = 'success';
-                        break;
-                    case TransactionType.TRANSFER:
-                        color = 'processing';
-                        break;
-                    default:
-                        break;
-                }
-
                 return (
                     <p className="space-y-1 truncate">
                         <Tag
-                            className="!text-sm font-medium"
+                            className="!me-0 !text-sm font-medium"
                             bordered={false}
-                            color={color}
+                            color={getAmountColor(type)}
                         >
                             {value}
                         </Tag>
@@ -131,7 +115,8 @@ function RecentTransaction({}: Props) {
                 columns={columns}
                 rowKey="id"
                 dataSource={data?.data}
-                loading={isLoading}
+                loading={isFetching}
+                size="small"
                 pagination={false}
                 scroll={{
                     y: responsive.lg ? 720 : 490,

@@ -16,6 +16,7 @@ import { useState } from 'react';
 import { AnalyticChartGroupBy } from '../../transaction/enums/transaction';
 import { useTransactionChart } from '../../transaction/hooks/use-transactions';
 import { TransactionAnalyticSearchParams } from '../../transaction/types/transaction';
+import DashboardCalendarDetail from './dashboard-calendar-detail';
 
 dayjs.extend(dayLocaleData);
 
@@ -32,6 +33,11 @@ function DashboardCalendar({}: Props) {
     const responsive = useResponsive();
     const { token } = theme.useToken();
     const messages = useTranslations();
+
+    const [selectedData, setSelectedData] = useState<{
+        date: dayjs.Dayjs;
+        type: string;
+    }>();
 
     const [dataFilter, setDataFilter] =
         useState<TransactionAnalyticSearchParams>({
@@ -56,7 +62,7 @@ function DashboardCalendar({}: Props) {
             const options = responsive.mobile
                 ? ({
                       notation: 'compact',
-                      maximumFractionDigits: 2,
+                      maximumFractionDigits: 0,
                   } as Intl.NumberFormatOptions)
                 : undefined;
 
@@ -64,7 +70,7 @@ function DashboardCalendar({}: Props) {
                 <div className="mt-3 text-right">
                     {data.expense > 0 && (
                         <p
-                            className="font-semibold"
+                            className="text-xs font-semibold lg:text-sm"
                             style={{
                                 color: token.colorErrorText,
                             }}
@@ -74,7 +80,7 @@ function DashboardCalendar({}: Props) {
                     )}
                     {data.income > 0 && (
                         <p
-                            className="font-semibold"
+                            className="text-xs font-semibold lg:text-sm"
                             style={{
                                 color: token.colorSuccessText,
                             }}
@@ -185,7 +191,21 @@ function DashboardCalendar({}: Props) {
                 onPanelChange={onPanelChange}
                 cellRender={cellRender}
                 headerRender={headerRender}
+                onSelect={(date, info) => {
+                    setSelectedData({
+                        date,
+                        type: info.source,
+                    });
+                }}
             />
+            {selectedData && (
+                <DashboardCalendarDetail
+                    open
+                    onCancel={() => setSelectedData(undefined)}
+                    type={selectedData.type}
+                    date={selectedData.date}
+                />
+            )}
         </div>
     );
 }

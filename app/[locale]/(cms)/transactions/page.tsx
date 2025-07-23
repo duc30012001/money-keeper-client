@@ -19,7 +19,6 @@ import { IconLabel } from '@/modules/icon/components/icon-label';
 import TransactionModalForm from '@/modules/transaction/components/transaction-modal-form';
 import TransactionTypeSelect from '@/modules/transaction/components/transaction-type-select';
 import { defaultTransactionDate } from '@/modules/transaction/constants/transaction';
-import { TransactionType } from '@/modules/transaction/enums/transaction';
 import {
     useDeleteTransaction,
     useTransactionsList,
@@ -28,6 +27,7 @@ import {
     Transaction,
     TransactionSearchParams,
 } from '@/modules/transaction/types/transaction';
+import { getAmountColor } from '@/modules/transaction/utils/transaction';
 import { ProColumns, ProTable } from '@ant-design/pro-components';
 import { Tag, theme } from 'antd';
 import { useResponsive } from 'antd-style';
@@ -82,25 +82,13 @@ export default function TransactionsPage() {
             render: (_, record) => formatDate(record.transactionDate),
         },
         {
-            title: messages('account.title'),
-            key: 'account.title',
-            dataIndex: 'account.title',
-            ellipsis: true,
-            width: 200,
-            responsive: ['xl'],
-            render: (_, record) => {
-                const data = record.account || record.senderAccount;
-                return <IconLabel title={data?.name} url={data?.icon?.url} />;
-            },
-        },
-        {
             title: messages('category.title'),
             key: 'category.title',
             dataIndex: 'category.title',
             ellipsis: true,
-            width: 200,
+            width: responsive.sm ? 200 : 170,
             render: (_, record) => {
-                const { category, receiverAccount } = record;
+                const { category, receiverAccount, transactionDate } = record;
                 let title: string | undefined = undefined;
                 let url: string | undefined = undefined;
 
@@ -125,7 +113,7 @@ export default function TransactionsPage() {
                         title={title}
                         url={url}
                         description={
-                            !responsive.xl && formatDate(record.transactionDate)
+                            !responsive.xl && formatDate(transactionDate)
                         }
                         iconProps={{
                             size: responsive.xl ? 20 : 30,
@@ -135,37 +123,33 @@ export default function TransactionsPage() {
             },
         },
         {
+            title: messages('account.title'),
+            key: 'account.title',
+            dataIndex: 'account.title',
+            ellipsis: true,
+            width: 200,
+            responsive: ['xl'],
+            render: (_, record) => {
+                const data = record.account || record.senderAccount;
+                return <IconLabel title={data?.name} url={data?.icon?.url} />;
+            },
+        },
+        {
             title: messages('transaction.amount'),
             key: 'amount',
             dataIndex: 'amount',
             align: responsive.xl ? 'left' : 'right',
-            width: 130,
+            width: 120,
             render: (_, record) => {
-                const { amount, type } = record;
+                const { amount, type, account, senderAccount } = record;
                 const value = formatNumber(amount);
-
-                let color: string = 'default';
-
-                switch (type) {
-                    case TransactionType.EXPENSE:
-                        color = 'error';
-                        break;
-                    case TransactionType.INCOME:
-                        color = 'success';
-                        break;
-                    case TransactionType.TRANSFER:
-                        color = 'processing';
-                        break;
-                    default:
-                        break;
-                }
 
                 return (
                     <p className="space-y-1 truncate">
                         <Tag
-                            className="!text-sm font-medium"
+                            className="!me-0 !text-sm font-medium"
                             bordered={false}
-                            color={color}
+                            color={getAmountColor(type)}
                         >
                             {value}
                         </Tag>
@@ -173,7 +157,7 @@ export default function TransactionsPage() {
                             style={{ color: token.colorTextSecondary }}
                             className="block truncate xl:hidden"
                         >
-                            {record.account?.name ?? record.senderAccount?.name}
+                            {account?.name ?? senderAccount?.name}
                         </p>
                     </p>
                 );
@@ -191,7 +175,7 @@ export default function TransactionsPage() {
         {
             title: messages('common.createdAt'),
             dataIndex: 'createdAt',
-            width: 130,
+            width: 120,
             hideInSearch: true,
             responsive: ['xl'],
             render: (_, record) => formatDate(record.createdAt),
@@ -199,7 +183,7 @@ export default function TransactionsPage() {
         {
             title: messages('common.updatedAt'),
             dataIndex: 'updatedAt',
-            width: 130,
+            width: 120,
             hideInSearch: true,
             responsive: ['xl'],
             render: (_, record) => formatDate(record.updatedAt),
@@ -210,6 +194,7 @@ export default function TransactionsPage() {
             hideInSearch: true,
             hideInSetting: true,
             fixed: 'right',
+            responsive: ['md'],
             render: (_, record) => {
                 return [
                     <ActionButton
@@ -340,6 +325,12 @@ export default function TransactionsPage() {
                         }),
                     showSizeChanger: true,
                     size: 'default',
+                }}
+                onRow={(data) => {
+                    if (responsive.md) return {};
+                    return {
+                        onClick: () => openModal(ModalType.EDIT, data),
+                    };
                 }}
             />
 

@@ -102,6 +102,7 @@ export default function TransactionModalForm({ ...props }: Props) {
     return (
         <AppModal
             {...props}
+            className="!top-0 md:!top-20"
             loading={isLoading}
             onCancel={closeModal}
             title={

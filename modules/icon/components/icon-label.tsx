@@ -52,7 +52,10 @@ export function IconLabel({
                     )}
                     style={styles?.title}
                 >
-                    <Tooltip title={typeof title === 'string' ? title : ''}>
+                    <Tooltip
+                        title={typeof title === 'string' ? title : ''}
+                        trigger={['hover']}
+                    >
                         {title}
                     </Tooltip>
                 </div>

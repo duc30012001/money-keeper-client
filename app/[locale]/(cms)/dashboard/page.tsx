@@ -45,11 +45,24 @@ export default function DashboardPage() {
         .map(Number);
 
     const totalBalance = useTotalBalance();
-    const analytic = useTransactionAnalytic(filterValues);
-    // const { data: chart } = useTransactionChart(searchParams);
-    const expenseByParentCategories =
-        useExpenseByParentCategories(filterValues);
-    const incomeByParentCategories = useIncomeByParentCategories(filterValues);
+
+    const analytic = useTransactionAnalytic({
+        transactionDate: filterValues.transactionDate,
+        chartGroupBy: filterValues.chartGroupBy,
+    });
+
+    const expenseByParentCategories = useExpenseByParentCategories({
+        transactionDate: filterValues.transactionDate,
+        accountIds: filterValues.accountIds,
+        chartGroupBy: filterValues.chartGroupBy,
+    });
+
+    const incomeByParentCategories = useIncomeByParentCategories({
+        transactionDate: filterValues.transactionDate,
+        accountIds: filterValues.accountIds,
+        chartGroupBy: filterValues.chartGroupBy,
+    });
+
     const categoryAnalytic = useCategoryAnalytic(
         filterValues.categoryType as CategoryType,
         {
@@ -89,7 +102,7 @@ export default function DashboardPage() {
                     percentage={false}
                     backgroundColor={token.colorWarningBg}
                     color={token.colorWarningText}
-                    loading={totalBalance.isLoading}
+                    loading={totalBalance.isFetching}
                 />
                 <StatisticCard
                     title={formatNumber(
@@ -101,7 +114,7 @@ export default function DashboardPage() {
                     backgroundColor={token.colorErrorBg}
                     color={token.colorErrorText}
                     need="down"
-                    loading={analytic.isLoading}
+                    loading={analytic.isFetching}
                 />
                 <StatisticCard
                     title={formatNumber(
@@ -112,7 +125,7 @@ export default function DashboardPage() {
                     percentage={analytic?.data?.data?.change?.income ?? 0}
                     backgroundColor={token.colorSuccessBg}
                     color={token.colorSuccessText}
-                    loading={analytic.isLoading}
+                    loading={analytic.isFetching}
                 />
                 <StatisticCard
                     title={formatNumber(
@@ -123,7 +136,7 @@ export default function DashboardPage() {
                     percentage={analytic?.data?.data?.change?.net ?? 0}
                     backgroundColor={token.colorInfoBg}
                     color={token.colorInfoText}
-                    loading={analytic.isLoading}
+                    loading={analytic.isFetching}
                 />
             </div>
 
@@ -132,12 +145,12 @@ export default function DashboardPage() {
                     <DashboardChart
                         title={messages('dashboard.topExpenseByCategory')}
                         data={expenseByParentCategories?.data?.data ?? []}
-                        loading={expenseByParentCategories.isLoading}
+                        loading={expenseByParentCategories.isFetching}
                     />
                     <DashboardChart
                         title={messages('dashboard.topIncomeByCategory')}
                         data={incomeByParentCategories?.data?.data ?? []}
-                        loading={incomeByParentCategories.isLoading}
+                        loading={incomeByParentCategories.isFetching}
                     />
                 </div>
                 <CategoryList
@@ -146,7 +159,7 @@ export default function DashboardPage() {
                     onChange={(value) =>
                         onChangeFilter({ categoryType: value })
                     }
-                    loading={categoryAnalytic.isLoading}
+                    loading={categoryAnalytic.isFetching}
                 />
                 <AccountList />
             </div>

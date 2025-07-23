@@ -13,7 +13,7 @@ type Props = {};
 function AccountList({}: Props) {
     const messages = useTranslations();
 
-    const { data, isLoading } = useAccountsList({ pageSize: PageSize.XLARGE });
+    const { data, isFetching } = useAccountsList({ pageSize: PageSize.XLARGE });
 
     const columns: TableProps<Account>['columns'] = [
         {
@@ -56,7 +56,8 @@ function AccountList({}: Props) {
                 columns={columns}
                 rowKey="id"
                 dataSource={data?.data}
-                loading={isLoading}
+                loading={isFetching}
+                size="small"
                 pagination={false}
                 scroll={{
                     y: 470,

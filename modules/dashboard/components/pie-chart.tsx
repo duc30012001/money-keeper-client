@@ -1,3 +1,4 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import { PIE_CHART_COLORS } from '@/constants/color';
 import { useThemeMode } from '@/hooks/use-theme-mode';
 import { calculatePercent, formatNumber } from '@/lib/format';
@@ -64,7 +65,7 @@ export function DashboardChart({ data, title, loading }: DashboardChartProps) {
 
     const CustomLegend: ContentType = ({ payload }) => {
         return (
-            <div className="flex flex-col gap-2">
+            <div className="ml-2 flex w-40 flex-col gap-1 md:w-48">
                 {payload?.map((entry, index) => {
                     return (
                         <div
@@ -72,19 +73,12 @@ export function DashboardChart({ data, title, loading }: DashboardChartProps) {
                             className="flex items-center gap-2"
                         >
                             <div
-                                className="mt-0.5 size-3 rounded dark:brightness-90"
+                                className="mt-0.5 size-3 flex-none rounded dark:brightness-90"
                                 style={{ backgroundColor: entry.color }}
                             />
-                            <p>
-                                {entry.value} (
-                                <span className="font-semibold">
-                                    {calculatePercent(
-                                        entry.payload?.value,
-                                        total
-                                    )}
-                                    %
-                                </span>
-                                )
+                            <p className="flex-1 truncate">{entry.value}</p>
+                            <p className="font-semibold">
+                                {calculatePercent(entry.payload?.value, total)}%
                             </p>
                         </div>
                     );
@@ -93,8 +87,36 @@ export function DashboardChart({ data, title, loading }: DashboardChartProps) {
         );
     };
 
+    if (loading) {
+        return (
+            <Card title={title}>
+                <div className="flex h-40 items-center justify-center">
+                    <div className="px-5">
+                        <Skeleton className="size-36 rounded-full" />
+                    </div>
+                    <div className="flex w-48 flex-col gap-2">
+                        {Array.from({ length: 6 }).map((item, index) => (
+                            <div
+                                key={`legend-${index}`}
+                                className="flex items-center gap-2"
+                            >
+                                <Skeleton className="mt-0.5 size-3 flex-none rounded dark:brightness-90" />
+                                <p className="flex-1 truncate">
+                                    <Skeleton className="h-3 w-full" />
+                                </p>
+                                <p className="font-semibold">
+                                    <Skeleton className="h-3 w-10" />
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </Card>
+        );
+    }
+
     return (
-        <Card title={title} loading={loading}>
+        <Card title={title}>
             <div className="h-40">
                 <ResponsiveContainer width="100%" height="100%">
                     <PieChart>

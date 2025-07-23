@@ -32,19 +32,19 @@ const nextConfig = {
                 hostname: 'storage.googleapis.com',
                 pathname: '**',
             },
-            {
-                protocol: 'https',
-                hostname: 'drive.google.com',
-                pathname: '**',
-            },
-            {
-                protocol: 'https',
-                hostname: '**',
-            },
-            {
-                protocol: 'http',
-                hostname: '**',
-            },
+            // {
+            //     protocol: 'https',
+            //     hostname: 'drive.google.com',
+            //     pathname: '**',
+            // },
+            // {
+            //     protocol: 'https',
+            //     hostname: '**',
+            // },
+            // {
+            //     protocol: 'http',
+            //     hostname: '**',
+            // },
         ],
         minimumCacheTTL: 1500000,
     },

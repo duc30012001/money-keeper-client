@@ -118,7 +118,7 @@ export default function SignInPage() {
                     extra={
                         <p className="mt-2 text-right">
                             <Link href={AppRoute.FORGOT_PASSWORD}>
-                                {messages('auth.forgotPassword.submit')}
+                                {messages('auth.forgotPassword.title')}
                             </Link>
                         </p>
                     }
