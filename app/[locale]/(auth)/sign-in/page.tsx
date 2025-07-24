@@ -44,10 +44,7 @@ export default function SignInPage() {
             });
 
             if (result?.error) {
-                // The error message is now the server's error message
-                toast(result.error, {
-                    type: 'error',
-                });
+                handleError(result.error);
             }
         } catch (error: any) {
             handleError(error);

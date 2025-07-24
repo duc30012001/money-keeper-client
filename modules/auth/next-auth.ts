@@ -57,7 +57,6 @@ export const authOptions: NextAuthOptions = {
             console.log('callbacks accessToken:', accessToken);
             const now = Date.now();
             const accessTokenPayload = getDataFromToken(accessToken);
-            console.log('callbacks accessTokenPayload:', accessTokenPayload);
             const exp = (accessTokenPayload?.exp || 0) * 1000;
             // refresh nếu còn 1 phút hoặc đã quá hạn
             if (now > exp - 60 * 1000) {
@@ -88,7 +87,7 @@ export const authOptions: NextAuthOptions = {
                 };
             }
 
-            session.accessToken = accessToken;
+            // session.accessToken = accessToken;
             return session;
         },
     },

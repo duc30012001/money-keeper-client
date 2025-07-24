@@ -1,26 +1,21 @@
 'use client';
 
 import CMSLayout from '@/components/layouts/cms';
-import { Spin, theme } from 'antd';
-import { useSession } from 'next-auth/react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    const { status, data } = useSession();
-    const { token } = theme.useToken();
+    // const { status } = useSession();
+    // const { token } = theme.useToken();
 
-    console.log('data:', data);
-    console.log('status:', status);
+    // if (status === 'authenticated') {
+    return <CMSLayout>{children}</CMSLayout>;
+    // }
 
-    if (status === 'authenticated') {
-        return <CMSLayout>{children}</CMSLayout>;
-    }
-
-    return (
-        <div
-            className="flex min-h-screen w-full items-center justify-center"
-            style={{ backgroundColor: token.colorBgContainer }}
-        >
-            <Spin spinning size="large" />
-        </div>
-    );
+    // return (
+    //     <div
+    //         className="flex min-h-screen w-full items-center justify-center"
+    //         style={{ backgroundColor: token.colorBgContainer }}
+    //     >
+    //         <Spin spinning size="large" />
+    //     </div>
+    // );
 }
