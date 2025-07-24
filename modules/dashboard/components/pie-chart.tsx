@@ -3,7 +3,7 @@ import { PIE_CHART_COLORS } from '@/constants/color';
 import { useThemeMode } from '@/hooks/use-theme-mode';
 import { calculatePercent, formatNumber } from '@/lib/format';
 import { hexToRGB } from '@/lib/utils';
-import { Card, theme } from 'antd';
+import { Card, Empty, theme } from 'antd';
 import { useMemo } from 'react';
 import {
     Cell,
@@ -110,6 +110,16 @@ export function DashboardChart({ data, title, loading }: DashboardChartProps) {
                             </div>
                         ))}
                     </div>
+                </div>
+            </Card>
+        );
+    }
+
+    if (data.length === 0) {
+        return (
+            <Card title={title}>
+                <div className="h-40">
+                    <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
                 </div>
             </Card>
         );

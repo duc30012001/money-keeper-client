@@ -14,6 +14,9 @@ export const authService = {
     signin: (payload: SigninDto) =>
         axiosInstance.post<ResponseDto<GetTokenResponse>>(`/signin`, payload),
 
+    register: (payload: SigninDto) =>
+        axiosInstance.post<ResponseDto<User>>(`/register`, payload),
+
     getCurrentUser: (token?: string) =>
         axiosInstance.get<ResponseDto<User>>(`/me`, {
             headers: {

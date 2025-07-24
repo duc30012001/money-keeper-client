@@ -2,7 +2,9 @@
 
 import AppForm from '@/components/ui/form/app-form';
 import { AppRoute } from '@/enums/routes';
+import { useApiError } from '@/hooks/use-api-error';
 import { Link } from '@/i18n/navigation';
+import { authService } from '@/modules/auth/service';
 import { Button, Input, theme } from 'antd';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -19,6 +21,7 @@ export default function RegisterPage() {
     const { token } = theme.useToken();
     const [isLoading, setIsLoading] = useState(false);
     const messages = useTranslations();
+    const { handleError } = useApiError();
 
     const searchParams = useSearchParams();
     const error = searchParams.get('error');
@@ -34,6 +37,8 @@ export default function RegisterPage() {
     const onFinish = async (values: FormValues) => {
         setIsLoading(true);
         try {
+            await authService.register(values);
+
             const result = await signIn('credentials', {
                 email: values.email,
                 password: values.password,
@@ -48,10 +53,7 @@ export default function RegisterPage() {
                 });
             }
         } catch (error: any) {
-            // Handle any unexpected errors
-            toast(error?.message || 'An error occurred during login', {
-                type: 'error',
-            });
+            handleError(error);
         } finally {
             setIsLoading(false);
         }

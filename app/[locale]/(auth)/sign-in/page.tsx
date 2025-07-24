@@ -2,6 +2,7 @@
 
 import AppForm from '@/components/ui/form/app-form';
 import { AppRoute } from '@/enums/routes';
+import { useApiError } from '@/hooks/use-api-error';
 import { Link } from '@/i18n/navigation';
 import { Button, Input, theme } from 'antd';
 import { signIn } from 'next-auth/react';
@@ -19,6 +20,7 @@ export default function SignInPage() {
     const { token } = theme.useToken();
     const [isLoading, setIsLoading] = useState(false);
     const messages = useTranslations();
+    const { handleError } = useApiError();
 
     const searchParams = useSearchParams();
     const error = searchParams.get('error');
@@ -48,10 +50,7 @@ export default function SignInPage() {
                 });
             }
         } catch (error: any) {
-            // Handle any unexpected errors
-            toast(error?.message || 'An error occurred during login', {
-                type: 'error',
-            });
+            handleError(error);
         } finally {
             setIsLoading(false);
         }
