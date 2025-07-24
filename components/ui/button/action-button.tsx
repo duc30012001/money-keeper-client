@@ -35,6 +35,9 @@ function ActionButton({ editProps, deleteProps, ...props }: Props) {
 
     if (showDelete) {
         items.push({
+            type: 'divider',
+        });
+        items.push({
             key: 'delete',
             label: messages('common.delete'),
             icon: <Trash2 />,

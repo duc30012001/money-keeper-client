@@ -1,9 +1,14 @@
+import { SortOrder } from '@/enums/common';
 import { Account } from '@/modules/account/types/account';
 import { CategoryType } from '@/modules/category/enums/category';
 import { Category } from '@/modules/category/types/category';
 import { BaseEntity, BaseQuery } from '@/types/common';
 import dayjs from 'dayjs';
-import { AnalyticChartGroupBy, TransactionType } from '../enums/transaction';
+import {
+    AnalyticChartGroupBy,
+    TransactionOrderBy,
+    TransactionType,
+} from '../enums/transaction';
 
 export interface Transaction extends BaseEntity {
     type: TransactionType;
@@ -43,12 +48,14 @@ export type UpdateTransactionDto = Partial<CreateTransactionDto>;
 export interface TransactionSearchParams extends BaseQuery {
     accountIds?: string;
     categoryIds?: string;
-    senderAccountIds?: string;
-    receiverAccountIds?: string;
+    // senderAccountIds?: string;
+    // receiverAccountIds?: string;
     transactionDate?: string;
     amount?: string;
     type?: string;
-    sort?: string;
+    // sort?: string;
+    order?: SortOrder;
+    orderBy?: TransactionOrderBy;
 }
 
 export interface TransactionPeriodResult {
@@ -71,8 +78,22 @@ export interface TransactionAnalyticSearchParams {
     transactionDate?: string;
     accountIds?: string;
     categoryIds?: string;
+    categoryType?: CategoryType;
+}
+
+export interface TransactionAnalyticByDateSearchParams {
+    transactionDate?: string;
+    accountIds?: string;
+    categoryIds?: string;
     chartGroupBy?: AnalyticChartGroupBy;
     categoryType?: CategoryType;
+}
+
+export interface TransactionAnalyticParentCategorySearchParams {
+    transactionDate?: string;
+    accountIds?: string;
+    categoryIds?: string;
+    categoryType: CategoryType;
 }
 
 export interface ChartResult {
@@ -81,12 +102,7 @@ export interface ChartResult {
     expense: number;
 }
 
-export interface ExpenseByParentCategoryResult {
-    label: string;
-    value: number;
-}
-
-export interface IncomeByParentCategoryResult {
+export interface AnalyticByParentCategoryResult {
     label: string;
     value: number;
 }

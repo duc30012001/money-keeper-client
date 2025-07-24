@@ -6,11 +6,13 @@ import { CreateButton } from '@/components/ui/button/create-button';
 import AppRangePicker from '@/components/ui/date-picler/app-range-picker';
 import AppSearch from '@/components/ui/input/search';
 import ConfirmModal from '@/components/ui/modal/confirm-modal';
+import { TRANSFER_ICON } from '@/constants/app';
 import { ARRAY_SEPARATOR } from '@/constants/common';
-import { ModalType, PageSize, Screen } from '@/enums/common';
+import { ModalType, PageSize, Screen, SortOrder } from '@/enums/common';
 import { useFilter } from '@/hooks/use-filter';
 import { useModal } from '@/hooks/use-modal';
 import { formatDate, formatNumber } from '@/lib/format';
+import { getSortOrder, setSortOrder } from '@/lib/sort';
 import { arrayFromString, arrayToString } from '@/lib/utils';
 import AccountSelect from '@/modules/account/components/account-select';
 import CategorySelect from '@/modules/category/components/category-select';
@@ -20,6 +22,10 @@ import TransactionModalForm from '@/modules/transaction/components/transaction-m
 import TransactionTypeSelect from '@/modules/transaction/components/transaction-type-select';
 import { defaultTransactionDate } from '@/modules/transaction/constants/transaction';
 import {
+    TransactionOrderBy,
+    TransactionType,
+} from '@/modules/transaction/enums/transaction';
+import {
     useDeleteTransaction,
     useTransactionsList,
 } from '@/modules/transaction/hooks/use-transactions';
@@ -27,13 +33,21 @@ import {
     Transaction,
     TransactionSearchParams,
 } from '@/modules/transaction/types/transaction';
-import { getAmountColor } from '@/modules/transaction/utils/transaction';
-import { ProColumns, ProTable } from '@ant-design/pro-components';
+import {
+    getAmountColor,
+    getAmountSign,
+} from '@/modules/transaction/utils/transaction';
+import {
+    ProColumns,
+    ProTable,
+    ProTableProps,
+} from '@ant-design/pro-components';
 import { Tag, theme } from 'antd';
 import { useResponsive } from 'antd-style';
+import { SorterResult, TablePaginationConfig } from 'antd/es/table/interface';
 import dayjs from 'dayjs';
 import { useTranslations } from 'next-intl';
-import { parseAsInteger, parseAsString } from 'nuqs';
+import { parseAsInteger, parseAsString, parseAsStringEnum } from 'nuqs';
 
 export default function TransactionsPage() {
     const responsive = useResponsive();
@@ -43,7 +57,7 @@ export default function TransactionsPage() {
     const { editingData, typeModal, openModal, closeModal } =
         useModal<Transaction>();
 
-    const { filterValues, onChangePage, onSearch, onChangeFilter } =
+    const { filterValues, onSearch, onChangeFilter } =
         useFilter<TransactionSearchParams>({
             page: parseAsInteger.withDefault(1),
             pageSize: parseAsInteger.withDefault(PageSize.MEDIUM),
@@ -54,6 +68,12 @@ export default function TransactionsPage() {
             transactionDate: parseAsString.withDefault(
                 defaultTransactionDate.join(ARRAY_SEPARATOR)
             ),
+            order: parseAsStringEnum(Object.values(SortOrder)).withDefault(
+                SortOrder.DESC
+            ),
+            orderBy: parseAsStringEnum(
+                Object.values(TransactionOrderBy)
+            ).withDefault(TransactionOrderBy.TRANSACTION_DATE),
         });
     const [startTransactionDate, endTransactionDate] = filterValues
         .transactionDate!.split(',')
@@ -79,6 +99,12 @@ export default function TransactionsPage() {
             dataIndex: 'transactionDate',
             width: 130,
             responsive: ['xl'],
+            sorter: true,
+            defaultSortOrder: getSortOrder(
+                filterValues.order,
+                'transactionDate',
+                filterValues.orderBy
+            ),
             render: (_, record) => formatDate(record.transactionDate),
         },
         {
@@ -98,10 +124,8 @@ export default function TransactionsPage() {
                 }
 
                 if (receiverAccount) {
-                    title = messages('transaction.type.transfer.message', {
-                        value: receiverAccount.name,
-                    });
-                    url = receiverAccount.icon?.url;
+                    title = messages('transaction.type.transfer.title');
+                    url = TRANSFER_ICON;
                 }
 
                 if (!title) {
@@ -116,7 +140,7 @@ export default function TransactionsPage() {
                             !responsive.xl && formatDate(transactionDate)
                         }
                         iconProps={{
-                            size: responsive.xl ? 20 : 30,
+                            size: responsive.xl ? 20 : 28,
                         }}
                     />
                 );
@@ -140,10 +164,14 @@ export default function TransactionsPage() {
             dataIndex: 'amount',
             align: responsive.xl ? 'left' : 'right',
             width: 120,
+            sorter: responsive.xl,
+            defaultSortOrder: getSortOrder(
+                filterValues.order,
+                'amount',
+                filterValues.orderBy
+            ),
             render: (_, record) => {
                 const { amount, type, account, senderAccount } = record;
-                const value = formatNumber(amount);
-
                 return (
                     <p className="space-y-1 truncate">
                         <Tag
@@ -151,11 +179,11 @@ export default function TransactionsPage() {
                             bordered={false}
                             color={getAmountColor(type)}
                         >
-                            {value}
+                            {getAmountSign(type) + formatNumber(amount)}
                         </Tag>
                         <p
                             style={{ color: token.colorTextSecondary }}
-                            className="block truncate xl:hidden"
+                            className="block truncate text-xs xl:hidden"
                         >
                             {account?.name ?? senderAccount?.name}
                         </p>
@@ -171,6 +199,18 @@ export default function TransactionsPage() {
             width: 250,
             hideInSearch: true,
             responsive: ['lg'],
+            render: (dom, record) => {
+                if (record.description) return dom;
+                if (
+                    record.type === TransactionType.TRANSFER &&
+                    record.receiverAccount
+                ) {
+                    return messages('transaction.type.transfer.message', {
+                        value: record.receiverAccount.name,
+                    });
+                }
+                return dom;
+            },
         },
         {
             title: messages('common.createdAt'),
@@ -210,6 +250,24 @@ export default function TransactionsPage() {
             },
         },
     ];
+
+    const onChangeTable = (
+        pagination: TablePaginationConfig,
+        filters: any,
+        sorter: SorterResult<Transaction>
+    ) => {
+        const order = setSortOrder(sorter.order);
+        const orderBy = sorter.field as TransactionOrderBy;
+        onChangeFilter(
+            {
+                order,
+                orderBy,
+                page: pagination.current,
+                pageSize: pagination.pageSize,
+            },
+            false
+        );
+    };
 
     return (
         <AppContainer
@@ -316,7 +374,7 @@ export default function TransactionsPage() {
                     current: data?.meta?.page,
                     pageSize: data?.meta?.pageSize,
                     total: data?.meta?.total,
-                    onChange: onChangePage,
+                    // onChange: onChangePage,
                     showTotal: (total, [from, to]) =>
                         messages('table.showTotal', {
                             from: formatNumber(from),
@@ -326,6 +384,9 @@ export default function TransactionsPage() {
                     showSizeChanger: true,
                     size: 'default',
                 }}
+                onChange={
+                    onChangeTable as ProTableProps<Transaction, any>['onChange']
+                }
                 onRow={(data) => {
                     if (responsive.md) return {};
                     return {
@@ -350,6 +411,7 @@ export default function TransactionsPage() {
                     description={messages('action.delete.alert', {
                         label: editingData.id,
                     })}
+                    loading={deleteMutation.isPending}
                 />
             )}
         </AppContainer>

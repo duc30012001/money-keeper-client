@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { IconLabel } from '@/modules/icon/components/icon-label';
-import { TreeSelect, TreeSelectProps } from 'antd';
+import { Spin, TreeSelect, TreeSelectProps } from 'antd';
 import { useTranslations } from 'next-intl';
 import { CategoryType } from '../enums/category';
 import { useCategoriesList } from '../hooks/use-categories';
@@ -13,7 +13,7 @@ type Props = {
 function CategorySelect({ type, ...props }: Props) {
     const messages = useTranslations();
 
-    const { data } = useCategoriesList({
+    const { data, isFetching } = useCategoriesList({
         type,
     });
 
@@ -37,6 +37,13 @@ function CategorySelect({ type, ...props }: Props) {
 
     return (
         <TreeSelect
+            notFoundContent={
+                !isFetching ? (
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <Spin size="small" />
+                    </div>
+                ) : undefined
+            }
             placeholder={messages('category.title')}
             showSearch
             filterTreeNode={(input, option) =>

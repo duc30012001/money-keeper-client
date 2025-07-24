@@ -52,7 +52,7 @@ export default function CategoryModalForm({ defaultType, ...props }: Props) {
                     await createMutation.mutateAsync(
                         values as CreateCategoryDto
                     );
-                    form.resetFields();
+                    form.resetFields(['name', 'description', 'iconId']);
                 }
             })
             .catch((error) => {

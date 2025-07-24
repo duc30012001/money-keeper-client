@@ -4,7 +4,7 @@ export enum ModalType {
     DELETE = 'delete',
 }
 
-export enum OrderDirection {
+export enum SortOrder {
     ASC = 'ASC',
     DESC = 'DESC',
 }

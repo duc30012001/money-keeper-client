@@ -64,7 +64,7 @@ export function IconLabel({
                         color: token.colorTextTertiary,
                         ...styles?.description,
                     }}
-                    className={descriptionClassname}
+                    className={cn('text-xs', descriptionClassname)}
                 >
                     {description}
                 </div>

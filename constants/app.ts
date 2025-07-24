@@ -6,3 +6,6 @@ export const appConfig = {
         process.env.NEXT_PUBLIC_APP_DESCRIPTION ||
         'Money Keeper App - Track your finances, manage your money, and achieve your financial goals',
 };
+
+export const TRANSFER_ICON =
+    'https://storage.googleapis.com/viet-duc-bucket/ICON/V2/CHI/CHI_chuyen_khoan.png';

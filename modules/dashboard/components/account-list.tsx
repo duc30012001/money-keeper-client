@@ -28,7 +28,7 @@ function AccountList({}: Props) {
                     url={record.icon?.url}
                     description={formatNumber(record.balance)}
                     iconProps={{
-                        size: 30,
+                        size: 28,
                     }}
                 />
             ),

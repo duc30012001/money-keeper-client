@@ -1,8 +1,12 @@
+import { TRANSFER_ICON } from '@/constants/app';
 import { PageSize } from '@/enums/common';
 import { AppRoute } from '@/enums/routes';
 import { Link } from '@/i18n/navigation';
 import { formatDate, formatNumber } from '@/lib/format';
-import { getAmountColor } from '@/modules/transaction/utils/transaction';
+import {
+    getAmountColor,
+    getAmountSign,
+} from '@/modules/transaction/utils/transaction';
 import { Card, Table, TableProps, Tag, theme } from 'antd';
 import { useResponsive } from 'antd-style';
 import { useTranslations } from 'next-intl';
@@ -40,10 +44,8 @@ function RecentTransaction({}: Props) {
                 }
 
                 if (receiverAccount) {
-                    title = messages('transaction.type.transfer.message', {
-                        value: receiverAccount.name,
-                    });
-                    url = receiverAccount.icon?.url;
+                    title = messages('transaction.type.transfer.title');
+                    url = TRANSFER_ICON;
                 }
 
                 if (!title) {
@@ -56,7 +58,7 @@ function RecentTransaction({}: Props) {
                         url={url}
                         description={formatDate(record.transactionDate)}
                         iconProps={{
-                            size: 30,
+                            size: 28,
                         }}
                     />
                 );
@@ -71,8 +73,6 @@ function RecentTransaction({}: Props) {
             align: 'right',
             render: (_, record) => {
                 const { amount, type } = record;
-                const value = formatNumber(amount);
-
                 return (
                     <p className="space-y-1 truncate">
                         <Tag
@@ -80,11 +80,11 @@ function RecentTransaction({}: Props) {
                             bordered={false}
                             color={getAmountColor(type)}
                         >
-                            {value}
+                            {getAmountSign(type) + formatNumber(amount)}
                         </Tag>
                         <p
                             style={{ color: token.colorTextSecondary }}
-                            className="truncate"
+                            className="truncate text-xs"
                         >
                             {record.account?.name ?? record.senderAccount?.name}
                         </p>

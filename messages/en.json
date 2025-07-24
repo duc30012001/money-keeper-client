@@ -112,7 +112,10 @@
         "initialBalance": "Initial balance",
         "count": "Account count",
         "totalBalance": "Total balance: {value}",
-        "currentBalance": "Current balance"
+        "currentBalance": "Current balance",
+        "delete": {
+            "alert": "Deleting this acocunt will also delete all trnsactions under this account. This action cannot be undone."
+        }
     },
     "transaction": {
         "title": "Transaction",

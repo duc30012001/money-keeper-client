@@ -5,8 +5,11 @@ import { Spin, theme } from 'antd';
 import { useSession } from 'next-auth/react';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-    const { status } = useSession();
+    const { status, data } = useSession();
     const { token } = theme.useToken();
+
+    console.log('data:', data);
+    console.log('status:', status);
 
     if (status === 'authenticated') {
         return <CMSLayout>{children}</CMSLayout>;

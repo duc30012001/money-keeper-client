@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { IconLabel } from '@/modules/icon/components/icon-label';
-import { Select, SelectProps } from 'antd';
+import { Select, SelectProps, Spin } from 'antd';
 import { useTranslations } from 'next-intl';
 import { CategoryType } from '../enums/category';
 import { useCategoriesList } from '../hooks/use-categories';
@@ -12,7 +12,7 @@ type Props = {
 function CategoryParentSelect({ type, ...props }: Props) {
     const messages = useTranslations();
 
-    const { data } = useCategoriesList({
+    const { data, isFetching } = useCategoriesList({
         type,
     });
 
@@ -24,6 +24,13 @@ function CategoryParentSelect({ type, ...props }: Props) {
 
     return (
         <Select
+            notFoundContent={
+                !isFetching ? (
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <Spin size="small" />
+                    </div>
+                ) : undefined
+            }
             placeholder={messages('category.parent')}
             showSearch
             allowClear

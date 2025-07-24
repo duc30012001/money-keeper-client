@@ -174,6 +174,7 @@ export default function UsersPage() {
                     description={messages('action.delete.alert', {
                         label: editingData.name,
                     })}
+                    loading={deleteMutation.isPending}
                 />
             )}
         </AppContainer>

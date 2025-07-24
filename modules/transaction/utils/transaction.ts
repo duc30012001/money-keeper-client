@@ -19,3 +19,23 @@ export const getAmountColor = (type: TransactionType) => {
 
     return color;
 };
+
+export const getAmountSign = (type: TransactionType) => {
+    let sign = '';
+
+    switch (type) {
+        case TransactionType.EXPENSE:
+            sign = '-';
+            break;
+        case TransactionType.INCOME:
+            sign = '+';
+            break;
+        case TransactionType.TRANSFER:
+            sign = '';
+            break;
+        default:
+            break;
+    }
+
+    return sign;
+};

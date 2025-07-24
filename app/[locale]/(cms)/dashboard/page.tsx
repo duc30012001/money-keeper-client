@@ -16,8 +16,7 @@ import RecentTransaction from '@/modules/dashboard/components/recent-transaction
 import StatisticCard from '@/modules/dashboard/components/statistic-card';
 import { defaultTransactionDate } from '@/modules/transaction/constants/transaction';
 import {
-    useExpenseByParentCategories,
-    useIncomeByParentCategories,
+    useAnalyticByParentCategories,
     useTransactionAnalytic,
 } from '@/modules/transaction/hooks/use-transactions';
 import { TransactionAnalyticSearchParams } from '@/modules/transaction/types/transaction';
@@ -48,19 +47,22 @@ export default function DashboardPage() {
 
     const analytic = useTransactionAnalytic({
         transactionDate: filterValues.transactionDate,
-        chartGroupBy: filterValues.chartGroupBy,
+        accountIds: filterValues.accountIds,
+        categoryIds: filterValues.categoryIds,
     });
 
-    const expenseByParentCategories = useExpenseByParentCategories({
+    const expenseByParentCategories = useAnalyticByParentCategories({
         transactionDate: filterValues.transactionDate,
         accountIds: filterValues.accountIds,
-        chartGroupBy: filterValues.chartGroupBy,
+        categoryIds: filterValues.categoryIds,
+        categoryType: CategoryType.EXPENSE,
     });
 
-    const incomeByParentCategories = useIncomeByParentCategories({
+    const incomeByParentCategories = useAnalyticByParentCategories({
         transactionDate: filterValues.transactionDate,
         accountIds: filterValues.accountIds,
-        chartGroupBy: filterValues.chartGroupBy,
+        categoryIds: filterValues.categoryIds,
+        categoryType: CategoryType.INCOME,
     });
 
     const categoryAnalytic = useCategoryAnalytic(

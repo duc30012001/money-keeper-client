@@ -9,7 +9,6 @@ export type ConfirmModalProps = {
 const ConfirmModal = ({
     description = '',
     typeDelete = true,
-    loading,
     ...props
 }: ConfirmModalProps) => {
     return (
@@ -18,12 +17,10 @@ const ConfirmModal = ({
             okButtonProps={{
                 danger: typeDelete,
                 ghost: typeDelete,
-                disabled: loading,
             }}
             cancelButtonProps={{
                 type: !typeDelete ? 'default' : 'primary',
                 ghost: true,
-                disabled: loading,
             }}
         >
             {description}

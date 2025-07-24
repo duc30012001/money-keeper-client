@@ -112,7 +112,10 @@
         "initialBalance": "Số dư ban đầu",
         "count": "Số lượng tài khoản",
         "totalBalance": "Tổng số dư: {value}",
-        "currentBalance": "Số dư hiện tại"
+        "currentBalance": "Số dư hiện tại",
+        "delete": {
+            "alert": "Xoá tài khoản này cũng sẽ xoá toàn bộ giao dịch liên quan. Hành động này không thể hoàn tác."
+        }
     },
     "transaction": {
         "title": "Giao dịch",

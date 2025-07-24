@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import { Select, SelectProps } from 'antd';
+import { Select, SelectProps, Spin } from 'antd';
 import { useTranslations } from 'next-intl';
 import { useAccountTypesList } from '../hooks/use-account-types';
 
@@ -8,7 +8,7 @@ type Props = {} & SelectProps;
 function AccountTypeSelect({ ...props }: Props) {
     const messages = useTranslations();
 
-    const { data } = useAccountTypesList();
+    const { data, isFetching } = useAccountTypesList();
 
     const options = (data?.data ?? []).map((item) => ({
         value: item.id,
@@ -17,6 +17,13 @@ function AccountTypeSelect({ ...props }: Props) {
 
     return (
         <Select
+            notFoundContent={
+                !isFetching ? (
+                    <div className="flex h-10 w-full items-center justify-center">
+                        <Spin size="small" />
+                    </div>
+                ) : undefined
+            }
             placeholder={messages('accountType.title')}
             showSearch
             allowClear

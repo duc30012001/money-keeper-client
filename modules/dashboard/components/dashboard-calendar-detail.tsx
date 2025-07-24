@@ -1,11 +1,16 @@
 import AppModal, { AppModalProps } from '@/components/ui/modal/app-modal';
+import { TRANSFER_ICON } from '@/constants/app';
 import { PageSize, Screen } from '@/enums/common';
 import { formatDate, formatNumber } from '@/lib/format';
 import { arrayToString } from '@/lib/utils';
 import { IconLabel } from '@/modules/icon/components/icon-label';
+import { TransactionType } from '@/modules/transaction/enums/transaction';
 import { useTransactionsList } from '@/modules/transaction/hooks/use-transactions';
 import { Transaction } from '@/modules/transaction/types/transaction';
-import { getAmountColor } from '@/modules/transaction/utils/transaction';
+import {
+    getAmountColor,
+    getAmountSign,
+} from '@/modules/transaction/utils/transaction';
 import { Table, TableProps, Tag, theme } from 'antd';
 import { useResponsive } from 'antd-style';
 import dayjs from 'dayjs';
@@ -64,10 +69,8 @@ function DashboardCalendarDetail({ type, date, ...props }: Props) {
                 }
 
                 if (receiverAccount) {
-                    title = messages('transaction.type.transfer.message', {
-                        value: receiverAccount.name,
-                    });
-                    url = receiverAccount.icon?.url;
+                    title = messages('transaction.type.transfer.title');
+                    url = TRANSFER_ICON;
                 }
 
                 if (!title) {
@@ -82,7 +85,7 @@ function DashboardCalendarDetail({ type, date, ...props }: Props) {
                             !responsive.xl && formatDate(transactionDate)
                         }
                         iconProps={{
-                            size: responsive.xl ? 20 : 30,
+                            size: responsive.xl ? 20 : 28,
                         }}
                     />
                 );
@@ -108,8 +111,6 @@ function DashboardCalendarDetail({ type, date, ...props }: Props) {
             width: 120,
             render: (_, record) => {
                 const { amount, type, account, senderAccount } = record;
-                const value = formatNumber(amount);
-
                 return (
                     <p className="space-y-1 truncate">
                         <Tag
@@ -117,11 +118,11 @@ function DashboardCalendarDetail({ type, date, ...props }: Props) {
                             bordered={false}
                             color={getAmountColor(type)}
                         >
-                            {value}
+                            {getAmountSign(type) + formatNumber(amount)}
                         </Tag>
                         <p
                             style={{ color: token.colorTextSecondary }}
-                            className="block truncate xl:hidden"
+                            className="block truncate text-xs xl:hidden"
                         >
                             {account?.name ?? senderAccount?.name}
                         </p>
@@ -136,6 +137,18 @@ function DashboardCalendarDetail({ type, date, ...props }: Props) {
             ellipsis: true,
             width: 250,
             responsive: ['lg'],
+            render: (dom, record) => {
+                if (record.description) return dom;
+                if (
+                    record.type === TransactionType.TRANSFER &&
+                    record.receiverAccount
+                ) {
+                    return messages('transaction.type.transfer.message', {
+                        value: record.receiverAccount.name,
+                    });
+                }
+                return dom;
+            },
         },
     ];
 

@@ -1,11 +1,12 @@
 import axiosInstance from '@/lib/axios';
 import { PaginatedResponseDto, ResponseDto } from '@/types/common';
 import {
+    AnalyticByParentCategoryResult,
     ChartResult,
     CreateTransactionDto,
-    ExpenseByParentCategoryResult,
-    IncomeByParentCategoryResult,
     Transaction,
+    TransactionAnalyticByDateSearchParams,
+    TransactionAnalyticParentCategorySearchParams,
     TransactionAnalyticResult,
     TransactionAnalyticSearchParams,
     TransactionSearchParams,
@@ -27,24 +28,19 @@ export const transactionApi = {
             { params: searchParams }
         ),
 
-    getChart: (searchParams: TransactionAnalyticSearchParams) =>
-        axiosInstance.get<ResponseDto<ChartResult[]>>('/transactions/chart', {
-            params: searchParams,
-        }),
-
-    getExpenseByParentCategory: (
-        searchParams: TransactionAnalyticSearchParams
-    ) =>
-        axiosInstance.get<ResponseDto<ExpenseByParentCategoryResult[]>>(
-            '/transactions/expense-by-parent-categories',
-            { params: searchParams }
+    getChart: (searchParams: TransactionAnalyticByDateSearchParams) =>
+        axiosInstance.get<ResponseDto<ChartResult[]>>(
+            '/transactions/analytics/chart',
+            {
+                params: searchParams,
+            }
         ),
 
-    getIncomeByParentCategory: (
-        searchParams: TransactionAnalyticSearchParams
+    getAnalyticParentCategory: (
+        searchParams: TransactionAnalyticParentCategorySearchParams
     ) =>
-        axiosInstance.get<ResponseDto<IncomeByParentCategoryResult[]>>(
-            '/transactions/income-by-parent-categories',
+        axiosInstance.get<ResponseDto<AnalyticByParentCategoryResult[]>>(
+            '/transactions/analytics/parent-categories',
             { params: searchParams }
         ),
 

@@ -228,9 +228,8 @@ export default function AccountsPage() {
                     title={messages('action.delete.title', {
                         label: editingData.name,
                     })}
-                    description={messages('action.delete.alert', {
-                        label: editingData.name,
-                    })}
+                    description={messages('account.delete.alert')}
+                    loading={deleteMutation.isPending}
                 />
             )}
         </AppContainer>

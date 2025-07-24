@@ -10,11 +10,11 @@ import {
 import { toast } from 'react-toastify';
 import { transactionApi } from '../api/transaction.api';
 import {
+    AnalyticByParentCategoryResult,
     ChartResult,
     CreateTransactionDto,
-    ExpenseByParentCategoryResult,
-    IncomeByParentCategoryResult,
     Transaction,
+    TransactionAnalyticParentCategorySearchParams,
     TransactionAnalyticResult,
     TransactionAnalyticSearchParams,
     TransactionSearchParams,
@@ -39,22 +39,16 @@ export const transactionKeys = {
         searchParams
             ? [...transactionKeys.all, 'chart', searchParams]
             : ([...transactionKeys.all, 'chart'] as const),
-    expenseByParentCategories: (
+    analyticByParentCategories: (
         searchParams?: TransactionAnalyticSearchParams
     ) =>
         searchParams
             ? [
                   ...transactionKeys.all,
-                  'expenseByParentCategories',
+                  'analyticByParentCategories',
                   searchParams,
               ]
-            : ([...transactionKeys.all, 'expenseByParentCategories'] as const),
-    incomeByParentCategories: (
-        searchParams?: TransactionAnalyticSearchParams
-    ) =>
-        searchParams
-            ? [...transactionKeys.all, 'incomeByParentCategories', searchParams]
-            : ([...transactionKeys.all, 'incomeByParentCategories'] as const),
+            : ([...transactionKeys.all, 'analyticByParentCategories'] as const),
 };
 
 export const useTransactionsList = (searchParams: TransactionSearchParams) => {
@@ -113,36 +107,20 @@ export const useTransactionChart = (
     } as UseQueryOptions<ResponseDto<ChartResult[]>>);
 };
 
-export const useExpenseByParentCategories = (
-    searchParams: TransactionAnalyticSearchParams
+export const useAnalyticByParentCategories = (
+    searchParams: TransactionAnalyticParentCategorySearchParams
 ) => {
     const { handleError } = useApiError();
-    return useQuery<ResponseDto<ExpenseByParentCategoryResult[]>>({
-        queryKey: transactionKeys.expenseByParentCategories(searchParams),
+    return useQuery<ResponseDto<AnalyticByParentCategoryResult[]>>({
+        queryKey: transactionKeys.analyticByParentCategories(searchParams),
         queryFn: async () => {
             const response =
-                await transactionApi.getExpenseByParentCategory(searchParams);
+                await transactionApi.getAnalyticParentCategory(searchParams);
             return response.data;
         },
         onError: handleError,
         placeholderData: (prev) => prev,
-    } as UseQueryOptions<ResponseDto<ExpenseByParentCategoryResult[]>>);
-};
-
-export const useIncomeByParentCategories = (
-    searchParams: TransactionAnalyticSearchParams
-) => {
-    const { handleError } = useApiError();
-    return useQuery<ResponseDto<IncomeByParentCategoryResult[]>>({
-        queryKey: transactionKeys.incomeByParentCategories(searchParams),
-        queryFn: async () => {
-            const response =
-                await transactionApi.getIncomeByParentCategory(searchParams);
-            return response.data;
-        },
-        onError: handleError,
-        placeholderData: (prev) => prev,
-    } as UseQueryOptions<ResponseDto<IncomeByParentCategoryResult[]>>);
+    } as UseQueryOptions<ResponseDto<AnalyticByParentCategoryResult[]>>);
 };
 
 export const useCreateTransaction = () => {

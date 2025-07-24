@@ -15,7 +15,7 @@ import { useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { AnalyticChartGroupBy } from '../../transaction/enums/transaction';
 import { useTransactionChart } from '../../transaction/hooks/use-transactions';
-import { TransactionAnalyticSearchParams } from '../../transaction/types/transaction';
+import { TransactionAnalyticByDateSearchParams } from '../../transaction/types/transaction';
 import DashboardCalendarDetail from './dashboard-calendar-detail';
 
 dayjs.extend(dayLocaleData);
@@ -40,7 +40,7 @@ function DashboardCalendar({}: Props) {
     }>();
 
     const [dataFilter, setDataFilter] =
-        useState<TransactionAnalyticSearchParams>({
+        useState<TransactionAnalyticByDateSearchParams>({
             transactionDate: arrayToString(getRangeDay(dayjs())),
             chartGroupBy: AnalyticChartGroupBy.DAY,
         });
