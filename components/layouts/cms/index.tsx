@@ -1,3 +1,5 @@
+'use client';
+
 import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
