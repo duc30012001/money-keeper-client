@@ -76,7 +76,7 @@ function IconSelect({ ...props }: Props) {
         <div>
             <Popover
                 content={
-                    <ScrollArea className="h-80 max-w-screen-md">
+                    <ScrollArea className="h-96 max-w-screen-md">
                         {renderContent()}
                     </ScrollArea>
                 }

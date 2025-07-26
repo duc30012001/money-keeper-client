@@ -37,6 +37,13 @@ export default function AccountModalForm(props: Props) {
         });
     }, [editingData, form]);
 
+    const onSelectAccountType = (value: any, option: any) => {
+        const iconId = form.getFieldValue('iconId');
+        if (!iconId && option?.iconId) {
+            form.setFieldValue('iconId', option?.iconId);
+        }
+    };
+
     const onFinish = async () => {
         form.validateFields()
             .then(async (values) => {
@@ -65,10 +72,10 @@ export default function AccountModalForm(props: Props) {
             onCancel={closeModal}
             title={
                 editingData
-                    ? messages('common.edit.title', {
+                    ? messages('action.update.title', {
                           label: editingData.name,
                       })
-                    : messages('common.create')
+                    : messages('action.create.button')
             }
             onOk={onFinish}
         >
@@ -122,7 +129,7 @@ export default function AccountModalForm(props: Props) {
                         },
                     ]}
                 >
-                    <AccountTypeSelect />
+                    <AccountTypeSelect externalOnChange={onSelectAccountType} />
                 </AppForm.Item>
                 <AppForm.Item
                     label={messages('icon.title')}

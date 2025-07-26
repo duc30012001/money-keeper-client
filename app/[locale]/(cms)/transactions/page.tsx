@@ -242,6 +242,10 @@ export default function TransactionsPage() {
                         editProps={{
                             onClick: () => openModal(ModalType.EDIT, record),
                         }}
+                        duplicateProps={{
+                            onClick: () => openModal(ModalType.CREATE, record),
+                            show: true,
+                        }}
                         deleteProps={{
                             onClick: () => openModal(ModalType.DELETE, record),
                         }}

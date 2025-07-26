@@ -1,11 +1,14 @@
 import { cn } from '@/lib/utils';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { Select, SelectProps, Spin } from 'antd';
 import { useTranslations } from 'next-intl';
 import { useAccountTypesList } from '../hooks/use-account-types';
 
-type Props = {} & SelectProps;
+type Props = {
+    externalOnChange?: SelectProps['onChange'];
+} & SelectProps;
 
-function AccountTypeSelect({ ...props }: Props) {
+function AccountTypeSelect({ externalOnChange, ...props }: Props) {
     const messages = useTranslations();
 
     const { data, isFetching } = useAccountTypesList();
@@ -13,6 +16,8 @@ function AccountTypeSelect({ ...props }: Props) {
     const options = (data?.data ?? []).map((item) => ({
         value: item.id,
         label: item.name,
+        icon: item.icon?.url,
+        iconId: item.icon?.id,
     }));
 
     return (
@@ -29,12 +34,19 @@ function AccountTypeSelect({ ...props }: Props) {
             allowClear
             maxTagCount="responsive"
             {...props}
+            onChange={(...agrs) => {
+                props.onChange?.(...agrs);
+                externalOnChange?.(...agrs);
+            }}
             className={cn('w-full', props.className)}
             filterOption={(input, option) =>
                 option?.label.toLowerCase().includes(input.toLowerCase()) ??
                 false
             }
             options={options}
+            optionRender={({ data }) => (
+                <IconLabel title={data.label} url={data.icon} />
+            )}
         />
     );
 }

@@ -1,7 +1,7 @@
 import AppForm from '@/components/ui/form/app-form';
 import InputNumber from '@/components/ui/input/input-number';
 import AppModal, { AppModalProps } from '@/components/ui/modal/app-modal';
-import { DateFormat } from '@/enums/common';
+import { DateFormat, ModalType } from '@/enums/common';
 import { useModal } from '@/hooks/use-modal';
 import { formatNumber } from '@/lib/format';
 import AccountSelect from '@/modules/account/components/account-select';
@@ -27,8 +27,10 @@ interface Props extends AppModalProps {}
 
 export default function TransactionModalForm({ ...props }: Props) {
     const messages = useTranslations();
-    const { editingData, closeModal } = useModal<Transaction>();
+    const { editingData, typeModal, closeModal } = useModal<Transaction>();
     const [form] = AppForm.useForm<TransactionFormValues>();
+
+    const isUpdate = Boolean(editingData && typeModal === ModalType.EDIT);
 
     const createMutation = useCreateTransaction();
     const updateMutation = useUpdateTransaction();
@@ -42,9 +44,9 @@ export default function TransactionModalForm({ ...props }: Props) {
                     transactionDate: values.transactionDate.toDate(),
                 };
 
-                if (editingData) {
+                if (isUpdate) {
                     await updateMutation.mutateAsync({
-                        id: editingData.id,
+                        id: editingData!.id,
                         data: data as UpdateTransactionDto,
                     });
                     closeModal();
@@ -106,9 +108,9 @@ export default function TransactionModalForm({ ...props }: Props) {
             loading={isLoading}
             onCancel={closeModal}
             title={
-                editingData
+                isUpdate
                     ? messages('transaction.edit.title', {
-                          label: editingData.id,
+                          label: editingData!.id,
                       })
                     : messages('transaction.create')
             }

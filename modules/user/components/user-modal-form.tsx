@@ -63,10 +63,10 @@ export default function UserModalForm(props: Props) {
             onCancel={closeModal}
             title={
                 editingData
-                    ? messages('common.edit.title', {
+                    ? messages('action.update.title', {
                           label: editingData.email,
                       })
-                    : messages('common.create')
+                    : messages('action.create.button')
             }
             onOk={onFinish}
         >

@@ -14,6 +14,7 @@ import {
     useUpdateSortOrder,
 } from '@/modules/account-type/hooks/use-account-types';
 import { AccountType } from '@/modules/account-type/types/account-type';
+import { IconLabel } from '@/modules/icon/components/icon-label';
 import { DragSortTable, ProColumns } from '@ant-design/pro-components';
 import { useResponsive } from 'antd-style';
 import { useTranslations } from 'next-intl';
@@ -69,6 +70,13 @@ export default function UsersPage() {
             dataIndex: 'name',
             ellipsis: true,
             width: responsive.lg ? 200 : undefined,
+            render: (_, record) => (
+                <IconLabel
+                    title={record.name}
+                    descriptionClassname="block lg:hidden"
+                    url={record.icon?.url}
+                />
+            ),
         },
         {
             title: messages('account.count'),

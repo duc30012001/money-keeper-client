@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { defaultLocale } from './enums/common';
 import { AppRoute, AUTH_ROUTES, PUBLIC_ROUTES } from './enums/routes';
 import { routing } from './i18n/routing';
-import { getToken } from './modules/auth/utils';
+import { getToken } from './modules/auth/utils/auth';
 
 const nextIntl = createNextIntlMiddleware(routing);
 
@@ -28,12 +28,12 @@ export async function middleware(req: NextRequest) {
     // 2. Do your session check + redirects
     const token = await getToken(req);
     const locale = cookies().get('NEXT_LOCALE')?.value || defaultLocale;
-    const isPublicRoutes =
-        PUBLIC_ROUTES.findIndex((item) => pathname === `/${locale}${item}`) !==
-        -1;
-    const isAuthRoutes =
-        AUTH_ROUTES.findIndex((item) => pathname === `/${locale}${item}`) !==
-        -1;
+    const isPublicRoutes = PUBLIC_ROUTES.some(
+        (item) => pathname === `/${locale}${item}`
+    );
+    const isAuthRoutes = AUTH_ROUTES.some(
+        (item) => pathname === `/${locale}${item}`
+    );
 
     if (isPublicRoutes) {
         return nextIntl(req);

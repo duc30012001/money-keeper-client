@@ -18,6 +18,10 @@
             "description": "Enter your email and we'll send you a link to reset your password",
             "submit": "Send password reset link",
             "back": "Back to sign in"
+        },
+        "forbidden": {
+            "title": "Access Denied",
+            "description": "You do not have permission to view this resource."
         }
     },
     "validation": {
@@ -40,13 +44,7 @@
         "loading": "Loading...",
         "save": "Save",
         "cancel": "Cancel",
-        "delete": "Delete",
-        "edit": {
-            "title": "Edit {label}",
-            "action": "Edit"
-        },
         "view": "View",
-        "create": "Create",
         "search": "Search",
         "noData": "No data",
         "yes": "Yes",
@@ -168,17 +166,26 @@
     },
     "action": {
         "create": {
+            "button": "Create",
             "title": "Create {label}",
             "success": "{label} created successfully"
         },
         "update": {
+            "button": "Update",
             "title": "Update {label}",
             "success": "{label} updated successfully"
         },
+        "duplicate": {
+            "button": "Duplicate"
+        },
         "delete": {
+            "button": "Delete",
             "title": "Delete {label}",
             "alert": "Are you sure you want to delete {label}? This action cannot be undone.",
             "success": "{label} deleted successfully"
+        },
+        "back": {
+            "button": "Go back"
         }
     },
     "date": {

@@ -18,9 +18,9 @@ export default function NotFoundPage() {
             <p className="text-muted-foreground text-lg">
                 The page you requested could not be found.
             </p>
-            <Link href={AppRoute.DASHBOARD} className="mt-6">
+            <Link href={AppRoute.HOME} className="mt-6">
                 <Button type="primary" size="large">
-                    Back to Dashboard
+                    Go back
                 </Button>
             </Link>
         </div>

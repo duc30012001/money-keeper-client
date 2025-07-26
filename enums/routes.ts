@@ -26,11 +26,12 @@ export enum AppRoute {
     RESET_PASSWORD = '/reset-password',
     FORBIDDEN = '/forbidden',
     NOT_FOUND = '/not-found',
+    HOME = '/',
 }
 
 export interface SidebarItem {
     title: string;
-    name: string;
+    name: any;
     href: AppRoute;
     icon: LucideIcon;
     role?: UserRole;
@@ -72,7 +73,6 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
         name: 'icon.title',
         href: AppRoute.ICONS,
         icon: LayoutGrid,
-        role: UserRole.ADMIN,
     },
     {
         title: 'Users',

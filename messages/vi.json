@@ -18,6 +18,10 @@
             "description": "Nhập email của bạn và chúng tôi sẽ gửi liên kết đặt lại mật khẩu",
             "submit": "Gửi liên kết đặt lại mật khẩu",
             "back": "Trở về trang đăng nhập"
+        },
+        "forbidden": {
+            "title": "Truy cập bị từ chối",
+            "description": "Bạn không có quyền truy cập tài nguyên này."
         }
     },
     "validation": {
@@ -40,13 +44,7 @@
         "loading": "Đang tải...",
         "save": "Lưu",
         "cancel": "Hủy",
-        "delete": "Xóa",
-        "edit": {
-            "title": "Chỉnh sửa {label}",
-            "action": "Chỉnh sửa"
-        },
         "view": "Xem",
-        "create": "Thêm mới",
         "search": "Tìm kiếm",
         "noData": "Không có dữ liệu",
         "yes": "Có",
@@ -168,17 +166,26 @@
     },
     "action": {
         "create": {
+            "button": "Thêm mới",
             "title": "Thêm {label}",
             "success": "Thêm {label} thành công"
         },
         "update": {
+            "button": "Cập nhật",
             "title": "Cập nhật {label}",
             "success": "Cập nhật {label} thành công"
         },
+        "duplicate": {
+            "button": "Nhân bản"
+        },
         "delete": {
+            "button": "Xoá",
             "title": "Xoá {label}",
             "alert": "Bạn có chắc muốn xóa {label}? Hành động này không thể hoàn tác.",
             "success": "Xoá {label} thành công"
+        },
+        "back": {
+            "button": "Quay lại"
         }
     },
     "date": {

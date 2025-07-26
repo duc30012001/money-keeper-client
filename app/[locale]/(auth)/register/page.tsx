@@ -4,7 +4,7 @@ import AppForm from '@/components/ui/form/app-form';
 import { AppRoute } from '@/enums/routes';
 import { useApiError } from '@/hooks/use-api-error';
 import { Link } from '@/i18n/navigation';
-import { authService } from '@/modules/auth/service';
+import { authApi } from '@/modules/auth/api/auth.api';
 import { Button, Input, theme } from 'antd';
 import { signIn } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -37,7 +37,7 @@ export default function RegisterPage() {
     const onFinish = async (values: FormValues) => {
         setIsLoading(true);
         try {
-            await authService.register(values);
+            await authApi.register(values);
 
             const result = await signIn('credentials', {
                 email: values.email,

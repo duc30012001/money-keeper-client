@@ -29,7 +29,7 @@ export function useApiError() {
         }
 
         messageList.forEach((message) => {
-            toast.error(messages(message), {
+            toast.error(messages(message as any), {
                 toastId: message,
             });
         });

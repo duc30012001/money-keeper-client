@@ -1,12 +1,15 @@
 'use client';
 
+import ForbiddenPage from '@/app/forbidden/page';
 import AppLocale from '@/components/app-locale';
 import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
 import AppTheme from '@/components/app-theme';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { usePathname } from '@/i18n/navigation';
-import { Button, Drawer, Layout, Menu, theme } from 'antd';
+import { useAuthUser } from '@/modules/auth/hooks/use-auth-user';
+import { UserRole } from '@/modules/user/enums/user';
+import { Button, Drawer, Layout, Menu, Spin, theme } from 'antd';
 import { useResponsive } from 'antd-style';
 import { Menu as MenuIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -26,7 +29,15 @@ export default function CMSLayout({ children }: Props) {
     const pathname = usePathname();
     const responsive = useResponsive();
 
-    const items = SIDEBAR_ITEMS.map((item) => ({
+    const { data, isLoading } = useAuthUser();
+    const role = data?.data?.role;
+
+    const canAccess = (userRole?: UserRole, itemRole?: UserRole) =>
+        itemRole ? itemRole === userRole : true;
+
+    const items = SIDEBAR_ITEMS.filter((item) =>
+        canAccess(role, item.role)
+    ).map((item) => ({
         key: item.href,
         icon: <item.icon />,
         label: <Link href={item.href}>{messages(item.name)}</Link>,
@@ -34,6 +45,25 @@ export default function CMSLayout({ children }: Props) {
     }));
 
     const toggleSidebar = () => setCollapsed((value) => !value);
+
+    const currentRoute = SIDEBAR_ITEMS.find((item) => item.href === pathname);
+    const canAccessCurrentRoute = canAccess(role, currentRoute?.role);
+
+    const renderChildren = () => {
+        if (isLoading) {
+            return (
+                <div className="flex h-96 items-center justify-center">
+                    <Spin />
+                </div>
+            );
+        }
+
+        if (canAccessCurrentRoute) {
+            return children;
+        }
+
+        return <ForbiddenPage />;
+    };
 
     return (
         <React.Fragment>
@@ -115,7 +145,7 @@ export default function CMSLayout({ children }: Props) {
                     <Layout>
                         <Content>
                             <div className="min-h-[calc(100vh-4rem)]">
-                                {children}
+                                {renderChildren()}
                             </div>
                         </Content>
                     </Layout>

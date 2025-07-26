@@ -9,7 +9,7 @@ export interface DeleteButtonProps extends ButtonProps {
 export function DeleteButton({ tooltipProps, ...props }: DeleteButtonProps) {
     const messages = useTranslations();
     return (
-        <Tooltip title={messages('common.delete')} {...tooltipProps}>
+        <Tooltip title={messages('action.delete.button')} {...tooltipProps}>
             <Button type="text" icon={<Trash2 />} {...props} />
         </Tooltip>
     );

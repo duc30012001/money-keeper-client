@@ -11,7 +11,7 @@ export function CreateButton({ label, ...props }: CreateButtonProps) {
 
     return (
         <Button type="primary" {...props}>
-            {label ?? messages('common.create')}
+            {label ?? messages('action.create.button')}
         </Button>
     );
 }

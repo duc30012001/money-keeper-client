@@ -1,8 +1,8 @@
 import { AppRoute } from '@/enums/routes';
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { authService } from './service';
-import { getDataFromToken } from './utils';
+import { authApi } from './api/auth.api';
+import { getDataFromToken } from './utils/auth';
 
 export const authOptions: NextAuthOptions = {
     // 1) Provider đăng nhập bằng email/password
@@ -16,7 +16,7 @@ export const authOptions: NextAuthOptions = {
             // @ts-ignore
             async authorize(credentials) {
                 try {
-                    const res = await authService.signin({
+                    const res = await authApi.signin({
                         email: credentials!.email,
                         password: credentials!.password,
                     });
@@ -54,14 +54,13 @@ export const authOptions: NextAuthOptions = {
 
             // Tự động refresh nếu token sắp hết hạn
             const { accessToken } = token;
-            console.log('callbacks accessToken:', accessToken);
             const now = Date.now();
             const accessTokenPayload = getDataFromToken(accessToken);
             const exp = (accessTokenPayload?.exp || 0) * 1000;
             // refresh nếu còn 1 phút hoặc đã quá hạn
             if (now > exp - 60 * 1000) {
                 try {
-                    const res = await authService.refreshToken({
+                    const res = await authApi.refreshToken({
                         refreshToken: token.refreshToken,
                     });
                     const data = res.data.data;

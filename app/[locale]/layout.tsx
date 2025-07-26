@@ -1,3 +1,4 @@
+import GoogleAnalytics from '@/components/google-analytics';
 import { appConfig } from '@/constants/app';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
 import { routing } from '@/i18n/routing';
@@ -50,6 +51,7 @@ export default async function LocaleLayout({
                 <NextIntlClientProvider>
                     <AntdProvider>
                         <NuqsAdapter>{children}</NuqsAdapter>
+                        <GoogleAnalytics />
                     </AntdProvider>
                 </NextIntlClientProvider>
             </body>

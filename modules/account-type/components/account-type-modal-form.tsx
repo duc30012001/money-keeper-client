@@ -1,6 +1,7 @@
 import AppForm from '@/components/ui/form/app-form';
 import AppModal, { AppModalProps } from '@/components/ui/modal/app-modal';
 import { useModal } from '@/hooks/use-modal';
+import IconSelect from '@/modules/icon/components/icon-select';
 import { Input } from 'antd';
 import { useTranslations } from 'next-intl';
 import { useEffect } from 'react';
@@ -30,6 +31,7 @@ export default function AccountTypeModalForm(props: Props) {
         form.setFieldsValue({
             name: editingData?.name,
             description: editingData?.description ?? undefined,
+            iconId: editingData?.icon?.id,
         });
     }, [editingData, form]);
 
@@ -61,10 +63,10 @@ export default function AccountTypeModalForm(props: Props) {
             onCancel={closeModal}
             title={
                 editingData
-                    ? messages('common.edit.title', {
+                    ? messages('action.update.title', {
                           label: editingData.name,
                       })
-                    : messages('common.create')
+                    : messages('action.create.button')
             }
             onOk={onFinish}
         >
@@ -87,6 +89,18 @@ export default function AccountTypeModalForm(props: Props) {
                     ]}
                 >
                     <Input />
+                </AppForm.Item>
+                <AppForm.Item
+                    label={messages('icon.title')}
+                    name={'iconId'}
+                    rules={[
+                        {
+                            required: true,
+                            message: messages('validation.select'),
+                        },
+                    ]}
+                >
+                    <IconSelect />
                 </AppForm.Item>
                 <AppForm.Item
                     label={messages('common.description')}
