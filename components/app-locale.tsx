@@ -24,20 +24,6 @@ export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
                     <Image
                         height={15}
                         width={30}
-                        src={'/images/languages/vi.svg'}
-                        alt={Locale.VI}
-                    />
-                    {messages('language.vietnamese')}
-                </p>
-            ),
-            key: Locale.VI,
-        },
-        {
-            label: (
-                <p className="flex items-center justify-start gap-2">
-                    <Image
-                        height={15}
-                        width={30}
                         src={'/images/languages/en.svg'}
                         alt={Locale.EN}
                     />
@@ -45,6 +31,20 @@ export default function AppLocale({ buttonProps, ...props }: AppLocaleProps) {
                 </p>
             ),
             key: Locale.EN,
+        },
+        {
+            label: (
+                <p className="flex items-center justify-start gap-2">
+                    <Image
+                        height={15}
+                        width={30}
+                        src={'/images/languages/vi.svg'}
+                        alt={Locale.VI}
+                    />
+                    {messages('language.vietnamese')}
+                </p>
+            ),
+            key: Locale.VI,
         },
     ];
 

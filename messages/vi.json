@@ -67,7 +67,8 @@
         "english": "English",
         "title": "Ngôn ngữ",
         "vietnamese": "Tiếng Việt",
-        "select": "Chọn ngôn ngữ"
+        "select": "Chọn ngôn ngữ",
+        "tooltip": "Ngôn ngữ của các dữ liệu khởi tạo ban đầu"
     },
     "user": {
         "title": "Người dùng",
@@ -186,6 +187,9 @@
         },
         "back": {
             "button": "Quay lại"
+        },
+        "copy": {
+            "success": "Đã sao chép vào bộ nhớ tạm"
         }
     },
     "date": {

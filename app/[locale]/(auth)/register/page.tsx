@@ -1,5 +1,6 @@
 'use client';
 
+import LocaleSelect from '@/components/locale-select';
 import AppForm from '@/components/ui/form/app-form';
 import { AppRoute } from '@/enums/routes';
 import { useApiError } from '@/hooks/use-api-error';
@@ -7,7 +8,7 @@ import { Link } from '@/i18n/navigation';
 import { authApi } from '@/modules/auth/api/auth.api';
 import { Button, Input, theme } from 'antd';
 import { signIn } from 'next-auth/react';
-import { useTranslations } from 'next-intl';
+import { Locale, useLocale, useTranslations } from 'next-intl';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -15,13 +16,17 @@ import { toast } from 'react-toastify';
 interface FormValues {
     email: string;
     password: string;
+    locale: Locale;
 }
 
 export default function RegisterPage() {
-    const { token } = theme.useToken();
-    const [isLoading, setIsLoading] = useState(false);
-    const messages = useTranslations();
     const { handleError } = useApiError();
+
+    const messages = useTranslations();
+    const locale = useLocale();
+    const { token } = theme.useToken();
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const searchParams = useSearchParams();
     const error = searchParams.get('error');
@@ -82,6 +87,9 @@ export default function RegisterPage() {
                 layout="vertical"
                 onFinish={onFinish}
                 disabled={isLoading}
+                initialValues={{
+                    locale,
+                }}
             >
                 <AppForm.Item
                     label={messages('user.email')}
@@ -138,6 +146,19 @@ export default function RegisterPage() {
                     ]}
                 >
                     <Input.Password />
+                </AppForm.Item>
+                <AppForm.Item
+                    label={messages('language.title')}
+                    name={'locale'}
+                    rules={[
+                        {
+                            required: true,
+                            message: messages('validation.select'),
+                        },
+                    ]}
+                    tooltip={messages('language.tooltip')}
+                >
+                    <LocaleSelect />
                 </AppForm.Item>
                 <Button
                     type="primary"

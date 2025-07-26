@@ -1,8 +1,9 @@
+import LocaleSelect from '@/components/locale-select';
 import AppForm from '@/components/ui/form/app-form';
 import AppModal, { AppModalProps } from '@/components/ui/modal/app-modal';
 import { useModal } from '@/hooks/use-modal';
 import { Input } from 'antd';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { useEffect } from 'react';
 import { UserRole } from '../enums/user';
 import { useCreateUser, useUpdateUser } from '../hooks/use-users';
@@ -21,6 +22,7 @@ export default function UserModalForm(props: Props) {
     const messages = useTranslations();
     const { editingData, closeModal } = useModal<User>();
     const [form] = AppForm.useForm<UserFormValues>();
+    const locale = useLocale();
 
     const createMutation = useCreateUser();
     const updateMutation = useUpdateUser();
@@ -32,8 +34,9 @@ export default function UserModalForm(props: Props) {
             password: editingData?.password,
             isActive: editingData?.isActive ?? true,
             role: editingData?.role || UserRole.USER,
+            locale: locale,
         });
-    }, [editingData, form]);
+    }, [editingData, form, locale]);
 
     const onFinish = async () => {
         form.validateFields()
@@ -48,7 +51,7 @@ export default function UserModalForm(props: Props) {
                     closeModal();
                 } else {
                     await createMutation.mutateAsync(values as CreateUserDto);
-                    form.resetFields();
+                    form.resetFields(['email', 'password']);
                 }
             })
             .catch((error) => {
@@ -160,6 +163,19 @@ export default function UserModalForm(props: Props) {
                     ]}
                 >
                     <UserRoleSelect allowClear={false} />
+                </AppForm.Item>
+                <AppForm.Item
+                    label={messages('language.title')}
+                    name={'locale'}
+                    rules={[
+                        {
+                            required: true,
+                            message: messages('validation.select'),
+                        },
+                    ]}
+                    tooltip={messages('language.tooltip')}
+                >
+                    <LocaleSelect />
                 </AppForm.Item>
             </AppForm>
         </AppModal>

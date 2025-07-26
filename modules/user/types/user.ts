@@ -1,3 +1,4 @@
+import { Locale } from '@/enums/common';
 import { BaseEntity, BaseQuery } from '@/types/common';
 import { UserRole } from '../enums/user';
 
@@ -13,6 +14,7 @@ export interface CreateUserDto {
     password: string;
     isActive?: boolean;
     role?: UserRole;
+    locale?: Locale;
 }
 
 export interface UpdateUserDto extends Partial<CreateUserDto> {}
@@ -27,4 +29,5 @@ export interface UserFormValues {
     password: string | undefined;
     isActive: boolean;
     role: UserRole;
+    locale: Locale;
 }

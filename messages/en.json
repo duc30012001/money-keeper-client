@@ -67,7 +67,8 @@
         "english": "English",
         "title": "Language",
         "vietnamese": "Tiếng Việt",
-        "select": "Select language"
+        "select": "Select language",
+        "tooltip": "The language of initial data"
     },
     "user": {
         "title": "User",
@@ -186,6 +187,9 @@
         },
         "back": {
             "button": "Go back"
+        },
+        "copy": {
+            "success": "Copied to clipboard"
         }
     },
     "date": {

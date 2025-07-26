@@ -7,10 +7,12 @@ import { useIconsList } from '@/modules/icon/hooks/use-icons';
 import { Icon } from '@/modules/icon/types/icon';
 import { BaseQuery } from '@/types/common';
 import { Anchor, Col, Row, theme } from 'antd';
+import { useTranslations } from 'next-intl';
 import { parseAsString } from 'nuqs';
 import { toast } from 'react-toastify';
 
 export default function IconsPage() {
+    const messages = useTranslations();
     const { token } = theme.useToken();
     const { filterValues, onSearch } = useFilter<BaseQuery>({
         keyword: parseAsString,
@@ -27,8 +29,13 @@ export default function IconsPage() {
     const groupByTypeData = Object.groupBy(filteredData, ({ type }) => type);
 
     const handleCopy = (data: Icon) => {
-        navigator.clipboard.writeText(data.name);
-        toast.success('Copied to clipboard!', { position: 'top-center' });
+        navigator.clipboard.writeText(data.id);
+        const message = messages('action.copy.success');
+        toast.success(message, {
+            position: 'top-center',
+            toastId: message,
+            pauseOnFocusLoss: false,
+        });
     };
 
     return (
