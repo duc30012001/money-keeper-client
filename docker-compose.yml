@@ -1,5 +1,5 @@
 services:
-    app-prod-1:
+    app-prod:
         image: money-keeper-client-v2/prod:${TAG:-latest}
         build: .
         ports:
