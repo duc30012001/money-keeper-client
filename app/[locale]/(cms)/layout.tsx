@@ -1,24 +1,29 @@
 import CMSLayout from '@/components/layouts/cms';
-import { authOptions } from '@/modules/auth/next-auth';
 import { Spin } from 'antd';
-import { getServerSession } from 'next-auth';
+import axios from 'axios';
+import { cookies } from 'next/headers';
 
 export default async function Layout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    // const cookieStore = await cookies();
-    // const cookieData = cookieStore.getAll();
-    // console.log('cookieData:', cookieData);
+    const cookieStore = await cookies();
+    const cookieString = cookieStore
+        .getAll()
+        .map((c) => `${c.name}=${c.value}`)
+        .join('; ');
 
-    // const url = process.env.NEXTAUTH_URL + '/api/auth/session';
-    // const { data } = await axios.get(url);
-    // console.log('data:', data);
+    const url = process.env.NEXTAUTH_URL + '/api/auth/session';
+    const { data } = await axios.get(url, {
+        headers: {
+            Cookie: cookieString,
+        },
+    });
 
-    const session = await getServerSession(authOptions);
+    // const session = await getServerSession(authOptions);
 
-    if (session?.user) {
+    if (data?.user) {
         return <CMSLayout>{children}</CMSLayout>;
     }
 

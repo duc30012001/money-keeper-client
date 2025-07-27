@@ -1,21 +1,25 @@
+import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
-import { Skeleton } from 'antd';
 
 export function IconListSkeleton({ className }: { className?: string }) {
     return (
         <div
             className={cn(
-                'grid w-full grid-cols-3 gap-x-2 gap-y-5 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10',
+                'flex flex-wrap items-center justify-start gap-2',
                 className
             )}
         >
-            {Array.from({ length: 40 }).map((_, index) => (
+            {Array.from({ length: 50 }).map((_, index) => (
                 <div
                     key={index}
-                    className="flex flex-col items-center justify-center space-y-2 rounded-xl px-2 py-4 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    className={cn(
+                        'flex-none cursor-pointer rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 lg:p-4',
+                        className
+                    )}
                 >
-                    <Skeleton.Avatar active size={32} />
-                    <Skeleton.Button size="small" block active />
+                    <div className="h-8 w-auto overflow-hidden rounded-lg">
+                        <Skeleton className="size-8 rounded-full bg-gray-200 object-cover object-center dark:bg-zinc-900" />
+                    </div>
                 </div>
             ))}
         </div>

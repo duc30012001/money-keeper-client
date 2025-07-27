@@ -145,7 +145,7 @@
             "lastQuarter": "Last quarter",
             "thisYear": "This year",
             "lastYear": "Last year",
-            "lastNDay": "Last {day} day(s)"
+            "lastNDay": "Last {day} days"
         },
         "recent": "Recent transactions"
     },

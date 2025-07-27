@@ -49,7 +49,7 @@ export function IconList({
                                 </h2>
                                 <div
                                     className={cn(
-                                        'grid grid-cols-3 gap-x-2 gap-y-5 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-10',
+                                        'flex flex-wrap items-center justify-start gap-2',
                                         className
                                     )}
                                 >
@@ -85,21 +85,18 @@ export function IconItem({ data, onSelect, className }: IconItemProps) {
             title={data.name}
             key={data.id}
             className={cn(
-                'flex cursor-pointer flex-col items-center justify-center rounded-lg px-2 py-4 hover:bg-gray-100 dark:hover:bg-zinc-800',
+                'flex-none cursor-pointer rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 lg:p-4',
                 className
             )}
         >
-            <div className="mb-2 h-8 w-auto overflow-hidden rounded-lg">
+            <div className="h-8 w-auto overflow-hidden rounded-lg">
                 <Image
                     alt={data.name}
                     src={data.url}
-                    width={100}
-                    height={100}
+                    width={40}
+                    height={40}
                     className="h-full w-full object-cover object-center"
                 />
-            </div>
-            <div className="w-full">
-                <p className="truncate text-center text-sm">{data.name}</p>
             </div>
         </div>
     );
