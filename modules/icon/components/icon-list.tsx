@@ -85,11 +85,11 @@ export function IconItem({ data, onSelect, className }: IconItemProps) {
             title={data.name}
             key={data.id}
             className={cn(
-                'flex-none cursor-pointer rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 lg:p-4',
+                'flex-none cursor-pointer rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 lg:p-5 xl:p-8',
                 className
             )}
         >
-            <div className="h-8 w-auto overflow-hidden rounded-lg">
+            <div className="size-10 w-auto overflow-hidden rounded-lg lg:size-12">
                 <Image
                     alt={data.name}
                     src={data.url}
