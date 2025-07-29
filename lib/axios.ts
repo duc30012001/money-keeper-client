@@ -1,4 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import { getSession, signOut } from 'next-auth/react';
+
+const ACCESS_TOKEN_EXPIRED_MESSAGE = 'jwt expired';
 
 const replacer = (_key: string, value: any) =>
     value === undefined ? null : value;
@@ -31,11 +34,17 @@ const axiosInstance: AxiosInstance = axios.create(config);
 // Global error handling
 axiosInstance.interceptors.response.use(
     (res: AxiosResponse) => res,
-    (error) => {
+    async (error) => {
         console.log('error:', error);
-        // if (error.response?.status === 401) {
-        //     signOut();
-        // }
+        if (error.response?.data?.message === ACCESS_TOKEN_EXPIRED_MESSAGE) {
+            const cfg = error.config;
+            const session = await getSession();
+            if (session?.error === 'RefreshFailed') {
+                signOut();
+                return Promise.reject(error);
+            }
+            return axiosInstance(cfg);
+        }
         return Promise.reject(error);
     }
 );

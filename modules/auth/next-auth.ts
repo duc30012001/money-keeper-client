@@ -76,17 +76,18 @@ export const authOptions: NextAuthOptions = {
         },
         // Truyền accessToken vào session trả về cho client
         async session({ session, token }) {
-            const { accessToken } = token;
+            const { accessToken, error } = token;
 
-            const data = getDataFromToken(accessToken);
-            if (data) {
+            const accessTokenData = getDataFromToken(accessToken);
+
+            if (accessTokenData) {
                 session.user = {
-                    id: data?.sub as string,
-                    email: data?.email,
+                    id: accessTokenData.sub,
+                    email: accessTokenData.email,
                 };
             }
 
-            // session.accessToken = accessToken;
+            session.error = error;
             return session;
         },
     },

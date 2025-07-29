@@ -1,7 +1,8 @@
+import { useAuthUser } from '@/modules/auth/hooks/use-auth-user';
 import { Avatar, Dropdown, theme } from 'antd';
 import { ItemType } from 'antd/es/menu/interface';
 import { LogOut } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 
 type Props = {};
@@ -10,8 +11,8 @@ function AppProfile({}: Props) {
     const messages = useTranslations();
     const { token } = theme.useToken();
 
-    const { data } = useSession();
-    const email = data?.user?.email;
+    const { data } = useAuthUser();
+    const email = data?.data?.email;
     const avatarPlaceholder = email?.[0]?.toUpperCase() || 'u';
 
     const items: ItemType[] = [
