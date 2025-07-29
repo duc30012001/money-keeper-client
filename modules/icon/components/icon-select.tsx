@@ -60,7 +60,7 @@ function IconSelect({ ...props }: Props) {
                 titleClassName="top-9"
                 data={groupByTypeData}
                 searchProps={{
-                    value: keyword,
+                    defaultValue: keyword,
                     onChange: (e) => setKeyword(e.target.value),
                 }}
                 onSelect={handleChange}
@@ -83,6 +83,7 @@ function IconSelect({ ...props }: Props) {
                 trigger="click"
                 open={popoverOpen}
                 onOpenChange={onOpenChange}
+                destroyOnHidden
             >
                 {value ? (
                     <Upload
