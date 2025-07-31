@@ -13,15 +13,14 @@ const nextConfig = {
         ];
     },
     async rewrites() {
+        const result = [];
         if (process.env.NEXT_PUBLIC_API_BASE_URL) {
-            return [
-                {
-                    source: '/api/v1/:path*',
-                    destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/:path*`,
-                },
-            ];
+            result.push({
+                source: '/api/v1/:path*',
+                destination: `${process.env.NEXT_PUBLIC_API_BASE_URL}/:path*`,
+            });
         }
-        return undefined;
+        return result;
     },
     images: {
         remotePatterns: [
