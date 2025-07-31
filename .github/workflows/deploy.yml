@@ -52,10 +52,14 @@ jobs:
                   # run each step with sudo
                     ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} '
                         git config --global --add safe.directory /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
-
                         cd /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1 || exit 1
                         sudo git pull origin main
-
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/moneykeeper-client:latest
+                        sudo DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} docker compose up -d
+                        
+                        git config --global --add safe.directory /www/wwwroot/money-keeper-client/domain2/money-keeper-client-2
+                        cd /www/wwwroot/money-keeper-client/domain2/money-keeper-client-2 || exit 1
+                        sudo git pull origin main
                         sudo docker pull ${{ secrets.DOCKER_USERNAME }}/moneykeeper-client:latest
                         sudo DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} docker compose up -d
                     '
