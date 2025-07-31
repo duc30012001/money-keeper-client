@@ -41,10 +41,10 @@ jobs:
                   host: ${{ secrets.VPS_HOST }}
                   username: ${{ secrets.VPS_USER }}
                   key: ${{ secrets.VPS_SSH_KEY }}
-
-                  script:
+                  script: |
                       cd /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
                       git config --global --add safe.directory /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
                       sudo git pull origin main
-                      docker pull ${{ steps.meta.outputs.tags }}
+                      docker pull yourusername/moneykeeper-client:v0.0.3
+                      docker pull yourusername/moneykeeper-client:latest
                       docker compose up -d
