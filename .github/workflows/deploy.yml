@@ -54,6 +54,6 @@ jobs:
                         cd /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1 || exit 1
                         sudo git pull origin main
 
-                        sudo docker pull ${{ steps.meta.outputs.tags }}
-                        sudo docker compose up -d
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/moneykeeper-client:latest
+                        sudo DOCKER_USERNAME=${{ secrets.DOCKER_USERNAME }} docker compose up -d
                     '
