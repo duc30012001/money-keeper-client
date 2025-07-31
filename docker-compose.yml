@@ -1,12 +1,13 @@
 services:
     app-prod:
+        image: ${DOCKER_USERNAME:-vietduc3001}/moneykeeper-client:latest
+        build: .
         ports:
             - '${HOST_PORT:-3000}:3000'
         env_file:
             - .env
         environment:
             - TZ=${TZ:-Asia/Ho_Chi_Minh}
-        # command: yarn start
         restart: unless-stopped
         deploy:
         mem_limit: 2g # Set max memory to 2 GB
