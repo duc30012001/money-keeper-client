@@ -45,6 +45,5 @@ jobs:
                       cd /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
                       git config --global --add safe.directory /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
                       sudo git pull origin main
-                      docker pull yourusername/moneykeeper-client:v0.0.3
-                      docker pull yourusername/moneykeeper-client:latest
+                      docker pull ${{ steps.meta.outputs.tags }}
                       docker compose up -d
