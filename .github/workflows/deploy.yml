@@ -34,7 +34,7 @@ jobs:
                   context: .
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
-        steps:
+
             - name: Checkout repo
               uses: actions/checkout@v4
 
