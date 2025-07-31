@@ -34,6 +34,8 @@ jobs:
                   context: .
                   push: true
                   tags: ${{ steps.meta.outputs.tags }}
+                  build-args: |
+                      NEXT_PUBLIC_API_BASE_URL=${{ secrets.NEXT_PUBLIC_API_BASE_URL }}
 
             - name: Start SSH agent
               uses: webfactory/ssh-agent@v0.9.0
