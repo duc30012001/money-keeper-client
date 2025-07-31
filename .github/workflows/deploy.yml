@@ -2,38 +2,49 @@ name: Deploy production
 
 on:
     push:
-        branches:
-            - main
+        tags:
+            - 'v*'
 
 jobs:
     build:
         runs-on: ubuntu-latest
 
         steps:
-            - name: Checkout repo
+            - name: Checkout code
               uses: actions/checkout@v4
 
-            - name: Start SSH agent
-              uses: webfactory/ssh-agent@v0.9.0
+            - name: Set up QEMU
+              uses: docker/setup-qemu-action@v3
+
+            - name: Login to docker hub
+              uses: docker/login-action@v2
               with:
-                  ssh-private-key: ${{ secrets.VPS_SSH_KEY }}
+              username: ${{ secrets.DOCKER_USERNAME }}
+              password: ${{ secrets.DOCKER_PASSWORD }}
 
-            - name: Deploy via SSH
-              env:
-                  HOST: ${{ secrets.VPS_HOST }}
-                  USER: ${{ secrets.VPS_USER }}
-                  PORT: ${{ secrets.VPS_PORT }} # omit or set to 22
-              run: |
-                  # disable host checking (only if you trust the server)
-                  # run each step with sudo
-                    ssh -o StrictHostKeyChecking=no -p ${PORT:-22} ${USER}@${HOST} '
-                        git config --global --add safe.directory /www/wwwroot/dev/money-keeper-client-v2
+            - name: Tags docker image
+              id: meta
+              uses: docker/metadata-action@v5
+              with:
+              images: ${{ secrets.DOCKER_USERNAME }}/moneykeeper-client
 
-                        cd /www/wwwroot/dev/money-keeper-client-v2 || exit 1
-                        sudo git pull origin main
+            - name: Build and push to docker hub
+              uses: docker/build-push-action@v6
+              with:
+              context: .
+              push: true
+              tags: ${{ steps.meta.outputs.tags }}
 
-                        TAG=$(git rev-parse --short HEAD || echo "latest")
+            - name: Start SSH agent
+              uses: appleboy/ssh-action@v1.0.3
+              with:
+                  host: ${{ secrets.VPS_HOST }}
+                  username: ${{ secrets.VPS_USER }}
+                  key: ${{ secrets.VPS_SSH_KEY }}
 
-                        echo "Build và chạy Docker Compose với tag: $TAG"
-                        sudo TAG=$TAG docker compose -f docker-compose.yml up --build -d
-                    '
+              script:
+                  cd /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
+                  git config --global --add safe.directory /www/wwwroot/money-keeper-client/domain1/money-keeper-client-1
+                  sudo git pull origin main
+                  docker pull ${{ steps.meta.outputs.tags }}
+                  docker compose up -d
