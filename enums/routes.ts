@@ -83,7 +83,12 @@ export const SIDEBAR_ITEMS: SidebarItem[] = [
     },
 ];
 
-export const PUBLIC_ROUTES = [AppRoute.NOT_FOUND];
+export const PUBLIC_ROUTES = [
+    AppRoute.NOT_FOUND,
+    AppRoute.HOME,
+    AppRoute.FORBIDDEN,
+];
+
 export const AUTH_ROUTES = [
     AppRoute.SIGN_IN,
     AppRoute.REGISTER,

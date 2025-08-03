@@ -6,14 +6,13 @@ import AppLogo from '@/components/app-logo';
 import AppProfile from '@/components/app-profile';
 import AppTheme from '@/components/app-theme';
 import { SIDEBAR_ITEMS } from '@/enums/routes';
-import { usePathname } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { useAuthUser } from '@/modules/auth/hooks/use-auth-user';
 import { UserRole } from '@/modules/user/enums/user';
 import { Button, Drawer, Layout, Menu, Spin, theme } from 'antd';
 import { useResponsive } from 'antd-style';
 import { Menu as MenuIcon } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
 import React, { PropsWithChildren, useState } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 
@@ -103,8 +102,7 @@ export default function CMSLayout({ children }: Props) {
                             top: 64,
                             borderRightWidth: 1,
                             borderColor: token.colorBorder,
-                            padding: 4,
-                            paddingBottom: 0,
+                            padding: 0,
                         }}
                         collapsed={collapsed}
                         collapsedWidth={57}

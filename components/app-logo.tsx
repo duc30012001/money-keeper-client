@@ -1,9 +1,9 @@
 import { appConfig } from '@/constants/app';
 import { AppRoute } from '@/enums/routes';
+import { Link } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { theme } from 'antd';
 import Image from 'next/image';
-import Link from 'next/link';
 
 interface AppLogoProps {
     className?: string;
@@ -17,7 +17,7 @@ function AppLogo({ className, labelClassName, logoClassName }: AppLogoProps) {
     } = theme.useToken();
     return (
         <Link
-            href={AppRoute.DASHBOARD}
+            href={AppRoute.HOME}
             className={cn('flex w-fit items-center gap-2', className)}
         >
             <Image

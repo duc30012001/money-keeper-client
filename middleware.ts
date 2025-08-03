@@ -28,11 +28,15 @@ export async function middleware(req: NextRequest) {
     // 2. Do your session check + redirects
     const token = await getToken(req);
     const locale = cookies().get('NEXT_LOCALE')?.value || defaultLocale;
+
+    const normalizePath = (path: string) => path.replace(/\/+$/, '');
+    const normalizedPathname = normalizePath(pathname);
+
     const isPublicRoutes = PUBLIC_ROUTES.some(
-        (item) => pathname === `/${locale}${item}`
+        (item) => normalizedPathname === normalizePath(`/${locale}${item}`)
     );
     const isAuthRoutes = AUTH_ROUTES.some(
-        (item) => pathname === `/${locale}${item}`
+        (item) => normalizedPathname === normalizePath(`/${locale}${item}`)
     );
 
     if (isPublicRoutes) {

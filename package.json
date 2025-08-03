@@ -30,10 +30,12 @@
         "nextjs-toploader": "^3.8.16",
         "nuqs": "^2.4.3",
         "react": "^18",
+        "react-compare-slider": "^3.1.0",
         "react-custom-scrollbars": "^4.2.1",
         "react-dom": "^18",
         "react-toastify": "^11.0.5",
         "recharts": "^3.1.0",
+        "swiper": "^11.2.10",
         "tailwind-merge": "^3.3.1",
         "usehooks-ts": "^3.1.1",
         "zustand": "^5.0.6"
