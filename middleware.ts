@@ -33,10 +33,14 @@ export async function middleware(req: NextRequest) {
     const normalizedPathname = normalizePath(pathname);
 
     const isPublicRoutes = PUBLIC_ROUTES.some(
-        (item) => normalizedPathname === normalizePath(`/${locale}${item}`)
+        (item) =>
+            normalizedPathname === normalizePath(`/${locale}${item}`) ||
+            normalizedPathname === normalizePath(`${item}`)
     );
     const isAuthRoutes = AUTH_ROUTES.some(
-        (item) => normalizedPathname === normalizePath(`/${locale}${item}`)
+        (item) =>
+            normalizedPathname === normalizePath(`/${locale}${item}`) ||
+            normalizedPathname === normalizePath(`${item}`)
     );
 
     if (isPublicRoutes) {
